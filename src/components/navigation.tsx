@@ -1,11 +1,15 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import {
   Sheet,
@@ -22,11 +26,15 @@ import {
   Mic,
   Building,
   GraduationCap,
-  Headphones
+  Headphones,
+  Settings,
+  LogOut,
+  LayoutDashboard
 } from 'lucide-react';
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   const navItems = [
     { label: 'Artists', href: '/artists', icon: Mic },
@@ -78,29 +86,65 @@ export function Navigation() {
             </Button>
           </div>
 
-          {/* Auth Buttons */}
+          {/* Auth Buttons / User Menu */}
           <div className="hidden md:flex items-center space-x-3">
-            <Button variant="ghost">
-              <LogIn className="h-4 w-4 mr-2" />
-              Sign In
-            </Button>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="bg-gradient-primary hover:opacity-90">
-                  <UserPlus className="h-4 w-4 mr-2" />
-                  Join Now
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                {userTypes.map((type) => (
-                  <DropdownMenuItem key={type.value}>
-                    <User className="h-4 w-4 mr-2" />
-                    {type.label}
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={user.user_metadata?.avatar_url} />
+                      <AvatarFallback>{user.email?.charAt(0).toUpperCase()}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard">
+                      <LayoutDashboard className="h-4 w-4 mr-2" />
+                      Dashboard
+                    </Link>
                   </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  <DropdownMenuItem>
+                    <Settings className="h-4 w-4 mr-2" />
+                    Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={signOut}>
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button variant="ghost" asChild>
+                  <Link to="/auth">
+                    <LogIn className="h-4 w-4 mr-2" />
+                    Sign In
+                  </Link>
+                </Button>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button className="bg-gradient-primary hover:opacity-90">
+                      <UserPlus className="h-4 w-4 mr-2" />
+                      Join Now
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    {userTypes.map((type) => (
+                      <DropdownMenuItem key={type.value} asChild>
+                        <Link to="/auth">
+                          <User className="h-4 w-4 mr-2" />
+                          {type.label}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -129,15 +173,36 @@ export function Navigation() {
                   })}
                   
                   <div className="border-t pt-4">
-                    <Button variant="ghost" className="w-full justify-start mb-2">
-                      <LogIn className="h-4 w-4 mr-2" />
-                      Sign In
-                    </Button>
-                    
-                    <Button className="w-full bg-gradient-primary hover:opacity-90">
-                      <UserPlus className="h-4 w-4 mr-2" />
-                      Join Now
-                    </Button>
+                    {user ? (
+                      <>
+                        <Button variant="ghost" className="w-full justify-start mb-2" asChild>
+                          <Link to="/dashboard">
+                            <LayoutDashboard className="h-4 w-4 mr-2" />
+                            Dashboard
+                          </Link>
+                        </Button>
+                        <Button variant="outline" className="w-full justify-start" onClick={signOut}>
+                          <LogOut className="h-4 w-4 mr-2" />
+                          Sign Out
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button variant="ghost" className="w-full justify-start mb-2" asChild>
+                          <Link to="/auth">
+                            <LogIn className="h-4 w-4 mr-2" />
+                            Sign In
+                          </Link>
+                        </Button>
+                        
+                        <Button className="w-full bg-gradient-primary hover:opacity-90" asChild>
+                          <Link to="/auth">
+                            <UserPlus className="h-4 w-4 mr-2" />
+                            Join Now
+                          </Link>
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </div>
               </SheetContent>
