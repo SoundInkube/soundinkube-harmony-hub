@@ -19,6 +19,7 @@ import Gigs from "./pages/Gigs";
 import Bookings from "./pages/Bookings";
 import Admin from "./pages/Admin";
 import AdminUsers from "./pages/AdminUsers";
+import AdminContentManager from "./pages/AdminContentManager";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,12 +47,12 @@ const App = () => (
             <Route path="/bookings" element={<Bookings />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/users" element={<AdminUsers />} />
-            <Route path="/admin/content/*" element={<AdminUsers />} />
-            <Route path="/admin/analytics" element={<AdminUsers />} />
-            <Route path="/admin/messages" element={<AdminUsers />} />
-            <Route path="/admin/reviews" element={<AdminUsers />} />
-            <Route path="/admin/reports" element={<AdminUsers />} />
-            <Route path="/admin/settings" element={<AdminUsers />} />
+            <Route path="/admin/content/*" element={<AdminContentManager />} />
+            <Route path="/admin/analytics" element={<AdminContentManager />} />
+            <Route path="/admin/messages" element={<AdminContentManager />} />
+            <Route path="/admin/reviews" element={<AdminContentManager />} />
+            <Route path="/admin/reports" element={<AdminContentManager />} />
+            <Route path="/admin/settings" element={<AdminContentManager />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
