@@ -21,12 +21,25 @@ const AdminContentManager = () => {
       navigate('/auth');
       return;
     }
-    if (!isAdmin) {
+    if (!isAdmin && !loading) {
       navigate('/dashboard');
       return;
     }
-  }, [user, isAdmin, navigate]);
+  }, [user, isAdmin, loading, navigate]);
 
+  // Show loading state while checking admin status
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show access denied only after loading is complete and user is confirmed not admin
   if (!isAdmin) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
