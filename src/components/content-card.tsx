@@ -11,7 +11,7 @@ interface ContentCardProps {
   location?: string;
   genre?: string;
   price?: string;
-  type: 'artist' | 'studio' | 'school' | 'label';
+  type: 'artist' | 'studio' | 'school' | 'label' | 'jampad';
   className?: string;
   onClick?: () => void;
 }
@@ -34,6 +34,7 @@ export function ContentCard({
       case 'studio': return <Play className="h-4 w-4" />;
       case 'school': return <Users className="h-4 w-4" />;
       case 'label': return <Star className="h-4 w-4" />;
+      case 'jampad': return <Music className="h-4 w-4" />;
     }
   };
 
@@ -43,6 +44,7 @@ export function ContentCard({
       case 'studio': return 'bg-accent';
       case 'school': return 'bg-secondary';
       case 'label': return 'bg-warning';
+      case 'jampad': return 'bg-primary';
     }
   };
 

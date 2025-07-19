@@ -23,7 +23,7 @@ interface BookingDialogProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   provider: any;
-  providerType?: 'artist' | 'studio' | 'school' | 'label';
+  providerType?: 'artist' | 'studio' | 'school' | 'label' | 'jampad';
 }
 
 export function BookingDialog({ children, open: externalOpen, onOpenChange: externalOnOpenChange, provider, providerType = 'artist' }: BookingDialogProps) {
@@ -126,6 +126,12 @@ export function BookingDialog({ children, open: externalOpen, onOpenChange: exte
     label: [
       { value: 'collaboration', label: 'Record Deal Discussion' },
       { value: 'session', label: 'Meeting' },
+    ],
+    jampad: [
+      { value: 'session', label: 'Jam Session' },
+      { value: 'practice', label: 'Band Practice' },
+      { value: 'rehearsal', label: 'Rehearsal' },
+      { value: 'rental', label: 'Equipment Rental' },
     ]
   };
 
@@ -140,7 +146,7 @@ export function BookingDialog({ children, open: externalOpen, onOpenChange: exte
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Calendar className="h-5 w-5" />
-            Book {provider.stage_name || provider.studio_name || provider.school_name || provider.label_name}
+            Book {provider.stage_name || provider.studio_name || provider.school_name || provider.label_name || provider.jampad_name}
           </DialogTitle>
           <DialogDescription>
             Fill out the details for your booking request. The provider will receive your request and can accept or decline.

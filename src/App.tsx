@@ -11,6 +11,7 @@ import Artists from "./pages/Artists";
 import Studios from "./pages/Studios";
 import MusicSchools from "./pages/MusicSchools";
 import RecordLabels from "./pages/RecordLabels";
+import Jampads from "./pages/Jampads";
 import Messages from "./pages/Messages";
 import Marketplace from "./pages/Marketplace";
 import Collaborations from "./pages/Collaborations";
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/studios" element={<Studios />} />
             <Route path="/schools" element={<MusicSchools />} />
             <Route path="/labels" element={<RecordLabels />} />
+            <Route path="/jampads" element={<Jampads />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/collaborations" element={<Collaborations />} />

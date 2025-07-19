@@ -15,6 +15,7 @@ import {
   Shield,
   Globe
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 // Import images
 import heroStudio from '@/assets/hero-studio.jpg';
@@ -25,6 +26,7 @@ import school1 from '@/assets/school-1.jpg';
 import label1 from '@/assets/label-1.jpg';
 
 const Index = () => {
+  const navigate = useNavigate();
   // Sample data for different sections
   const featuredArtists = [
     {
@@ -170,6 +172,31 @@ const Index = () => {
     },
   ];
 
+  const topJampads = [
+    {
+      id: '1',
+      title: 'Rhythm Room',
+      subtitle: 'Professional Jamming Space',
+      image: studio1,
+      rating: 4.8,
+      location: 'Mumbai',
+      genre: 'All Genres',
+      price: '₹800/hr',
+      type: 'jampad' as const,
+    },
+    {
+      id: '2',
+      title: 'Sound Sanctuary',
+      subtitle: 'Band Rehearsal Studio',
+      image: studio1,
+      rating: 4.9,
+      location: 'Bangalore',
+      genre: 'Rock & Pop',
+      price: '₹1,200/hr',
+      type: 'jampad' as const,
+    },
+  ];
+
   const features = [
     {
       icon: Music,
@@ -230,6 +257,14 @@ const Index = () => {
         data={topLabels}
       />
 
+      {/* Jampads */}
+      <SectionCarousel
+        title="Top Jampads"
+        subtitle="Find the perfect jamming space for your band"
+        data={topJampads}
+        className="bg-muted/20"
+      />
+
       {/* Features Section */}
       <section className="py-20 bg-gradient-card">
         <div className="container mx-auto px-6">
@@ -274,11 +309,11 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-gradient-primary hover:opacity-90 px-8 py-6 text-lg glow-primary">
+              <Button size="lg" className="bg-gradient-primary hover:opacity-90 px-8 py-6 text-lg glow-primary" onClick={() => navigate('/auth')}>
                 <Users className="h-5 w-5 mr-2" />
                 Start Your Journey
               </Button>
-              <Button size="lg" variant="outline" className="border-primary/50 hover:bg-primary/10 px-8 py-6 text-lg">
+              <Button size="lg" variant="outline" className="border-primary/50 hover:bg-primary/10 px-8 py-6 text-lg" onClick={() => navigate('/artists')}>
                 <Headphones className="h-5 w-5 mr-2" />
                 Explore Platform
               </Button>
@@ -306,30 +341,30 @@ const Index = () => {
             <div>
               <h4 className="font-semibold mb-4">For Artists</h4>
               <ul className="space-y-2 text-muted-foreground">
-                <li>Create Profile</li>
-                <li>Manage Bookings</li>
-                <li>Collaborate</li>
-                <li>Sell Gear</li>
+                <li><button onClick={() => navigate('/auth')} className="hover:text-primary transition-colors text-left">Create Profile</button></li>
+                <li><button onClick={() => navigate('/bookings')} className="hover:text-primary transition-colors text-left">Manage Bookings</button></li>
+                <li><button onClick={() => navigate('/collaborations')} className="hover:text-primary transition-colors text-left">Collaborate</button></li>
+                <li><button onClick={() => navigate('/marketplace')} className="hover:text-primary transition-colors text-left">Sell Gear</button></li>
               </ul>
             </div>
             
             <div>
               <h4 className="font-semibold mb-4">For Clients</h4>
               <ul className="space-y-2 text-muted-foreground">
-                <li>Book Artists</li>
-                <li>Find Studios</li>
-                <li>Learn Music</li>
-                <li>Discover Talent</li>
+                <li><button onClick={() => navigate('/artists')} className="hover:text-primary transition-colors text-left">Book Artists</button></li>
+                <li><button onClick={() => navigate('/studios')} className="hover:text-primary transition-colors text-left">Find Studios</button></li>
+                <li><button onClick={() => navigate('/schools')} className="hover:text-primary transition-colors text-left">Learn Music</button></li>
+                <li><button onClick={() => navigate('/jampads')} className="hover:text-primary transition-colors text-left">Find Jampads</button></li>
               </ul>
             </div>
             
             <div>
               <h4 className="font-semibold mb-4">Support</h4>
               <ul className="space-y-2 text-muted-foreground">
-                <li>Help Center</li>
-                <li>Contact Us</li>
-                <li>Privacy Policy</li>
-                <li>Terms of Service</li>
+                <li><button onClick={() => navigate('/dashboard')} className="hover:text-primary transition-colors text-left">Help Center</button></li>
+                <li><button onClick={() => navigate('/messages')} className="hover:text-primary transition-colors text-left">Contact Us</button></li>
+                <li><span className="hover:text-primary transition-colors cursor-pointer">Privacy Policy</span></li>
+                <li><span className="hover:text-primary transition-colors cursor-pointer">Terms of Service</span></li>
               </ul>
             </div>
           </div>

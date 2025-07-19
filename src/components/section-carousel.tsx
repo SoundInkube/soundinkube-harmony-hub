@@ -8,6 +8,7 @@ import {
 import { ContentCard } from './content-card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface SectionCarouselProps {
   title: string;
@@ -21,12 +22,34 @@ interface SectionCarouselProps {
     location?: string;
     genre?: string;
     price?: string;
-    type: 'artist' | 'studio' | 'school' | 'label';
+    type: 'artist' | 'studio' | 'school' | 'label' | 'jampad';
   }>;
   className?: string;
 }
 
 export function SectionCarousel({ title, subtitle, data, className }: SectionCarouselProps) {
+  const navigate = useNavigate();
+
+  const getViewAllPath = () => {
+    if (data.length > 0) {
+      const type = data[0].type;
+      switch (type) {
+        case 'artist': return '/artists';
+        case 'studio': return '/studios';
+        case 'school': return '/schools';
+        case 'label': return '/labels';
+        case 'jampad': return '/jampads';
+        default: return '/';
+      }
+    }
+    return '/';
+  };
+
+  const handleCardClick = (item: any) => {
+    const basePath = getViewAllPath();
+    navigate(`${basePath}#${item.id}`);
+  };
+
   return (
     <section className={`py-16 ${className || ''}`}>
       <div className="container mx-auto px-6">
@@ -39,7 +62,7 @@ export function SectionCarousel({ title, subtitle, data, className }: SectionCar
             )}
           </div>
           
-          <Button variant="ghost" className="group">
+          <Button variant="ghost" className="group" onClick={() => navigate(getViewAllPath())}>
             View All
             <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
@@ -65,7 +88,7 @@ export function SectionCarousel({ title, subtitle, data, className }: SectionCar
                   genre={item.genre}
                   price={item.price}
                   type={item.type}
-                  onClick={() => console.log(`Clicked ${item.title}`)}
+                  onClick={() => handleCardClick(item)}
                 />
               </CarouselItem>
             ))}

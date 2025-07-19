@@ -54,6 +54,7 @@ export function Navigation() {
         { label: 'Artists', href: '/artists', icon: Mic },
         { label: 'Studios', href: '/studios', icon: Headphones },
         { label: 'Schools', href: '/schools', icon: GraduationCap },
+        { label: 'Jampads', href: '/jampads', icon: Music },
         { label: 'Labels', href: '/labels', icon: Building },
       ];
     }
