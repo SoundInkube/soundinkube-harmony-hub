@@ -1,23 +1,17 @@
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { 
-  LayoutDashboard,
-  Users,
+  LayoutDashboard, 
+  Users, 
+  FileText, 
+  BarChart3, 
+  MessageSquare, 
+  Star, 
+  AlertTriangle, 
   Settings,
-  BarChart3,
-  Database,
-  Shield,
-  FileText,
-  MessageSquare,
-  Briefcase,
-  Music,
-  Building,
-  School,
-  Disc,
-  ShoppingBag,
-  Calendar,
-  Star
+  ChevronDown
 } from 'lucide-react';
+import { useState } from 'react';
 
 interface AdminSidebarProps {
   className?: string;
@@ -25,6 +19,7 @@ interface AdminSidebarProps {
 
 export function AdminSidebar({ className }: AdminSidebarProps) {
   const location = useLocation();
+  const [expandedSection, setExpandedSection] = useState<string | null>('content');
 
   const navigation = [
     {
@@ -40,16 +35,16 @@ export function AdminSidebar({ className }: AdminSidebarProps) {
     {
       name: 'Content Management',
       href: '/admin/content',
-      icon: Database,
+      icon: FileText,
       children: [
-        { name: 'Artists', href: '/admin/content/artists', icon: Music },
-        { name: 'Studios', href: '/admin/content/studios', icon: Disc },
-        { name: 'Schools', href: '/admin/content/schools', icon: School },
-        { name: 'Labels', href: '/admin/content/labels', icon: Building },
-        { name: 'Marketplace', href: '/admin/content/marketplace', icon: ShoppingBag },
-        { name: 'Gigs', href: '/admin/content/gigs', icon: Briefcase },
-        { name: 'Collaborations', href: '/admin/content/collaborations', icon: Users },
-        { name: 'Bookings', href: '/admin/content/bookings', icon: Calendar },
+        { name: 'Artists', href: '/admin/content/artists' },
+        { name: 'Studios', href: '/admin/content/studios' },
+        { name: 'Schools', href: '/admin/content/schools' },
+        { name: 'Labels', href: '/admin/content/labels' },
+        { name: 'Marketplace', href: '/admin/content/marketplace' },
+        { name: 'Gigs', href: '/admin/content/gigs' },
+        { name: 'Collaborations', href: '/admin/content/collaborations' },
+        { name: 'Bookings', href: '/admin/content/bookings' },
       ]
     },
     {
@@ -70,7 +65,7 @@ export function AdminSidebar({ className }: AdminSidebarProps) {
     {
       name: 'Reports',
       href: '/admin/reports',
-      icon: FileText,
+      icon: AlertTriangle,
     },
     {
       name: 'Settings',
@@ -79,65 +74,83 @@ export function AdminSidebar({ className }: AdminSidebarProps) {
     },
   ];
 
+  const isActiveRoute = (href: string) => {
+    if (href === '/admin') {
+      return location.pathname === href;
+    }
+    return location.pathname.startsWith(href);
+  };
+
+  const toggleSection = (sectionName: string) => {
+    setExpandedSection(expandedSection === sectionName ? null : sectionName);
+  };
+
   return (
-    <div className={cn('flex h-full w-64 flex-col bg-card border-r', className)}>
-      <div className="flex h-16 items-center border-b px-6">
-        <div className="flex items-center space-x-2">
-          <Shield className="h-8 w-8 text-primary" />
-          <span className="text-xl font-bold">Admin Panel</span>
-        </div>
+    <div className={cn("bg-card border-r w-64 min-h-screen", className)}>
+      <div className="p-6 border-b">
+        <h2 className="text-xl font-bold">Admin Panel</h2>
+        <p className="text-sm text-muted-foreground">Manage your platform</p>
       </div>
       
-      <nav className="flex-1 space-y-1 px-3 py-4 overflow-y-auto">
-        {navigation.map((item) => {
-          const isActive = location.pathname === item.href;
-          const hasChildren = item.children && item.children.length > 0;
-          
-          return (
-            <div key={item.name}>
-              <Link
-                to={item.href}
-                className={cn(
-                  'group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors',
-                  isActive
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
-                )}
-              >
-                <item.icon
+      <nav className="p-4 space-y-2">
+        {navigation.map((item) => (
+          <div key={item.name}>
+            {item.children ? (
+              <div>
+                <button
+                  onClick={() => toggleSection(item.name.toLowerCase().replace(' ', '-'))}
                   className={cn(
-                    'mr-3 h-5 w-5 flex-shrink-0',
-                    isActive ? 'text-primary-foreground' : 'text-muted-foreground'
+                    "flex items-center justify-between w-full px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                    isActiveRoute(item.href)
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
                   )}
-                />
-                {item.name}
-              </Link>
-              
-              {hasChildren && (
-                <div className="ml-8 mt-1 space-y-1">
-                  {item.children.map((child) => {
-                    const isChildActive = location.pathname === child.href;
-                    return (
+                >
+                  <div className="flex items-center">
+                    <item.icon className="mr-3 h-4 w-4" />
+                    {item.name}
+                  </div>
+                  <ChevronDown className={cn(
+                    "h-4 w-4 transition-transform",
+                    expandedSection === item.name.toLowerCase().replace(' ', '-') ? "rotate-180" : ""
+                  )} />
+                </button>
+                
+                {expandedSection === item.name.toLowerCase().replace(' ', '-') && (
+                  <div className="ml-6 mt-2 space-y-1">
+                    {item.children.map((child) => (
                       <Link
                         key={child.name}
                         to={child.href}
                         className={cn(
-                          'group flex items-center px-2 py-1 text-sm rounded-md transition-colors',
-                          isChildActive
-                            ? 'bg-primary/10 text-primary'
-                            : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                          "block px-3 py-2 text-sm rounded-md transition-colors",
+                          isActiveRoute(child.href)
+                            ? "bg-primary text-primary-foreground"
+                            : "text-muted-foreground hover:text-foreground hover:bg-muted"
                         )}
                       >
-                        <child.icon className="mr-2 h-4 w-4" />
                         {child.name}
                       </Link>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          );
-        })}
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                to={item.href}
+                className={cn(
+                  "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                  isActiveRoute(item.href)
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                )}
+              >
+                <item.icon className="mr-3 h-4 w-4" />
+                {item.name}
+              </Link>
+            )}
+          </div>
+        ))}
       </nav>
     </div>
   );
