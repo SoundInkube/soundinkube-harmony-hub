@@ -119,7 +119,7 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <img src="/lovable-uploads/0ef42355-744e-4141-9372-c611bb5eb01a.png" alt="SoundInkube" className="h-32 w-auto" />
+            <img src="/lovable-uploads/0ef42355-744e-4141-9372-c611bb5eb01a.png" alt="SoundInkube" className="h-32 w-auto object-contain" />
           </div>
 
           {/* Desktop Navigation */}
