@@ -1,16 +1,19 @@
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { ContentManagement } from '@/components/admin/ContentManagement';
+import { UserManagement } from '@/components/admin/UserManagement';
+import { AdminStats } from '@/components/admin/AdminStats';
 import { useAuth } from '@/hooks/useAuth';
 import { useAdmin } from '@/hooks/useAdmin';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const AdminContentManager = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
-  const { isAdmin } = useAdmin();
+  const { isAdmin, stats, loading } = useAdmin();
 
   useEffect(() => {
     if (!user) {
@@ -38,12 +41,77 @@ const AdminContentManager = () => {
     );
   }
 
+  const renderContent = () => {
+    const path = location.pathname;
+    
+    if (path === '/admin/users') {
+      return <UserManagement />;
+    }
+    
+    if (path.startsWith('/admin/content')) {
+      return <ContentManagement />;
+    }
+    
+    if (path === '/admin/analytics') {
+      return (
+        <div>
+          <h2 className="text-2xl font-bold mb-6">Analytics Dashboard</h2>
+          <AdminStats stats={stats} loading={loading} />
+        </div>
+      );
+    }
+    
+    if (path === '/admin/messages') {
+      return (
+        <div>
+          <h2 className="text-2xl font-bold mb-6">Message Management</h2>
+          <p className="text-muted-foreground">Message management features coming soon.</p>
+        </div>
+      );
+    }
+    
+    if (path === '/admin/reviews') {
+      return (
+        <div>
+          <h2 className="text-2xl font-bold mb-6">Review Management</h2>
+          <p className="text-muted-foreground">Review management features coming soon.</p>
+        </div>
+      );
+    }
+    
+    if (path === '/admin/reports') {
+      return (
+        <div>
+          <h2 className="text-2xl font-bold mb-6">Reports & Issues</h2>
+          <p className="text-muted-foreground">Report management features coming soon.</p>
+        </div>
+      );
+    }
+    
+    if (path === '/admin/settings') {
+      return (
+        <div>
+          <h2 className="text-2xl font-bold mb-6">Platform Settings</h2>
+          <p className="text-muted-foreground">Settings management features coming soon.</p>
+        </div>
+      );
+    }
+    
+    // Default dashboard view
+    return (
+      <div>
+        <h2 className="text-2xl font-bold mb-6">Admin Dashboard</h2>
+        <AdminStats stats={stats} loading={loading} />
+      </div>
+    );
+  };
+
   return (
     <div className="flex h-screen bg-background">
       <AdminSidebar />
       <main className="flex-1 overflow-y-auto">
         <div className="p-8">
-          <ContentManagement />
+          {renderContent()}
         </div>
       </main>
     </div>
