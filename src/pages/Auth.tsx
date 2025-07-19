@@ -54,10 +54,7 @@ export default function Auth() {
           </Link>
           
           <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <Music className="h-6 w-6 text-white" />
-            </div>
-            <h1 className="text-2xl font-bold">SoundInkube</h1>
+            <img src="/lovable-uploads/f8c6f18a-b107-4e8a-a5f7-344a249422b1.png" alt="SoundInkube" className="h-10 w-auto" />
           </div>
           
           <p className="text-muted-foreground">

@@ -275,7 +275,7 @@ const Index = () => {
             </Badge>
             <h2 className="text-4xl font-bold mb-4">Everything You Need</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              SoundInkube provides all the tools you need to succeed in the music industry
+              Our platform provides all the tools you need to succeed in the music industry
             </p>
           </div>
 
@@ -305,7 +305,7 @@ const Index = () => {
               Ready to Join India's Music Revolution?
             </h2>
             <p className="text-xl text-muted-foreground mb-8">
-              Whether you're an artist, student, or music enthusiast, SoundInkube has something for everyone.
+              Whether you're an artist, student, or music enthusiast, our platform has something for everyone.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -328,10 +328,7 @@ const Index = () => {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-                  <Music className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-xl font-bold">SoundInkube</span>
+                <img src="/lovable-uploads/f8c6f18a-b107-4e8a-a5f7-344a249422b1.png" alt="SoundInkube" className="h-8 w-auto" />
               </div>
               <p className="text-muted-foreground">
                 India's premier music platform connecting professionals and enthusiasts.

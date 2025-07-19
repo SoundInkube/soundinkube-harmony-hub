@@ -119,10 +119,7 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <Music className="h-5 w-5 text-white" />
-            </div>
-            <span className="text-xl font-bold">SoundInkube</span>
+            <img src="/lovable-uploads/f8c6f18a-b107-4e8a-a5f7-344a249422b1.png" alt="SoundInkube" className="h-8 w-auto" />
           </div>
 
           {/* Desktop Navigation */}
