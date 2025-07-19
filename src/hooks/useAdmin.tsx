@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfile } from './useProfile';
+import { useToast } from './use-toast';
 
 export function useAdmin() {
   const { profile } = useProfile();
+  const { toast } = useToast();
   const [users, setUsers] = useState([]);
   const [stats, setStats] = useState({
     totalUsers: 0,
@@ -20,7 +22,7 @@ export function useAdmin() {
   });
   const [loading, setLoading] = useState(true);
 
-  const isAdmin = profile?.user_type === 'admin';
+  const isAdmin = profile?.user_type === 'admin' && profile?.verified;
 
   useEffect(() => {
     if (isAdmin) {
@@ -93,48 +95,98 @@ export function useAdmin() {
 
   const updateUserType = async (userId: string, newUserType: string) => {
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({ user_type: newUserType })
-        .eq('id', userId);
+      const { error } = await supabase.rpc('admin_update_user_type', {
+        target_user_id: userId,
+        new_user_type: newUserType
+      });
 
-      if (error) throw error;
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Security Error",
+          description: error.message || "Access denied: Only administrators can update user types"
+        });
+        return { error };
+      }
+
       await loadUsers();
+      await loadStats(); // Refresh stats after user type change
+      toast({
+        title: "Success",
+        description: "User type updated successfully"
+      });
       return { error: null };
-    } catch (error) {
-      console.error('Error updating user type:', error);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Security Error",
+        description: error.message || "Access denied"
+      });
       return { error };
     }
   };
 
   const updateUserVerification = async (userId: string, verified: boolean) => {
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({ verified })
-        .eq('id', userId);
+      const { error } = await supabase.rpc('admin_update_user_verification', {
+        target_user_id: userId,
+        is_verified: verified
+      });
 
-      if (error) throw error;
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Security Error",
+          description: error.message || "Access denied: Only administrators can update verification status"
+        });
+        return { error };
+      }
+
       await loadUsers();
+      await loadStats(); // Refresh stats after verification change
+      toast({
+        title: "Success",
+        description: `User ${verified ? 'verified' : 'unverified'} successfully`
+      });
       return { error: null };
-    } catch (error) {
-      console.error('Error updating user verification:', error);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Security Error",
+        description: error.message || "Access denied"
+      });
       return { error };
     }
   };
 
   const deleteUser = async (userId: string) => {
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .delete()
-        .eq('id', userId);
+      const { error } = await supabase.rpc('admin_delete_user', {
+        target_user_id: userId
+      });
 
-      if (error) throw error;
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Security Error",
+          description: error.message || "Access denied: Only administrators can delete users"
+        });
+        return { error };
+      }
+
       await loadUsers();
+      await loadStats(); // Refresh stats after user deletion
+      toast({
+        title: "Success",
+        description: "User deleted successfully"
+      });
       return { error: null };
-    } catch (error) {
-      console.error('Error deleting user:', error);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Security Error",
+        description: error.message || "Access denied"
+      });
       return { error };
     }
   };

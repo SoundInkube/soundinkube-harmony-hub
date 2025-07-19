@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_log: {
+        Row: {
+          action: string
+          admin_user_id: string
+          created_at: string
+          details: Json | null
+          id: string
+          target_user_id: string | null
+        }
+        Insert: {
+          action: string
+          admin_user_id: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          target_user_id?: string | null
+        }
+        Update: {
+          action?: string
+          admin_user_id?: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          target_user_id?: string | null
+        }
+        Relationships: []
+      }
       artist_profiles: {
         Row: {
           achievements: string[] | null
@@ -946,6 +973,30 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_delete_user: {
+        Args: { target_user_id: string }
+        Returns: boolean
+      }
+      admin_update_user_type: {
+        Args: { target_user_id: string; new_user_type: string }
+        Returns: boolean
+      }
+      admin_update_user_verification: {
+        Args: { target_user_id: string; is_verified: boolean }
+        Returns: boolean
+      }
+      is_admin: {
+        Args: { user_uuid?: string }
+        Returns: boolean
+      }
+      log_admin_action: {
+        Args: {
+          action_name: string
+          target_user_uuid?: string
+          action_details?: Json
+        }
+        Returns: undefined
+      }
       promote_user_to_admin: {
         Args: { user_email: string }
         Returns: boolean
