@@ -26,14 +26,13 @@ export function HeroSection() {
           </Badge>
 
           {/* Main Logo */}
-          <div className="flex justify-center mb-6 overflow-hidden">
+          <div className="flex justify-center mb-6">
             <img 
               src="/lovable-uploads/0ef42355-744e-4141-9372-c611bb5eb01a.png" 
               alt="Music Platform Logo" 
-              className="h-[576px] md:h-[768px] w-auto object-cover object-center filter drop-shadow-2xl"
+              className="h-[576px] md:h-[768px] w-auto object-contain filter drop-shadow-2xl"
               style={{ 
-                clipPath: 'inset(20% 0 20% 0)',
-                transform: 'scale(1.67)' 
+                clipPath: 'inset(20% 0 20% 0)'
               }}
             />
           </div>
