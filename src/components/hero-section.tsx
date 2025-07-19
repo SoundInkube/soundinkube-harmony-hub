@@ -27,8 +27,8 @@ export function HeroSection() {
 
           {/* Main Logo */}
           <div className="flex justify-center mb-0">
-            <img
-              src="/lovable-uploads/0ef42355-744e-4141-9372-c611bb5eb01a.png" 
+            <img 
+              src="/lovable-uploads/69918e24-a799-4c5c-9104-37eee2db9aac.png" 
               alt="Music Platform Logo" 
               className="h-[576px] md:h-[768px] w-auto object-contain filter drop-shadow-2xl"
             />
