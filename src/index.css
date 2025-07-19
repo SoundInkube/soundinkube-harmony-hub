@@ -8,57 +8,57 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Core Brand Colors - Red Theme */
-    --background: 0 20% 5%;              /* Very dark red-tinted background */
-    --foreground: 0 5% 98%;              /* Light text with subtle warmth */
+    /* Core Brand Colors - Dark Red Theme */
+    --background: 0 0% 4%;                   /* Very dark background */
+    --foreground: 0 5% 95%;                  /* Light text */
     
-    /* Main Red Palette */
-    --primary: 0 100% 37%;               /* #b60505 - Main brand red */
+    /* Main Red Palette - #b60505 for accents */
+    --primary: 0 100% 37%;                   /* #b60505 - For accents and highlights */
     --primary-foreground: 0 5% 98%;
-    --primary-glow: 0 85% 45%;           /* Slightly lighter red for glows */
+    --primary-glow: 0 85% 45%;               /* Slightly lighter red for glows */
     
-    --secondary: 15 90% 45%;             /* Red-orange accent */
+    --secondary: 15 80% 35%;                 /* Darker red-orange accent */
     --secondary-foreground: 0 5% 98%;
-    --secondary-glow: 15 85% 55%;
+    --secondary-glow: 15 75% 45%;
     
-    --accent: 25 100% 50%;               /* Orange accent */
-    --accent-foreground: 0 20% 5%;
-    --accent-glow: 25 100% 65%;
+    --accent: 25 90% 40%;                    /* Darker orange accent */
+    --accent-foreground: 0 5% 98%;
+    --accent-glow: 25 85% 50%;
     
     /* Platform Colors */
-    --success: 120 60% 40%;              /* Green */
+    --success: 120 50% 35%;                  /* Darker green */
     --success-foreground: 0 5% 98%;
     
-    --warning: 38 92% 50%;               /* Orange warning */
-    --warning-foreground: 0 20% 5%;
+    --warning: 38 80% 45%;                   /* Darker orange warning */
+    --warning-foreground: 0 5% 98%;
     
-    --destructive: 0 84% 60%;            /* Bright red for errors */
+    --destructive: 0 75% 50%;                /* Red for errors */
     --destructive-foreground: 0 5% 98%;
     
-    /* Surface Colors with Red Undertones */
-    --card: 0 20% 8%;                    /* Dark cards with red undertone */
-    --card-foreground: 0 5% 98%;
+    /* Dark Surface Colors */
+    --card: 0 5% 8%;                         /* Very dark cards */
+    --card-foreground: 0 5% 95%;
     
-    --popover: 0 20% 8%;
-    --popover-foreground: 0 5% 98%;
+    --popover: 0 5% 6%;                      /* Even darker popovers */
+    --popover-foreground: 0 5% 95%;
     
-    --muted: 0 15% 12%;                  /* Muted backgrounds */
-    --muted-foreground: 0 10% 65%;
+    --muted: 0 5% 10%;                       /* Dark muted backgrounds */
+    --muted-foreground: 0 5% 60%;
     
-    --border: 0 20% 15%;                 /* Red-tinted borders */
-    --input: 0 15% 12%;                  /* Input backgrounds */
-    --ring: 0 100% 37%;                  /* Focus rings match primary */
+    --border: 0 10% 15%;                     /* Subtle borders */
+    --input: 0 5% 8%;                        /* Dark input backgrounds */
+    --ring: 0 100% 37%;                      /* Focus rings use accent red */
     
-    /* Red-themed Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(0 100% 37%), hsl(15 90% 45%));
-    --gradient-secondary: linear-gradient(135deg, hsl(15 90% 45%), hsl(25 100% 50%));
-    --gradient-hero: linear-gradient(135deg, hsl(0 20% 5%), hsl(0 100% 25%), hsl(0 100% 37%));
-    --gradient-card: linear-gradient(145deg, hsl(0 20% 8%), hsl(0 15% 6%));
+    /* Dark Red-themed Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(0 100% 37%), hsl(15 80% 35%));
+    --gradient-secondary: linear-gradient(135deg, hsl(15 80% 35%), hsl(25 90% 40%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 4%), hsl(0 5% 8%), hsl(0 100% 37%));
+    --gradient-card: linear-gradient(145deg, hsl(0 5% 8%), hsl(0 5% 6%));
     
-    /* Red-themed Shadows & Effects */
+    /* Dark Red-themed Shadows & Effects */
     --shadow-glow: 0 0 40px hsl(0 100% 37% / 0.3);
-    --shadow-card: 0 8px 32px hsl(0 20% 2% / 0.5);
-    --shadow-elevated: 0 20px 60px hsl(0 20% 2% / 0.7);
+    --shadow-card: 0 8px 32px hsl(0 0% 2% / 0.5);
+    --shadow-elevated: 0 20px 60px hsl(0 0% 2% / 0.7);
     
     /* Animation */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
