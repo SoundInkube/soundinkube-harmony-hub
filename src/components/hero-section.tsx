@@ -32,7 +32,7 @@ export function HeroSection() {
               alt="Music Platform Logo" 
               className="h-[576px] md:h-[768px] w-auto object-contain filter drop-shadow-2xl"
               style={{ 
-                clipPath: 'inset(20% 0 20% 0)'
+                clipPath: 'inset(40% 0 40% 0)'
               }}
             />
           </div>
