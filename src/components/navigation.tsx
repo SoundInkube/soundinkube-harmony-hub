@@ -160,13 +160,21 @@ export function Navigation() {
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuContent align="end" className="w-56 bg-background border shadow-lg z-50">
                   <DropdownMenuItem asChild>
                     <Link to="/dashboard">
                       <LayoutDashboard className="h-4 w-4 mr-2" />
                       Dashboard
                     </Link>
                   </DropdownMenuItem>
+                  {profile?.user_type === 'admin' && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin">
+                        <Settings className="h-4 w-4 mr-2" />
+                        Admin Panel
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem>
                     <Settings className="h-4 w-4 mr-2" />
                     Settings

@@ -16,6 +16,8 @@ import Marketplace from "./pages/Marketplace";
 import Collaborations from "./pages/Collaborations";
 import Gigs from "./pages/Gigs";
 import Bookings from "./pages/Bookings";
+import Admin from "./pages/Admin";
+import AdminUsers from "./pages/AdminUsers";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +42,14 @@ const App = () => (
             <Route path="/collaborations" element={<Collaborations />} />
             <Route path="/gigs" element={<Gigs />} />
             <Route path="/bookings" element={<Bookings />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/content/*" element={<AdminUsers />} />
+            <Route path="/admin/analytics" element={<AdminUsers />} />
+            <Route path="/admin/messages" element={<AdminUsers />} />
+            <Route path="/admin/reviews" element={<AdminUsers />} />
+            <Route path="/admin/reports" element={<AdminUsers />} />
+            <Route path="/admin/settings" element={<AdminUsers />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
