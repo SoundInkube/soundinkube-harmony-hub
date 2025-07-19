@@ -26,8 +26,8 @@ export function HeroSection() {
           </Badge>
 
           {/* Main Logo */}
-          <div className="flex justify-center mb-2">
-            <img 
+          <div className="flex justify-center mb-0">
+            <img
               src="/lovable-uploads/0ef42355-744e-4141-9372-c611bb5eb01a.png" 
               alt="Music Platform Logo" 
               className="h-[576px] md:h-[768px] w-auto object-contain filter drop-shadow-2xl"
