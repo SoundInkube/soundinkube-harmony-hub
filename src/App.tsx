@@ -45,8 +45,8 @@ const App = () => (
             <Route path="/collaborations" element={<Collaborations />} />
             <Route path="/gigs" element={<Gigs />} />
             <Route path="/bookings" element={<Bookings />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin" element={<AdminContentManager />} />
+            <Route path="/admin/users" element={<AdminContentManager />} />
             <Route path="/admin/content/*" element={<AdminContentManager />} />
             <Route path="/admin/analytics" element={<AdminContentManager />} />
             <Route path="/admin/messages" element={<AdminContentManager />} />
