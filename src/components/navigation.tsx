@@ -67,14 +67,14 @@ export function Navigation() {
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
-                <a
+                <Link
                   key={item.href}
-                  href={item.href}
+                  to={item.href}
                   className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <Icon className="h-4 w-4" />
                   <span>{item.label}</span>
-                </a>
+                </Link>
               );
             })}
           </div>
@@ -160,15 +160,15 @@ export function Navigation() {
                   {navItems.map((item) => {
                     const Icon = item.icon;
                     return (
-                      <a
+                      <Link
                         key={item.href}
-                        href={item.href}
+                        to={item.href}
                         className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors p-2"
                         onClick={() => setIsOpen(false)}
                       >
                         <Icon className="h-5 w-5" />
                         <span>{item.label}</span>
-                      </a>
+                      </Link>
                     );
                   })}
                   

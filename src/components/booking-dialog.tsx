@@ -19,16 +19,20 @@ import { Calendar, Clock, DollarSign, MessageSquare } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface BookingDialogProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   provider: any;
-  providerType: 'artist' | 'studio' | 'school' | 'label';
+  providerType?: 'artist' | 'studio' | 'school' | 'label';
 }
 
-export function BookingDialog({ children, provider, providerType }: BookingDialogProps) {
+export function BookingDialog({ children, open: externalOpen, onOpenChange: externalOnOpenChange, provider, providerType = 'artist' }: BookingDialogProps) {
   const { user } = useAuth();
   const { profile } = useProfile();
   const { toast } = useToast();
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = externalOpen !== undefined ? externalOpen : internalOpen;
+  const setOpen = externalOnOpenChange || setInternalOpen;
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -127,9 +131,11 @@ export function BookingDialog({ children, provider, providerType }: BookingDialo
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+      {children && (
+        <DialogTrigger asChild>
+          {children}
+        </DialogTrigger>
+      )}
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
