@@ -61,7 +61,7 @@ export function HeroSection() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto mb-16">
             <div className="text-center">
               <div className="text-3xl font-bold text-primary mb-2">1000+</div>
               <div className="text-sm text-muted-foreground">Artists</div>
