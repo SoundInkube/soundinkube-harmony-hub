@@ -2,6 +2,7 @@ import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { ContentManagement } from '@/components/admin/ContentManagement';
 import { UserManagement } from '@/components/admin/UserManagement';
 import { AdminStats } from '@/components/admin/AdminStats';
+import { AdminOverview } from '@/components/admin/AdminOverview';
 import { useAuth } from '@/hooks/useAuth';
 import { useAdmin } from '@/hooks/useAdmin';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -99,9 +100,17 @@ const AdminContentManager = () => {
     
     // Default dashboard view
     return (
-      <div>
-        <h2 className="text-2xl font-bold mb-6">Admin Dashboard</h2>
-        <AdminStats stats={stats} loading={loading} />
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-3xl font-bold">Admin Dashboard</h2>
+            <p className="text-muted-foreground">Welcome back! Here's what's happening on your platform.</p>
+          </div>
+          <Button onClick={() => window.location.reload()}>
+            Refresh Data
+          </Button>
+        </div>
+        <AdminOverview />
       </div>
     );
   };

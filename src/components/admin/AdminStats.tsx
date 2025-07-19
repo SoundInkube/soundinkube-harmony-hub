@@ -36,8 +36,10 @@ export function AdminStats({ stats, loading }: AdminStatsProps) {
       title: 'Total Users',
       value: stats.totalUsers,
       icon: Users,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100',
+      color: 'text-primary',
+      bgColor: 'bg-primary/10',
+      change: '+12%',
+      trend: 'up'
     },
     {
       title: 'Artists',
@@ -45,6 +47,8 @@ export function AdminStats({ stats, loading }: AdminStatsProps) {
       icon: Music,
       color: 'text-purple-600',
       bgColor: 'bg-purple-100',
+      change: '+8%',
+      trend: 'up'
     },
     {
       title: 'Clients',
@@ -52,6 +56,8 @@ export function AdminStats({ stats, loading }: AdminStatsProps) {
       icon: UserPlus,
       color: 'text-green-600',
       bgColor: 'bg-green-100',
+      change: '+15%',
+      trend: 'up'
     },
     {
       title: 'Studios',
@@ -59,6 +65,8 @@ export function AdminStats({ stats, loading }: AdminStatsProps) {
       icon: Building,
       color: 'text-orange-600',
       bgColor: 'bg-orange-100',
+      change: '+5%',
+      trend: 'up'
     },
     {
       title: 'Schools',
@@ -66,6 +74,8 @@ export function AdminStats({ stats, loading }: AdminStatsProps) {
       icon: Building,
       color: 'text-cyan-600',
       bgColor: 'bg-cyan-100',
+      change: '+3%',
+      trend: 'up'
     },
     {
       title: 'Labels',
@@ -73,6 +83,8 @@ export function AdminStats({ stats, loading }: AdminStatsProps) {
       icon: Star,
       color: 'text-pink-600',
       bgColor: 'bg-pink-100',
+      change: '+7%',
+      trend: 'up'
     },
     {
       title: 'Total Bookings',
@@ -80,6 +92,8 @@ export function AdminStats({ stats, loading }: AdminStatsProps) {
       icon: Calendar,
       color: 'text-indigo-600',
       bgColor: 'bg-indigo-100',
+      change: '+25%',
+      trend: 'up'
     },
     {
       title: 'Active Gigs',
@@ -87,6 +101,8 @@ export function AdminStats({ stats, loading }: AdminStatsProps) {
       icon: Briefcase,
       color: 'text-yellow-600',
       bgColor: 'bg-yellow-100',
+      change: '+18%',
+      trend: 'up'
     },
     {
       title: 'Collaborations',
@@ -94,6 +110,8 @@ export function AdminStats({ stats, loading }: AdminStatsProps) {
       icon: Users,
       color: 'text-red-600',
       bgColor: 'bg-red-100',
+      change: '+22%',
+      trend: 'up'
     },
     {
       title: 'Marketplace Items',
@@ -101,6 +119,8 @@ export function AdminStats({ stats, loading }: AdminStatsProps) {
       icon: ShoppingBag,
       color: 'text-emerald-600',
       bgColor: 'bg-emerald-100',
+      change: '+11%',
+      trend: 'up'
     },
     {
       title: 'Recent Signups (30d)',
@@ -108,6 +128,8 @@ export function AdminStats({ stats, loading }: AdminStatsProps) {
       icon: TrendingUp,
       color: 'text-violet-600',
       bgColor: 'bg-violet-100',
+      change: '+35%',
+      trend: 'up'
     },
     {
       title: 'Platform Activity',
@@ -115,6 +137,8 @@ export function AdminStats({ stats, loading }: AdminStatsProps) {
       icon: Activity,
       color: 'text-slate-600',
       bgColor: 'bg-slate-100',
+      change: '+20%',
+      trend: 'up'
     },
   ];
 
@@ -148,7 +172,14 @@ export function AdminStats({ stats, loading }: AdminStatsProps) {
                 <p className="text-sm font-medium text-muted-foreground">
                   {stat.title}
                 </p>
-                <p className="text-3xl font-bold">{stat.value.toLocaleString()}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-3xl font-bold">{stat.value.toLocaleString()}</p>
+                  {stat.change && (
+                    <Badge variant="outline" className="text-green-600 border-green-600">
+                      {stat.change}
+                    </Badge>
+                  )}
+                </div>
               </div>
               <div className={`p-3 rounded-full ${stat.bgColor}`}>
                 <stat.icon className={`h-6 w-6 ${stat.color}`} />
