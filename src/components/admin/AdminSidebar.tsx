@@ -9,6 +9,7 @@ import {
   Star, 
   AlertTriangle, 
   Settings,
+  CheckCircle,
   ChevronDown
 } from 'lucide-react';
 import { useState } from 'react';
@@ -46,6 +47,11 @@ export function AdminSidebar({ className }: AdminSidebarProps) {
         { name: 'Collaborations', href: '/admin/content/collaborations' },
         { name: 'Bookings', href: '/admin/content/bookings' },
       ]
+    },
+    {
+      name: 'Approvals',
+      href: '/admin/approvals',
+      icon: CheckCircle,
     },
     {
       name: 'Analytics',

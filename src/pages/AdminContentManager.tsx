@@ -3,6 +3,10 @@ import { ContentManagement } from '@/components/admin/ContentManagement';
 import { UserManagement } from '@/components/admin/UserManagement';
 import { AdminStats } from '@/components/admin/AdminStats';
 import { AdminOverview } from '@/components/admin/AdminOverview';
+import { MessageManagement } from '@/components/admin/MessageManagement';
+import { ReviewManagement } from '@/components/admin/ReviewManagement';
+import { ReportManagement } from '@/components/admin/ReportManagement';
+import { ProfileApproval } from '@/components/admin/ProfileApproval';
 import { useAuth } from '@/hooks/useAuth';
 import { useAdmin } from '@/hooks/useAdmin';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -76,30 +80,19 @@ const AdminContentManager = () => {
     }
     
     if (path === '/admin/messages') {
-      return (
-        <div>
-          <h2 className="text-2xl font-bold mb-6">Message Management</h2>
-          <p className="text-muted-foreground">Message management features coming soon.</p>
-        </div>
-      );
+      return <MessageManagement />;
     }
     
     if (path === '/admin/reviews') {
-      return (
-        <div>
-          <h2 className="text-2xl font-bold mb-6">Review Management</h2>
-          <p className="text-muted-foreground">Review management features coming soon.</p>
-        </div>
-      );
+      return <ReviewManagement />;
     }
     
     if (path === '/admin/reports') {
-      return (
-        <div>
-          <h2 className="text-2xl font-bold mb-6">Reports & Issues</h2>
-          <p className="text-muted-foreground">Report management features coming soon.</p>
-        </div>
-      );
+      return <ReportManagement />;
+    }
+    
+    if (path === '/admin/approvals') {
+      return <ProfileApproval />;
     }
     
     if (path === '/admin/settings') {
