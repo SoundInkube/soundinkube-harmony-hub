@@ -161,12 +161,11 @@ export default function Auth() {
                         <SelectValue placeholder="Select account type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="client">Music Enthusiast/Client</SelectItem>
-                        <SelectItem value="artist">Music Professional/Artist</SelectItem>
-                        <SelectItem value="studio">Recording Studio</SelectItem>
-                        <SelectItem value="school">Music School</SelectItem>
-                        <SelectItem value="label">Record Label</SelectItem>
-                        <SelectItem value="manager">Artist Manager</SelectItem>
+                        <SelectItem value="client">Client - Looking for music services</SelectItem>
+                        <SelectItem value="music_professional">Music Professional - Artist, Producer, Musician</SelectItem>
+                        <SelectItem value="business">Business - Music School or Jampad</SelectItem>
+                        <SelectItem value="record_label">Record Label</SelectItem>
+                        <SelectItem value="artist_manager">Artist Manager</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

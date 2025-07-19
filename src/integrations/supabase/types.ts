@@ -14,6 +14,62 @@ export type Database = {
   }
   public: {
     Tables: {
+      artist_profiles: {
+        Row: {
+          achievements: string[] | null
+          bio: string | null
+          created_at: string
+          genres: string[] | null
+          id: string
+          image_url: string | null
+          manager_id: string
+          portfolio_urls: string[] | null
+          real_name: string | null
+          social_media: Json | null
+          stage_name: string
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          achievements?: string[] | null
+          bio?: string | null
+          created_at?: string
+          genres?: string[] | null
+          id?: string
+          image_url?: string | null
+          manager_id: string
+          portfolio_urls?: string[] | null
+          real_name?: string | null
+          social_media?: Json | null
+          stage_name: string
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          achievements?: string[] | null
+          bio?: string | null
+          created_at?: string
+          genres?: string[] | null
+          id?: string
+          image_url?: string | null
+          manager_id?: string
+          portfolio_urls?: string[] | null
+          real_name?: string | null
+          social_media?: Json | null
+          stage_name?: string
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "artist_profiles_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       artists: {
         Row: {
           achievements: string[] | null
@@ -142,6 +198,349 @@ export type Database = {
           },
         ]
       }
+      collaboration_applications: {
+        Row: {
+          applicant_id: string
+          applied_at: string
+          collaboration_id: string
+          id: string
+          message: string | null
+          responded_at: string | null
+          status: string | null
+        }
+        Insert: {
+          applicant_id: string
+          applied_at?: string
+          collaboration_id: string
+          id?: string
+          message?: string | null
+          responded_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          applicant_id?: string
+          applied_at?: string
+          collaboration_id?: string
+          id?: string
+          message?: string | null
+          responded_at?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collaboration_applications_applicant_id_fkey"
+            columns: ["applicant_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collaboration_applications_collaboration_id_fkey"
+            columns: ["collaboration_id"]
+            isOneToOne: false
+            referencedRelation: "collaborations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      collaborations: {
+        Row: {
+          collaboration_type: string
+          compensation_amount: number | null
+          compensation_type: string | null
+          created_at: string
+          creator_id: string
+          current_participants: number | null
+          deadline: string | null
+          description: string
+          id: string
+          location: string | null
+          max_participants: number | null
+          required_instruments: string[] | null
+          required_skills: string[] | null
+          status: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          collaboration_type: string
+          compensation_amount?: number | null
+          compensation_type?: string | null
+          created_at?: string
+          creator_id: string
+          current_participants?: number | null
+          deadline?: string | null
+          description: string
+          id?: string
+          location?: string | null
+          max_participants?: number | null
+          required_instruments?: string[] | null
+          required_skills?: string[] | null
+          status?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          collaboration_type?: string
+          compensation_amount?: number | null
+          compensation_type?: string | null
+          created_at?: string
+          creator_id?: string
+          current_participants?: number | null
+          deadline?: string | null
+          description?: string
+          id?: string
+          location?: string | null
+          max_participants?: number | null
+          required_instruments?: string[] | null
+          required_skills?: string[] | null
+          status?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collaborations_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gig_applications: {
+        Row: {
+          applied_at: string
+          gig_id: string
+          id: string
+          professional_id: string
+          proposal: string
+          quoted_price: number | null
+          responded_at: string | null
+          status: string | null
+        }
+        Insert: {
+          applied_at?: string
+          gig_id: string
+          id?: string
+          professional_id: string
+          proposal: string
+          quoted_price?: number | null
+          responded_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          applied_at?: string
+          gig_id?: string
+          id?: string
+          professional_id?: string
+          proposal?: string
+          quoted_price?: number | null
+          responded_at?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gig_applications_gig_id_fkey"
+            columns: ["gig_id"]
+            isOneToOne: false
+            referencedRelation: "gigs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gig_applications_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gigs: {
+        Row: {
+          budget_max: number | null
+          budget_min: number | null
+          client_id: string
+          created_at: string
+          description: string
+          duration_hours: number | null
+          event_date: string
+          event_type: string
+          id: string
+          location: string
+          required_instruments: string[] | null
+          required_skills: string[] | null
+          selected_professional_id: string | null
+          status: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          budget_max?: number | null
+          budget_min?: number | null
+          client_id: string
+          created_at?: string
+          description: string
+          duration_hours?: number | null
+          event_date: string
+          event_type: string
+          id?: string
+          location: string
+          required_instruments?: string[] | null
+          required_skills?: string[] | null
+          selected_professional_id?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          budget_max?: number | null
+          budget_min?: number | null
+          client_id?: string
+          created_at?: string
+          description?: string
+          duration_hours?: number | null
+          event_date?: string
+          event_type?: string
+          id?: string
+          location?: string
+          required_instruments?: string[] | null
+          required_skills?: string[] | null
+          selected_professional_id?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gigs_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gigs_selected_professional_id_fkey"
+            columns: ["selected_professional_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace: {
+        Row: {
+          category: string
+          condition: string
+          contact_preference: string | null
+          created_at: string
+          currency: string | null
+          description: string | null
+          id: string
+          images: string[] | null
+          location: string | null
+          price: number
+          seller_id: string
+          status: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          condition?: string
+          contact_preference?: string | null
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          location?: string | null
+          price: number
+          seller_id: string
+          status?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          condition?: string
+          contact_preference?: string | null
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          location?: string | null
+          price?: number
+          seller_id?: string
+          status?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      message_requests: {
+        Row: {
+          context_id: string | null
+          context_type: string | null
+          created_at: string
+          id: string
+          message: string | null
+          recipient_id: string
+          responded_at: string | null
+          sender_id: string
+          status: string | null
+        }
+        Insert: {
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          recipient_id: string
+          responded_at?: string | null
+          sender_id: string
+          status?: string | null
+        }
+        Update: {
+          context_id?: string | null
+          context_type?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          recipient_id?: string
+          responded_at?: string | null
+          sender_id?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_requests_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_requests_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           content: string
@@ -263,13 +662,25 @@ export type Database = {
       }
       profiles: {
         Row: {
+          achievements: string[] | null
+          availability_status: string | null
           avatar_url: string | null
           bio: string | null
+          company_name: string | null
           created_at: string
+          experience_level: string | null
+          founded_year: number | null
           full_name: string | null
+          genres: string[] | null
+          hourly_rate: number | null
           id: string
+          instruments: string[] | null
           location: string | null
           phone: string | null
+          portfolio_urls: string[] | null
+          skills: string[] | null
+          social_media: Json | null
+          team_size: number | null
           updated_at: string
           user_id: string
           user_type: string
@@ -278,13 +689,25 @@ export type Database = {
           website: string | null
         }
         Insert: {
+          achievements?: string[] | null
+          availability_status?: string | null
           avatar_url?: string | null
           bio?: string | null
+          company_name?: string | null
           created_at?: string
+          experience_level?: string | null
+          founded_year?: number | null
           full_name?: string | null
+          genres?: string[] | null
+          hourly_rate?: number | null
           id?: string
+          instruments?: string[] | null
           location?: string | null
           phone?: string | null
+          portfolio_urls?: string[] | null
+          skills?: string[] | null
+          social_media?: Json | null
+          team_size?: number | null
           updated_at?: string
           user_id: string
           user_type?: string
@@ -293,13 +716,25 @@ export type Database = {
           website?: string | null
         }
         Update: {
+          achievements?: string[] | null
+          availability_status?: string | null
           avatar_url?: string | null
           bio?: string | null
+          company_name?: string | null
           created_at?: string
+          experience_level?: string | null
+          founded_year?: number | null
           full_name?: string | null
+          genres?: string[] | null
+          hourly_rate?: number | null
           id?: string
+          instruments?: string[] | null
           location?: string | null
           phone?: string | null
+          portfolio_urls?: string[] | null
+          skills?: string[] | null
+          social_media?: Json | null
+          team_size?: number | null
           updated_at?: string
           user_id?: string
           user_type?: string
