@@ -367,7 +367,7 @@ const Index = () => {
           </div>
           
           <div className="border-t border-border/50 mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 SoundInkube. All rights reserved.</p>
+            <p>&copy; 2024 Music Platform. All rights reserved.</p>
           </div>
         </div>
       </footer>
