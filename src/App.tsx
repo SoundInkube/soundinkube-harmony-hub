@@ -12,6 +12,10 @@ import Studios from "./pages/Studios";
 import MusicSchools from "./pages/MusicSchools";
 import RecordLabels from "./pages/RecordLabels";
 import Messages from "./pages/Messages";
+import Marketplace from "./pages/Marketplace";
+import Collaborations from "./pages/Collaborations";
+import Gigs from "./pages/Gigs";
+import Bookings from "./pages/Bookings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +36,10 @@ const App = () => (
             <Route path="/schools" element={<MusicSchools />} />
             <Route path="/labels" element={<RecordLabels />} />
             <Route path="/messages" element={<Messages />} />
+            <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/collaborations" element={<Collaborations />} />
+            <Route path="/gigs" element={<Gigs />} />
+            <Route path="/bookings" element={<Bookings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

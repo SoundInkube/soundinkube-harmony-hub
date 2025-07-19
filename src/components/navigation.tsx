@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -29,19 +30,80 @@ import {
   Headphones,
   Settings,
   LogOut,
-  LayoutDashboard
+  LayoutDashboard,
+  Users,
+  ShoppingBag,
+  Briefcase,
+  MessageSquare,
+  Calendar,
+  Star,
+  School,
+  Disc
 } from 'lucide-react';
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const { profile } = useProfile();
 
-  const navItems = [
-    { label: 'Artists', href: '/artists', icon: Mic },
-    { label: 'Studios', href: '/studios', icon: Headphones },
-    { label: 'Schools', href: '/schools', icon: GraduationCap },
-    { label: 'Labels', href: '/labels', icon: Building },
-  ];
+  // Role-based navigation items
+  const getRoleBasedNavItems = () => {
+    if (!profile) {
+      // Default public navigation
+      return [
+        { label: 'Artists', href: '/artists', icon: Mic },
+        { label: 'Studios', href: '/studios', icon: Headphones },
+        { label: 'Schools', href: '/schools', icon: GraduationCap },
+        { label: 'Labels', href: '/labels', icon: Building },
+      ];
+    }
+
+    switch (profile.user_type) {
+      case 'client':
+        return [
+          { label: 'Music Professionals', href: '/artists', icon: Music },
+          { label: 'Studios', href: '/studios', icon: Disc },
+          { label: 'Music Schools', href: '/schools', icon: School },
+          { label: 'My Gigs', href: '/gigs', icon: Briefcase },
+          { label: 'Messages', href: '/messages', icon: MessageSquare }
+        ];
+
+      case 'artist':
+        return [
+          { label: 'Marketplace', href: '/marketplace', icon: ShoppingBag },
+          { label: 'Collaborations', href: '/collaborations', icon: Users },
+          { label: 'Gigs', href: '/gigs', icon: Briefcase },
+          { label: 'Studios', href: '/studios', icon: Disc },
+          { label: 'Messages', href: '/messages', icon: MessageSquare }
+        ];
+
+      case 'studio':
+      case 'school':
+        return [
+          { label: 'Bookings', href: '/bookings', icon: Calendar },
+          { label: 'Artists', href: '/artists', icon: Star },
+          { label: 'Messages', href: '/messages', icon: MessageSquare }
+        ];
+
+      case 'label':
+      case 'manager':
+        return [
+          { label: 'Artists', href: '/artists', icon: Star },
+          { label: 'Collaborations', href: '/collaborations', icon: Users },
+          { label: 'Messages', href: '/messages', icon: MessageSquare }
+        ];
+
+      default:
+        return [
+          { label: 'Artists', href: '/artists', icon: Mic },
+          { label: 'Studios', href: '/studios', icon: Headphones },
+          { label: 'Schools', href: '/schools', icon: GraduationCap },
+          { label: 'Labels', href: '/labels', icon: Building },
+        ];
+    }
+  };
+
+  const navItems = getRoleBasedNavItems();
 
   const userTypes = [
     { label: 'Music Professional', value: 'artist' },
