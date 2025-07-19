@@ -54,7 +54,7 @@ export default function Auth() {
           </Link>
           
           <div className="flex items-center justify-center gap-2 mb-4">
-            <img src="/lovable-uploads/0ef42355-744e-4141-9372-c611bb5eb01a.png" alt="SoundInkube" className="h-10 w-auto" />
+            <img src="/lovable-uploads/0ef42355-744e-4141-9372-c611bb5eb01a.png" alt="SoundInkube" className="h-20 w-auto" />
           </div>
           
           <p className="text-muted-foreground">
