@@ -25,13 +25,14 @@ export function HeroSection() {
             India's Premier Music Platform
           </Badge>
 
-          {/* Main Heading */}
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 text-glow">
-            Sound
-            <span className="bg-gradient-primary bg-clip-text text-transparent">
-              Inkube
-            </span>
-          </h1>
+          {/* Main Logo */}
+          <div className="flex justify-center mb-6">
+            <img 
+              src="/lovable-uploads/0ef42355-744e-4141-9372-c611bb5eb01a.png" 
+              alt="Music Platform Logo" 
+              className="h-24 md:h-32 w-auto object-contain filter drop-shadow-2xl"
+            />
+          </div>
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
