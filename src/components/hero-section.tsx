@@ -30,7 +30,7 @@ export function HeroSection() {
             <img 
               src="/lovable-uploads/0ef42355-744e-4141-9372-c611bb5eb01a.png" 
               alt="Music Platform Logo" 
-              className="h-24 md:h-32 w-auto object-contain filter drop-shadow-2xl"
+              className="h-[576px] md:h-[768px] w-auto object-contain filter drop-shadow-2xl"
             />
           </div>
 
