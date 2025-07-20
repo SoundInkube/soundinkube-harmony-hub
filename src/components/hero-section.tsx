@@ -35,7 +35,7 @@ export function HeroSection() {
           </div>
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed -mt-300">
+          <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 text-center">
             Where Music Professionals Connect, Collaborate, and Create. 
             From booking artists to learning music, discover India's vibrant music ecosystem.
           </p>
