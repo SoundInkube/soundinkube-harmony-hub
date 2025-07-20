@@ -40,6 +40,7 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
     phone: profile?.phone || '',
     website: profile?.website || '',
     user_type: profile?.user_type || 'client',
+    company_name: (profile as any)?.company_name || '',
     social_media: (profile as any)?.social_media || {},
     skills: (profile as any)?.skills || [],
     instruments: (profile as any)?.instruments || [],
@@ -59,6 +60,7 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
         phone: profile.phone || '',
         website: profile.website || '',
         user_type: profile.user_type || 'client',
+        company_name: (profile as any).company_name || '',
         social_media: (profile as any).social_media || {},
         skills: (profile as any).skills || [],
         instruments: (profile as any).instruments || [],
@@ -222,7 +224,7 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
 
           {/* Social Media Section */}
           <div className="space-y-4">
-            <Label className="text-base font-semibold">Social Media Links</Label>
+            <Label className="text-base font-semibold">Social Media & Streaming</Label>
             
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -292,6 +294,21 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
                 />
               </div>
               <div>
+                <Label htmlFor="apple_music">Apple Music</Label>
+                <Input
+                  id="apple_music"
+                  placeholder="https://music.apple.com/artist/..."
+                  value={formData.social_media?.apple_music || ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    social_media: { ...prev.social_media, apple_music: e.target.value }
+                  }))}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
                 <Label htmlFor="linkedin">LinkedIn</Label>
                 <Input
                   id="linkedin"
@@ -303,25 +320,66 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
                   }))}
                 />
               </div>
+              <div>
+                <Label htmlFor="tiktok">TikTok</Label>
+                <Input
+                  id="tiktok"
+                  placeholder="https://tiktok.com/@username"
+                  value={formData.social_media?.tiktok || ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    social_media: { ...prev.social_media, tiktok: e.target.value }
+                  }))}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="facebook">Facebook</Label>
+                <Input
+                  id="facebook"
+                  placeholder="https://facebook.com/username"
+                  value={formData.social_media?.facebook || ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    social_media: { ...prev.social_media, facebook: e.target.value }
+                  }))}
+                />
+              </div>
+              <div>
+                <Label htmlFor="bandcamp">Bandcamp</Label>
+                <Input
+                  id="bandcamp"
+                  placeholder="https://username.bandcamp.com"
+                  value={formData.social_media?.bandcamp || ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    social_media: { ...prev.social_media, bandcamp: e.target.value }
+                  }))}
+                />
+              </div>
             </div>
           </div>
 
           {/* Professional Details */}
-          {(formData.user_type === 'artist' || formData.user_type === 'studio') && (
+          {(['artist', 'studio', 'manager', 'label', 'school'].includes(formData.user_type)) && (
             <div className="space-y-4">
               <Label className="text-base font-semibold">Professional Details</Label>
               
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="hourly_rate">Hourly Rate ($)</Label>
-                  <Input
-                    id="hourly_rate"
-                    type="number"
-                    placeholder="50"
-                    value={formData.hourly_rate}
-                    onChange={(e) => setFormData(prev => ({ ...prev, hourly_rate: e.target.value }))}
-                  />
-                </div>
+                {(formData.user_type === 'artist' || formData.user_type === 'studio') && (
+                  <div>
+                    <Label htmlFor="hourly_rate">Hourly Rate ($)</Label>
+                    <Input
+                      id="hourly_rate"
+                      type="number"
+                      placeholder="50"
+                      value={formData.hourly_rate}
+                      onChange={(e) => setFormData(prev => ({ ...prev, hourly_rate: e.target.value }))}
+                    />
+                  </div>
+                )}
                 <div>
                   <Label htmlFor="experience_level">Experience Level</Label>
                   <Select 
@@ -340,6 +398,76 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
                     </SelectContent>
                   </Select>
                 </div>
+              </div>
+              
+              {formData.user_type === 'label' && (
+                <div>
+                  <Label htmlFor="company_name">Label Name</Label>
+                  <Input
+                    id="company_name"
+                    placeholder="Record Label Name"
+                    value={formData.company_name || ''}
+                    onChange={(e) => setFormData(prev => ({ ...prev, company_name: e.target.value }))}
+                  />
+                </div>
+              )}
+              
+              {(formData.user_type === 'studio' || formData.user_type === 'school') && (
+                <div>
+                  <Label htmlFor="company_name">Business Name</Label>
+                  <Input
+                    id="company_name"
+                    placeholder="Studio/School Name"
+                    value={formData.company_name || ''}
+                    onChange={(e) => setFormData(prev => ({ ...prev, company_name: e.target.value }))}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Skills and Instruments for relevant user types */}
+          {(formData.user_type === 'artist' || formData.user_type === 'manager') && (
+            <div className="space-y-4">
+              <Label className="text-base font-semibold">Skills & Expertise</Label>
+              
+              <div>
+                <Label htmlFor="skills">Skills (comma-separated)</Label>
+                <Input
+                  id="skills"
+                  placeholder="Music Production, Mixing, Mastering"
+                  value={Array.isArray(formData.skills) ? formData.skills.join(', ') : ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    skills: e.target.value.split(',').map(s => s.trim()).filter(Boolean)
+                  }))}
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="instruments">Instruments (comma-separated)</Label>
+                <Input
+                  id="instruments"
+                  placeholder="Guitar, Piano, Drums"
+                  value={Array.isArray(formData.instruments) ? formData.instruments.join(', ') : ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    instruments: e.target.value.split(',').map(s => s.trim()).filter(Boolean)
+                  }))}
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="genres">Genres (comma-separated)</Label>
+                <Input
+                  id="genres"
+                  placeholder="Pop, Rock, Jazz, Electronic"
+                  value={Array.isArray(formData.genres) ? formData.genres.join(', ') : ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    genres: e.target.value.split(',').map(s => s.trim()).filter(Boolean)
+                  }))}
+                />
               </div>
             </div>
           )}

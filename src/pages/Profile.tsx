@@ -107,6 +107,9 @@ export default function Profile() {
       case 'twitter': case 'x': return <Twitter className="h-4 w-4" />;
       case 'youtube': return <Youtube className="h-4 w-4" />;
       case 'linkedin': return <Linkedin className="h-4 w-4" />;
+      case 'tiktok': return <Music className="h-4 w-4" />;
+      case 'spotify': case 'apple_music': case 'soundcloud': case 'bandcamp': return <Music className="h-4 w-4" />;
+      case 'facebook': return <Users className="h-4 w-4" />;
       default: return <ExternalLink className="h-4 w-4" />;
     }
   };
