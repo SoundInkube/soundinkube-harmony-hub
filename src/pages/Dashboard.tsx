@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ProfileEditDialog } from '@/components/profile-edit-dialog';
 import { 
   Calendar, 
   MessageSquare, 
@@ -23,6 +24,7 @@ import {
 
 export default function Dashboard() {
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<any>(null);
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -231,22 +233,24 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-2">
-                    <Button variant="outline" className="justify-start">
+                    <Button variant="outline" className="justify-start" onClick={() => navigate('/bookings')}>
                       <Calendar className="h-4 w-4 mr-2" />
                       View Calendar
                     </Button>
-                    <Button variant="outline" className="justify-start">
+                    <Button variant="outline" className="justify-start" onClick={() => navigate('/messages')}>
                       <MessageSquare className="h-4 w-4 mr-2" />
                       Check Messages
                     </Button>
-                    <Button variant="outline" className="justify-start">
+                    <Button variant="outline" className="justify-start" onClick={() => navigate('/dashboard')}>
                       <BarChart3 className="h-4 w-4 mr-2" />
                       View Analytics
                     </Button>
-                    <Button variant="outline" className="justify-start">
-                      <Settings className="h-4 w-4 mr-2" />
-                      Account Settings
-                    </Button>
+                    <ProfileEditDialog>
+                      <Button variant="outline" className="justify-start w-full">
+                        <Settings className="h-4 w-4 mr-2" />
+                        Account Settings
+                      </Button>
+                    </ProfileEditDialog>
                   </div>
                 </CardContent>
               </Card>
@@ -349,9 +353,11 @@ export default function Dashboard() {
                     <p className="text-sm text-muted-foreground">{profile?.bio || 'No bio yet'}</p>
                   </div>
                   
-                  <Button className="bg-gradient-primary hover:opacity-90">
-                    Edit Profile
-                  </Button>
+                  <ProfileEditDialog>
+                    <Button className="bg-gradient-primary hover:opacity-90">
+                      Edit Profile
+                    </Button>
+                  </ProfileEditDialog>
                 </div>
               </CardContent>
             </Card>
