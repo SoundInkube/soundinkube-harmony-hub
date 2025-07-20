@@ -41,7 +41,7 @@ export function CollaborationApplicationDialog({ children, open: externalOpen, o
 
   const getCompensationDisplay = (collaboration: any) => {
     if (collaboration.compensation_type === 'Paid' && collaboration.compensation_amount) {
-      return `$${collaboration.compensation_amount.toLocaleString()}`;
+      return `₹${collaboration.compensation_amount.toLocaleString('en-IN')}`;
     } else if (collaboration.compensation_type) {
       return collaboration.compensation_type;
     }

@@ -172,7 +172,7 @@ const Bookings = () => {
                         </div>
                         <div className="text-right">
                           <div className="font-semibold text-primary text-lg">
-                            ${booking.total_amount?.toLocaleString() || 'TBD'}
+                            ₹{booking.total_amount?.toLocaleString('en-IN') || 'TBD'}
                           </div>
                         </div>
                       </div>
@@ -259,7 +259,7 @@ const Bookings = () => {
                         </div>
                         <div className="text-right">
                           <div className="font-semibold text-primary text-lg">
-                            ${booking.total_amount?.toLocaleString() || 'TBD'}
+                            ₹{booking.total_amount?.toLocaleString('en-IN') || 'TBD'}
                           </div>
                         </div>
                       </div>
@@ -339,7 +339,7 @@ const Bookings = () => {
                         </div>
                         <div className="text-right">
                           <div className="font-semibold text-muted-foreground text-lg">
-                            ${booking.total_amount?.toLocaleString() || 'TBD'}
+                            ₹{booking.total_amount?.toLocaleString('en-IN') || 'TBD'}
                           </div>
                         </div>
                       </div>

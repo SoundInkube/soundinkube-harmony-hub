@@ -42,9 +42,9 @@ export function GigApplicationDialog({ children, open: externalOpen, onOpenChang
 
   const getBudgetDisplay = (gig: any) => {
     if (gig.budget_min && gig.budget_max) {
-      return `$${gig.budget_min.toLocaleString()} - $${gig.budget_max.toLocaleString()}`;
+      return `₹${gig.budget_min.toLocaleString('en-IN')} - ₹${gig.budget_max.toLocaleString('en-IN')}`;
     } else if (gig.budget_min) {
-      return `$${gig.budget_min.toLocaleString()}+`;
+      return `₹${gig.budget_min.toLocaleString('en-IN')}+`;
     }
     return 'Budget TBD';
   };
@@ -173,7 +173,7 @@ export function GigApplicationDialog({ children, open: externalOpen, onOpenChang
               </div>
 
               <div>
-                <Label htmlFor="quoted_price">Your Quote ($) *</Label>
+                <Label htmlFor="quoted_price">Your Quote (₹) *</Label>
                 <Input
                   id="quoted_price"
                   type="number"

@@ -285,7 +285,7 @@ export function ProfileApproval() {
                     )}
                     {entity.hourly_rate && (
                       <div className="text-green-600 font-medium">
-                        ${entity.hourly_rate}/hr
+                        ₹{entity.hourly_rate}/hr
                       </div>
                     )}
                   </div>

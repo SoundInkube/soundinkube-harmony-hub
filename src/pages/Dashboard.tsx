@@ -370,7 +370,7 @@ export default function Dashboard() {
                 <CardContent>
                   <div className="text-2xl font-bold">
                     {['artist', 'studio', 'manager'].includes(profile?.user_type) ? 
-                      `$${stats.earnings || 0}` : 
+                      `₹${stats.earnings || 0}` : 
                       marketplaceItems.length
                     }
                   </div>

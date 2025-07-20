@@ -43,7 +43,7 @@ export function MarketplaceItemDialog({ children, open: externalOpen, onOpenChan
     category: '',
     condition: '',
     price: '',
-    currency: 'USD',
+    currency: 'INR',
     location: '',
     contact_preference: 'message',
     tags: [] as string[]
@@ -137,7 +137,7 @@ export function MarketplaceItemDialog({ children, open: externalOpen, onOpenChan
         category: '',
         condition: '',
         price: '',
-        currency: 'USD',
+        currency: 'INR',
         location: '',
         contact_preference: 'message',
         tags: []
@@ -279,7 +279,7 @@ export function MarketplaceItemDialog({ children, open: externalOpen, onOpenChan
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="USD">USD</SelectItem>
+                    <SelectItem value="INR">INR (₹)</SelectItem>
                     <SelectItem value="EUR">EUR</SelectItem>
                     <SelectItem value="GBP">GBP</SelectItem>
                     <SelectItem value="CAD">CAD</SelectItem>

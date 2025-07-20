@@ -289,7 +289,7 @@ export function CollaborationDialog({ children, open: externalOpen, onOpenChange
                 </Select>
               </div>
               <div>
-                <Label htmlFor="compensation_amount">Amount ($)</Label>
+                <Label htmlFor="compensation_amount">Amount (₹)</Label>
                 <Input
                   id="compensation_amount"
                   type="number"

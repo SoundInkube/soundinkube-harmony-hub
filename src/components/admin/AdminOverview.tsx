@@ -83,7 +83,7 @@ export function AdminOverview() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Total Revenue</p>
-                <p className="text-3xl font-bold">$12,453</p>
+                <p className="text-3xl font-bold">₹12,45,300</p>
                 <p className="text-sm text-green-600">+23% from last month</p>
               </div>
               <div className="p-3 rounded-full bg-green-100">
