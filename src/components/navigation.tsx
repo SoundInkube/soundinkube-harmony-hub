@@ -162,11 +162,79 @@ export function Navigation() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56 bg-background border shadow-lg z-50">
                   <DropdownMenuItem asChild>
+                    <Link to="/profile">
+                      <User className="h-4 w-4 mr-2" />
+                      View My Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
                     <Link to="/dashboard">
                       <LayoutDashboard className="h-4 w-4 mr-2" />
                       Dashboard
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  
+                  {/* Role-based feature links */}
+                  {profile?.user_type === 'client' && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/gigs">
+                        <Briefcase className="h-4 w-4 mr-2" />
+                        My Gigs
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  
+                  {profile?.user_type === 'artist' && (
+                    <>
+                      <DropdownMenuItem asChild>
+                        <Link to="/marketplace">
+                          <ShoppingBag className="h-4 w-4 mr-2" />
+                          Marketplace
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/collaborations">
+                          <Users className="h-4 w-4 mr-2" />
+                          Collaborations
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/gigs">
+                          <Briefcase className="h-4 w-4 mr-2" />
+                          Available Gigs
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  
+                  {(profile?.user_type === 'studio' || profile?.user_type === 'school') && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/bookings">
+                        <Calendar className="h-4 w-4 mr-2" />
+                        My Bookings
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  
+                  {(profile?.user_type === 'label' || profile?.user_type === 'manager') && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/collaborations">
+                        <Users className="h-4 w-4 mr-2" />
+                        Collaborations
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  
+                  <DropdownMenuItem asChild>
+                    <Link to="/messages">
+                      <MessageSquare className="h-4 w-4 mr-2" />
+                      Messages
+                    </Link>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuSeparator />
+                  
                   {profile?.user_type === 'admin' && (
                     <DropdownMenuItem asChild>
                       <Link to="/admin">
@@ -246,11 +314,79 @@ export function Navigation() {
                     {user ? (
                       <>
                         <Button variant="ghost" className="w-full justify-start mb-2" asChild>
-                          <Link to="/dashboard">
+                          <Link to="/profile" onClick={() => setIsOpen(false)}>
+                            <User className="h-4 w-4 mr-2" />
+                            View My Profile
+                          </Link>
+                        </Button>
+                        <Button variant="ghost" className="w-full justify-start mb-2" asChild>
+                          <Link to="/dashboard" onClick={() => setIsOpen(false)}>
                             <LayoutDashboard className="h-4 w-4 mr-2" />
                             Dashboard
                           </Link>
                         </Button>
+                        
+                        {/* Role-based feature links for mobile */}
+                        {profile?.user_type === 'client' && (
+                          <Button variant="ghost" className="w-full justify-start mb-2" asChild>
+                            <Link to="/gigs" onClick={() => setIsOpen(false)}>
+                              <Briefcase className="h-4 w-4 mr-2" />
+                              My Gigs
+                            </Link>
+                          </Button>
+                        )}
+                        
+                        {profile?.user_type === 'artist' && (
+                          <>
+                            <Button variant="ghost" className="w-full justify-start mb-2" asChild>
+                              <Link to="/marketplace" onClick={() => setIsOpen(false)}>
+                                <ShoppingBag className="h-4 w-4 mr-2" />
+                                Marketplace
+                              </Link>
+                            </Button>
+                            <Button variant="ghost" className="w-full justify-start mb-2" asChild>
+                              <Link to="/collaborations" onClick={() => setIsOpen(false)}>
+                                <Users className="h-4 w-4 mr-2" />
+                                Collaborations
+                              </Link>
+                            </Button>
+                          </>
+                        )}
+                        
+                        {(profile?.user_type === 'studio' || profile?.user_type === 'school') && (
+                          <Button variant="ghost" className="w-full justify-start mb-2" asChild>
+                            <Link to="/bookings" onClick={() => setIsOpen(false)}>
+                              <Calendar className="h-4 w-4 mr-2" />
+                              My Bookings
+                            </Link>
+                          </Button>
+                        )}
+                        
+                        {(profile?.user_type === 'label' || profile?.user_type === 'manager') && (
+                          <Button variant="ghost" className="w-full justify-start mb-2" asChild>
+                            <Link to="/collaborations" onClick={() => setIsOpen(false)}>
+                              <Users className="h-4 w-4 mr-2" />
+                              Collaborations
+                            </Link>
+                          </Button>
+                        )}
+                        
+                        <Button variant="ghost" className="w-full justify-start mb-2" asChild>
+                          <Link to="/messages" onClick={() => setIsOpen(false)}>
+                            <MessageSquare className="h-4 w-4 mr-2" />
+                            Messages
+                          </Link>
+                        </Button>
+                        
+                        {profile?.user_type === 'admin' && (
+                          <Button variant="ghost" className="w-full justify-start mb-2" asChild>
+                            <Link to="/admin" onClick={() => setIsOpen(false)}>
+                              <Settings className="h-4 w-4 mr-2" />
+                              Admin Panel
+                            </Link>
+                          </Button>
+                        )}
+                        
                         <Button variant="outline" className="w-full justify-start" onClick={signOut}>
                           <LogOut className="h-4 w-4 mr-2" />
                           Sign Out
