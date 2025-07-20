@@ -74,6 +74,7 @@ export function UserManagement() {
         description: "User type updated successfully",
       });
       setEditingUser(null);
+      await refreshUsers(); // Refresh the users list
     }
   };
 
@@ -209,11 +210,11 @@ export function UserManagement() {
                     {user.user_type}
                   </Badge>
                   
-                  {editingUser === user.id ? (
+                   {editingUser === user.id ? (
                     <div className="flex items-center gap-2">
                       <Select
                         value={user.user_type}
-                        onValueChange={(value) => handleUserTypeChange(user.id, value)}
+                        onValueChange={(value) => handleUserTypeChange(user.user_id, value)}
                       >
                         <SelectTrigger className="w-32">
                           <SelectValue />
@@ -247,7 +248,7 @@ export function UserManagement() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleVerificationToggle(user.id, !user.verified)}
+                        onClick={() => handleVerificationToggle(user.user_id, !user.verified)}
                         className={user.verified ? 'text-orange-600' : 'text-green-600'}
                       >
                         {user.verified ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
@@ -270,7 +271,7 @@ export function UserManagement() {
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                             <AlertDialogAction
-                              onClick={() => handleDeleteUser(user.id)}
+                              onClick={() => handleDeleteUser(user.user_id)}
                               className="bg-red-600 hover:bg-red-700"
                             >
                               Delete User
