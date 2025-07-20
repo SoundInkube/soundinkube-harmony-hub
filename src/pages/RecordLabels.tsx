@@ -77,14 +77,14 @@ const RecordLabels = () => {
       );
     }
 
-    if (locationFilter) {
+    if (locationFilter && locationFilter !== 'all') {
       filtered = filtered.filter(label =>
         label.city?.toLowerCase().includes(locationFilter.toLowerCase()) ||
         label.state?.toLowerCase().includes(locationFilter.toLowerCase())
       );
     }
 
-    if (genreFilter) {
+    if (genreFilter && genreFilter !== 'all') {
       filtered = filtered.filter(label =>
         label.genres?.some(genre =>
           genre.toLowerCase().includes(genreFilter.toLowerCase())
@@ -171,7 +171,7 @@ const RecordLabels = () => {
                 <SelectValue placeholder="Location" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Locations</SelectItem>
+                <SelectItem value="all">All Locations</SelectItem>
                 {uniqueCities.map(city => (
                   <SelectItem key={city} value={city}>{city}</SelectItem>
                 ))}
@@ -184,7 +184,7 @@ const RecordLabels = () => {
                 <SelectValue placeholder="Genre" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Genres</SelectItem>
+                <SelectItem value="all">All Genres</SelectItem>
                 {uniqueGenres.map(genre => (
                   <SelectItem key={genre} value={genre}>{genre}</SelectItem>
                 ))}

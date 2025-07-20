@@ -80,14 +80,14 @@ const MusicSchools = () => {
       );
     }
 
-    if (locationFilter) {
+    if (locationFilter && locationFilter !== 'all') {
       filtered = filtered.filter(school =>
         school.city?.toLowerCase().includes(locationFilter.toLowerCase()) ||
         school.state?.toLowerCase().includes(locationFilter.toLowerCase())
       );
     }
 
-    if (instrumentFilter) {
+    if (instrumentFilter && instrumentFilter !== 'all') {
       filtered = filtered.filter(school =>
         school.instruments_taught?.some(instrument =>
           instrument.toLowerCase().includes(instrumentFilter.toLowerCase())
@@ -165,7 +165,7 @@ const MusicSchools = () => {
                 <SelectValue placeholder="Location" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Locations</SelectItem>
+                <SelectItem value="all">All Locations</SelectItem>
                 {uniqueCities.map(city => (
                   <SelectItem key={city} value={city}>{city}</SelectItem>
                 ))}
@@ -178,7 +178,7 @@ const MusicSchools = () => {
                 <SelectValue placeholder="Instrument" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Instruments</SelectItem>
+                <SelectItem value="all">All Instruments</SelectItem>
                 {uniqueInstruments.map(instrument => (
                   <SelectItem key={instrument} value={instrument}>{instrument}</SelectItem>
                 ))}

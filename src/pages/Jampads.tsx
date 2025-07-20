@@ -171,7 +171,7 @@ export default function Jampads() {
   const filteredJampads = jampads.filter(jampad => {
     const matchesSearch = jampad.jampad_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          jampad.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCity = !selectedCity || jampad.city === selectedCity;
+    const matchesCity = selectedCity === 'all' || !selectedCity || jampad.city === selectedCity;
     return matchesSearch && matchesCity;
   });
 
@@ -252,7 +252,7 @@ export default function Jampads() {
                   <SelectValue placeholder="All Cities" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Cities</SelectItem>
+                  <SelectItem value="all">All Cities</SelectItem>
                   {cities.map(city => (
                     <SelectItem key={city} value={city}>{city}</SelectItem>
                   ))}

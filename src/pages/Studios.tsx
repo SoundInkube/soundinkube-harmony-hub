@@ -79,14 +79,14 @@ const Studios = () => {
       );
     }
 
-    if (locationFilter) {
+    if (locationFilter && locationFilter !== 'all') {
       filtered = filtered.filter(studio =>
         studio.city?.toLowerCase().includes(locationFilter.toLowerCase()) ||
         studio.state?.toLowerCase().includes(locationFilter.toLowerCase())
       );
     }
 
-    if (specialtyFilter) {
+    if (specialtyFilter && specialtyFilter !== 'all') {
       filtered = filtered.filter(studio =>
         studio.specialties?.some(specialty =>
           specialty.toLowerCase().includes(specialtyFilter.toLowerCase())
@@ -164,7 +164,7 @@ const Studios = () => {
                 <SelectValue placeholder="Location" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Locations</SelectItem>
+                <SelectItem value="all">All Locations</SelectItem>
                 {uniqueCities.map(city => (
                   <SelectItem key={city} value={city}>{city}</SelectItem>
                 ))}
@@ -177,7 +177,7 @@ const Studios = () => {
                 <SelectValue placeholder="Specialty" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Specialties</SelectItem>
+                <SelectItem value="all">All Specialties</SelectItem>
                 {uniqueSpecialties.map(specialty => (
                   <SelectItem key={specialty} value={specialty}>{specialty}</SelectItem>
                 ))}

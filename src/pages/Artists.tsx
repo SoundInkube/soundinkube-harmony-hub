@@ -44,11 +44,11 @@ export default function Artists() {
     const matchesSearch = artist.stage_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          artist.profile?.full_name?.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesGenre = !genreFilter || 
+    const matchesGenre = genreFilter === 'all' || !genreFilter || 
                         artist.genres?.some((genre: string) => 
                           genre.toLowerCase().includes(genreFilter.toLowerCase()));
     
-    const matchesLocation = !locationFilter || 
+    const matchesLocation = locationFilter === 'all' || !locationFilter || 
                            artist.profile?.location?.toLowerCase().includes(locationFilter.toLowerCase());
 
     return matchesSearch && matchesGenre && matchesLocation;
@@ -108,7 +108,7 @@ export default function Artists() {
                         <SelectValue placeholder="All Genres" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All Genres</SelectItem>
+                        <SelectItem value="all">All Genres</SelectItem>
                         {uniqueGenres.map((genre) => (
                           <SelectItem key={genre} value={genre}>
                             {genre}
@@ -122,7 +122,7 @@ export default function Artists() {
                         <SelectValue placeholder="All Locations" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All Locations</SelectItem>
+                        <SelectItem value="all">All Locations</SelectItem>
                         {uniqueLocations.map((location) => (
                           <SelectItem key={location} value={location}>
                             {location}
