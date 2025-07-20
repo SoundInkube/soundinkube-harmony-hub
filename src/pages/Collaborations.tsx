@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { useCollaborations } from '@/hooks/useCollaborations';
 import { useState } from 'react';
+import { CollaborationDialog } from '@/components/collaboration-dialog';
+import { CollaborationApplicationDialog } from '@/components/collaboration-application-dialog';
 
 const Collaborations = () => {
   const { collaborations, myCollaborations, applications, loading } = useCollaborations();
@@ -49,10 +51,12 @@ const Collaborations = () => {
               <h1 className="text-4xl font-bold mb-2">Collaborations</h1>
               <p className="text-muted-foreground">Find and create musical collaboration opportunities</p>
             </div>
-            <Button className="bg-gradient-primary hover:opacity-90">
-              <Plus className="h-4 w-4 mr-2" />
-              Create Collaboration
-            </Button>
+            <CollaborationDialog>
+              <Button className="bg-gradient-primary hover:opacity-90">
+                <Plus className="h-4 w-4 mr-2" />
+                Create Collaboration
+              </Button>
+            </CollaborationDialog>
           </div>
 
           <Tabs defaultValue="browse" className="space-y-6">
@@ -158,7 +162,9 @@ const Collaborations = () => {
                               </Badge>
                             )}
                           </div>
-                          <Button>Apply Now</Button>
+                          <CollaborationApplicationDialog collaboration={collaboration}>
+                            <Button>Apply Now</Button>
+                          </CollaborationApplicationDialog>
                         </div>
                       </CardContent>
                     </Card>

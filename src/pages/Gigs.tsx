@@ -18,6 +18,8 @@ import {
 import { useGigs } from '@/hooks/useGigs';
 import { useProfile } from '@/hooks/useProfile';
 import { useState } from 'react';
+import { GigCreationDialog } from '@/components/gig-creation-dialog';
+import { GigApplicationDialog } from '@/components/gig-application-dialog';
 
 const Gigs = () => {
   const { gigs, myGigs, applications, loading } = useGigs();
@@ -61,10 +63,12 @@ const Gigs = () => {
               </p>
             </div>
             {isClient && (
-              <Button className="bg-gradient-primary hover:opacity-90">
-                <Plus className="h-4 w-4 mr-2" />
-                Post Gig
-              </Button>
+              <GigCreationDialog>
+                <Button className="bg-gradient-primary hover:opacity-90">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Post Gig
+                </Button>
+              </GigCreationDialog>
             )}
           </div>
 
@@ -176,7 +180,11 @@ const Gigs = () => {
                           </div>
                           <div className="flex gap-2">
                             <Button variant="outline" size="sm">View Details</Button>
-                            {!isClient && <Button size="sm">Apply Now</Button>}
+                            {!isClient && (
+                              <GigApplicationDialog gig={gig}>
+                                <Button size="sm">Apply Now</Button>
+                              </GigApplicationDialog>
+                            )}
                           </div>
                         </div>
                       </CardContent>
@@ -192,10 +200,12 @@ const Gigs = () => {
                     {searchTerm ? 'No gigs match your search.' : 'No gigs available yet.'}
                   </p>
                   {isClient && (
-                    <Button className="bg-gradient-primary hover:opacity-90">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Post Your First Gig
-                    </Button>
+                    <GigCreationDialog>
+                      <Button className="bg-gradient-primary hover:opacity-90">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Post Your First Gig
+                      </Button>
+                    </GigCreationDialog>
                   )}
                 </div>
               )}

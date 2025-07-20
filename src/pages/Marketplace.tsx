@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useMarketplace } from '@/hooks/useMarketplace';
 import { useState } from 'react';
+import { MarketplaceItemDialog } from '@/components/marketplace-item-dialog';
 
 const Marketplace = () => {
   const { items, loading } = useMarketplace();
@@ -38,10 +39,12 @@ const Marketplace = () => {
               <h1 className="text-4xl font-bold mb-2">Gear Marketplace</h1>
               <p className="text-muted-foreground">Buy and sell musical instruments and equipment</p>
             </div>
-            <Button className="bg-gradient-primary hover:opacity-90">
-              <Plus className="h-4 w-4 mr-2" />
-              List Item
-            </Button>
+            <MarketplaceItemDialog>
+              <Button className="bg-gradient-primary hover:opacity-90">
+                <Plus className="h-4 w-4 mr-2" />
+                List Item
+              </Button>
+            </MarketplaceItemDialog>
           </div>
 
           {/* Search and Filters */}
@@ -150,10 +153,12 @@ const Marketplace = () => {
               <p className="text-muted-foreground text-lg mb-4">
                 {searchTerm ? 'No items match your search.' : 'No items available yet.'}
               </p>
-              <Button className="bg-gradient-primary hover:opacity-90">
-                <Plus className="h-4 w-4 mr-2" />
-                List Your First Item
-              </Button>
+              <MarketplaceItemDialog>
+                <Button className="bg-gradient-primary hover:opacity-90">
+                  <Plus className="h-4 w-4 mr-2" />
+                  List Your First Item
+                </Button>
+              </MarketplaceItemDialog>
             </div>
           )}
         </div>
