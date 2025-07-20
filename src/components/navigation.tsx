@@ -73,7 +73,7 @@ export function Navigation() {
         return [
           { label: 'Marketplace', href: '/marketplace', icon: ShoppingBag },
           { label: 'Collaborations', href: '/collaborations', icon: Users },
-          { label: 'Gigs', href: '/gigs', icon: Briefcase },
+          { label: 'Available Gigs', href: '/gigs', icon: Briefcase },
           { label: 'Studios', href: '/studios', icon: Disc },
           { label: 'Messages', href: '/messages', icon: MessageSquare }
         ];
