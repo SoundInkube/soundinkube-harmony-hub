@@ -39,7 +39,13 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
     location: profile?.location || '',
     phone: profile?.phone || '',
     website: profile?.website || '',
-    user_type: profile?.user_type || 'client'
+    user_type: profile?.user_type || 'client',
+    social_media: (profile as any)?.social_media || {},
+    skills: (profile as any)?.skills || [],
+    instruments: (profile as any)?.instruments || [],
+    genres: (profile as any)?.genres || [],
+    hourly_rate: (profile as any)?.hourly_rate || '',
+    experience_level: (profile as any)?.experience_level || ''
   });
 
   // Update form when profile loads
@@ -52,7 +58,13 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
         location: profile.location || '',
         phone: profile.phone || '',
         website: profile.website || '',
-        user_type: profile.user_type || 'client'
+        user_type: profile.user_type || 'client',
+        social_media: (profile as any).social_media || {},
+        skills: (profile as any).skills || [],
+        instruments: (profile as any).instruments || [],
+        genres: (profile as any).genres || [],
+        hourly_rate: (profile as any).hourly_rate || '',
+        experience_level: (profile as any).experience_level || ''
       });
     }
   });
@@ -64,6 +76,14 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
     { value: 'school', label: 'Music School' },
     { value: 'label', label: 'Record Label' },
     { value: 'manager', label: 'Artist Manager' }
+  ];
+
+  const experienceLevels = [
+    { value: 'beginner', label: 'Beginner' },
+    { value: 'intermediate', label: 'Intermediate' },
+    { value: 'advanced', label: 'Advanced' },
+    { value: 'professional', label: 'Professional' },
+    { value: 'expert', label: 'Expert' }
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -199,6 +219,130 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
               onChange={(e) => setFormData(prev => ({ ...prev, website: e.target.value }))}
             />
           </div>
+
+          {/* Social Media Section */}
+          <div className="space-y-4">
+            <Label className="text-base font-semibold">Social Media Links</Label>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="instagram">Instagram</Label>
+                <Input
+                  id="instagram"
+                  placeholder="https://instagram.com/username"
+                  value={formData.social_media?.instagram || ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    social_media: { ...prev.social_media, instagram: e.target.value }
+                  }))}
+                />
+              </div>
+              <div>
+                <Label htmlFor="twitter">Twitter/X</Label>
+                <Input
+                  id="twitter"
+                  placeholder="https://twitter.com/username"
+                  value={formData.social_media?.twitter || ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    social_media: { ...prev.social_media, twitter: e.target.value }
+                  }))}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="youtube">YouTube</Label>
+                <Input
+                  id="youtube"
+                  placeholder="https://youtube.com/@username"
+                  value={formData.social_media?.youtube || ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    social_media: { ...prev.social_media, youtube: e.target.value }
+                  }))}
+                />
+              </div>
+              <div>
+                <Label htmlFor="soundcloud">SoundCloud</Label>
+                <Input
+                  id="soundcloud"
+                  placeholder="https://soundcloud.com/username"
+                  value={formData.social_media?.soundcloud || ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    social_media: { ...prev.social_media, soundcloud: e.target.value }
+                  }))}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="spotify">Spotify</Label>
+                <Input
+                  id="spotify"
+                  placeholder="https://open.spotify.com/artist/..."
+                  value={formData.social_media?.spotify || ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    social_media: { ...prev.social_media, spotify: e.target.value }
+                  }))}
+                />
+              </div>
+              <div>
+                <Label htmlFor="linkedin">LinkedIn</Label>
+                <Input
+                  id="linkedin"
+                  placeholder="https://linkedin.com/in/username"
+                  value={formData.social_media?.linkedin || ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    social_media: { ...prev.social_media, linkedin: e.target.value }
+                  }))}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Professional Details */}
+          {(formData.user_type === 'artist' || formData.user_type === 'studio') && (
+            <div className="space-y-4">
+              <Label className="text-base font-semibold">Professional Details</Label>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="hourly_rate">Hourly Rate ($)</Label>
+                  <Input
+                    id="hourly_rate"
+                    type="number"
+                    placeholder="50"
+                    value={formData.hourly_rate}
+                    onChange={(e) => setFormData(prev => ({ ...prev, hourly_rate: e.target.value }))}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="experience_level">Experience Level</Label>
+                  <Select 
+                    value={formData.experience_level} 
+                    onValueChange={(value) => setFormData(prev => ({ ...prev, experience_level: value }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select level" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {experienceLevels.map((level) => (
+                        <SelectItem key={level.value} value={level.value}>
+                          {level.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="flex gap-3 pt-4">
             <Button

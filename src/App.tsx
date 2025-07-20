@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import Artists from "./pages/Artists";
 import Studios from "./pages/Studios";
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile/:userId?" element={<Profile />} />
             <Route path="/artists" element={<Artists />} />
             <Route path="/studios" element={<Studios />} />
             <Route path="/schools" element={<MusicSchools />} />
