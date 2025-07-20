@@ -13,8 +13,15 @@ Deno.serve(async (req) => {
   try {
     const { username } = await req.json()
 
+    // Input validation and sanitization
     if (!username) {
       throw new Error('Username is required')
+    }
+
+    // Sanitize username - only allow alphanumeric characters and underscores
+    const sanitizedUsername = username.replace(/[^a-zA-Z0-9_]/g, '')
+    if (sanitizedUsername !== username || username.length > 15 || username.length < 1) {
+      throw new Error('Invalid username format. Only alphanumeric characters and underscores allowed.')
     }
 
     // For now, return mock data since we need Twitter API setup

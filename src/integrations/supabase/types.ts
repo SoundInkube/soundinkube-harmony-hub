@@ -1001,6 +1001,14 @@ export type Database = {
         Args: { user_email: string }
         Returns: boolean
       }
+      secure_profile_update: {
+        Args: { target_user_id: string; update_data: Json }
+        Returns: boolean
+      }
+      update_user_profile: {
+        Args: { profile_updates: Json }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never

@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/dialog';
 import { User, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { validateProfileData, sanitizeProfileData } from '@/lib/validation';
 
 interface ProfileEditDialogProps {
   children?: React.ReactNode;
@@ -95,7 +96,16 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
     setLoading(true);
     
     try {
-      const { error } = await updateProfile(formData);
+      // Validate form data
+      const validation = validateProfileData(formData);
+      if (!validation.isValid) {
+        throw new Error(validation.errors.join(', '));
+      }
+
+      // Sanitize form data
+      const sanitizedData = sanitizeProfileData(formData);
+
+      const { error } = await updateProfile(sanitizedData);
 
       if (error) throw error;
 

@@ -13,8 +13,15 @@ Deno.serve(async (req) => {
   try {
     const { username, accessToken } = await req.json()
 
+    // Input validation and sanitization
     if (!username) {
       throw new Error('Username is required')
+    }
+
+    // Sanitize username - only allow alphanumeric characters, dots, underscores
+    const sanitizedUsername = username.replace(/[^a-zA-Z0-9._]/g, '')
+    if (sanitizedUsername !== username || username.length > 30 || username.length < 1) {
+      throw new Error('Invalid username format. Only alphanumeric characters, dots, and underscores allowed.')
     }
 
     // For now, return mock data since we need Instagram API setup

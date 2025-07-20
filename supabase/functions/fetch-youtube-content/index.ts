@@ -13,8 +13,24 @@ Deno.serve(async (req) => {
   try {
     const { channelId, username } = await req.json()
 
+    // Input validation and sanitization
     if (!channelId && !username) {
       throw new Error('Channel ID or username is required')
+    }
+
+    // Validate and sanitize inputs
+    if (channelId) {
+      const sanitizedChannelId = channelId.replace(/[^a-zA-Z0-9_-]/g, '')
+      if (sanitizedChannelId !== channelId || channelId.length > 50) {
+        throw new Error('Invalid channel ID format')
+      }
+    }
+
+    if (username) {
+      const sanitizedUsername = username.replace(/[^a-zA-Z0-9_-]/g, '')
+      if (sanitizedUsername !== username || username.length > 30) {
+        throw new Error('Invalid username format')
+      }
     }
 
     // For now, return mock data since we need YouTube API setup
