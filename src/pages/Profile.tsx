@@ -28,6 +28,7 @@ import {
   Verified
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { SocialMediaFeed } from '@/components/social-media-feed';
 
 export default function Profile() {
   const { userId } = useParams();
@@ -132,6 +133,27 @@ export default function Profile() {
     return types[userType as keyof typeof types] || userType;
   };
 
+  const getUsername = (url: string) => {
+    try {
+      const urlObj = new URL(url);
+      return urlObj.pathname.split('/').filter(Boolean).pop() || '';
+    } catch {
+      return '';
+    }
+  };
+
+  const getChannelId = (url: string) => {
+    try {
+      const urlObj = new URL(url);
+      if (url.includes('channel/')) {
+        return url.split('channel/')[1]?.split('/')[0] || '';
+      }
+      return urlObj.pathname.split('/').filter(Boolean).pop() || '';
+    } catch {
+      return '';
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -217,7 +239,7 @@ export default function Profile() {
                     )}
                     <div className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
-                      Joined {new Date(profile.created_at).toLocaleDateString()}
+                      Joined {new Date(profile.created_at).toLocaleDateString('en-IN')}
                     </div>
                   </div>
                 </div>
@@ -383,50 +405,77 @@ export default function Profile() {
             </TabsContent>
 
             <TabsContent value="social" className="space-y-6">
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {profile.social_media && Object.entries(profile.social_media).map(([platform, url]: [string, any]) => (
-                  <Card key={platform}>
-                    <CardHeader className="flex flex-row items-center gap-3">
-                      {getSocialIcon(platform)}
-                      <CardTitle className="capitalize">{platform}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <a
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline"
-                      >
-                        View Profile
-                      </a>
-                      {socialContent[platform] && (
-                        <div className="mt-4 space-y-2">
+              {profile.social_media && Object.keys(profile.social_media).length > 0 ? (
+                <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
+                  {Object.entries(profile.social_media).map(([platform, url]: [string, any]) => (
+                    <Card key={platform}>
+                      <CardHeader className="flex flex-row items-center gap-3">
+                        {getSocialIcon(platform)}
+                        <CardTitle className="capitalize">{platform}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline flex items-center gap-2"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                          View Full Profile
+                        </a>
+                        
+                        {/* Live Social Media Content Preview */}
+                        <div className="border-t pt-4">
                           {platform === 'instagram' && (
-                            <div className="flex gap-4 text-sm text-muted-foreground">
-                              <span>{socialContent.instagram.followers} followers</span>
-                              <span>{socialContent.instagram.following} following</span>
-                            </div>
+                            <SocialMediaFeed 
+                              platform="instagram" 
+                              username={getUsername(url)} 
+                            />
+                          )}
+                          {platform === 'twitter' && (
+                            <SocialMediaFeed 
+                              platform="twitter" 
+                              username={getUsername(url)} 
+                            />
                           )}
                           {platform === 'youtube' && (
-                            <div className="flex gap-4 text-sm text-muted-foreground">
-                              <span>{socialContent.youtube.subscribers} subscribers</span>
-                              <span>{socialContent.youtube.views} views</span>
+                            <SocialMediaFeed 
+                              platform="youtube" 
+                              channelId={getChannelId(url)}
+                              username={getUsername(url)} 
+                            />
+                          )}
+                          {!['instagram', 'twitter', 'youtube'].includes(platform) && (
+                            <div className="text-sm text-muted-foreground space-y-2">
+                              <div className="flex items-center gap-2">
+                                {getSocialIcon(platform)}
+                                <span>Profile linked successfully</span>
+                              </div>
+                              <div className="text-xs">
+                                Click "View Full Profile" to visit {platform}
+                              </div>
                             </div>
                           )}
                         </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-              
-              {(!profile.social_media || Object.keys(profile.social_media).length === 0) && (
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
                 <Card>
                   <CardContent className="text-center py-12">
-                    <p className="text-muted-foreground">No social media links added yet.</p>
+                    <div className="flex justify-center mb-4">
+                      <div className="bg-muted rounded-full p-4">
+                        <Users className="h-8 w-8 text-muted-foreground" />
+                      </div>
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2">No social media links added yet</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Connect your social media accounts to showcase your online presence and engage with your audience.
+                    </p>
                     {isOwnProfile && (
                       <ProfileEditDialog>
-                        <Button className="mt-4">
+                        <Button className="bg-gradient-primary hover:opacity-90">
                           Add Social Links
                         </Button>
                       </ProfileEditDialog>

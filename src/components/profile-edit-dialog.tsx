@@ -205,7 +205,7 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
               <Label htmlFor="phone">Phone</Label>
               <Input
                 id="phone"
-                placeholder="+1 (555) 123-4567"
+                placeholder="+91 98765 43210"
                 value={formData.phone}
                 onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
               />
