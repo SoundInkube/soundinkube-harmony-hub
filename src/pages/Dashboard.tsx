@@ -8,6 +8,9 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProfileEditDialog } from '@/components/profile-edit-dialog';
+import { GigCreationDialog } from '@/components/gig-creation-dialog';
+import { CollaborationDialog } from '@/components/collaboration-dialog';
+import { MarketplaceItemDialog } from '@/components/marketplace-item-dialog';
 import { 
   Calendar, 
   MessageSquare, 
@@ -19,7 +22,18 @@ import {
   GraduationCap,
   BarChart3,
   Clock,
-  DollarSign
+  DollarSign,
+  Plus,
+  Briefcase,
+  ShoppingBag,
+  TrendingUp,
+  Eye,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  School,
+  Disc,
+  Headphones
 } from 'lucide-react';
 
 export default function Dashboard() {
@@ -27,6 +41,11 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<any>(null);
   const [bookings, setBookings] = useState<any[]>([]);
+  const [gigs, setGigs] = useState<any[]>([]);
+  const [collaborations, setCollaborations] = useState<any[]>([]);
+  const [marketplaceItems, setMarketplaceItems] = useState<any[]>([]);
+  const [applications, setApplications] = useState<any[]>([]);
+  const [stats, setStats] = useState<any>({});
   const [loading, setLoading] = useState(true);
 
   // Redirect if not authenticated
@@ -49,24 +68,124 @@ export default function Dashboard() {
 
       setProfile(profileData);
 
-      // Load recent bookings
-      const { data: bookingsData } = await supabase
-        .from('bookings')
-        .select(`
-          *,
-          client:client_id(full_name),
-          provider:provider_id(full_name)
-        `)
-        .or(`client_id.eq.${profileData?.id},provider_id.eq.${profileData?.id}`)
-        .order('created_at', { ascending: false })
-        .limit(5);
+      if (!profileData) return;
 
-      setBookings(bookingsData || []);
+      // Load user-specific data based on profile type
+      await Promise.all([
+        loadBookings(profileData),
+        loadGigs(profileData),
+        loadCollaborations(profileData),
+        loadMarketplaceItems(profileData),
+        loadApplications(profileData),
+        loadStats(profileData)
+      ]);
+      
     } catch (error) {
       console.error('Error loading user data:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadBookings = async (profileData: any) => {
+    const { data } = await supabase
+      .from('bookings')
+      .select(`
+        *,
+        client:client_id(full_name),
+        provider:provider_id(full_name)
+      `)
+      .or(`client_id.eq.${profileData.id},provider_id.eq.${profileData.id}`)
+      .order('created_at', { ascending: false })
+      .limit(5);
+    
+    setBookings(data || []);
+  };
+
+  const loadGigs = async (profileData: any) => {
+    if (profileData.user_type === 'client') {
+      // Load gigs created by client
+      const { data } = await supabase
+        .from('gigs')
+        .select('*')
+        .eq('client_id', profileData.id)
+        .order('created_at', { ascending: false })
+        .limit(5);
+      setGigs(data || []);
+    } else {
+      // Load available gigs for professionals
+      const { data } = await supabase
+        .from('gigs')
+        .select('*')
+        .eq('status', 'open')
+        .order('created_at', { ascending: false })
+        .limit(5);
+      setGigs(data || []);
+    }
+  };
+
+  const loadCollaborations = async (profileData: any) => {
+    if (profileData.user_type === 'artist' || profileData.user_type === 'manager') {
+      const { data } = await supabase
+        .from('collaborations')
+        .select('*')
+        .or(`creator_id.eq.${profileData.id},status.eq.open`)
+        .order('created_at', { ascending: false })
+        .limit(5);
+      setCollaborations(data || []);
+    }
+  };
+
+  const loadMarketplaceItems = async (profileData: any) => {
+    const { data } = await supabase
+      .from('marketplace')
+      .select('*')
+      .eq('seller_id', profileData.id)
+      .order('created_at', { ascending: false })
+      .limit(5);
+    setMarketplaceItems(data || []);
+  };
+
+  const loadApplications = async (profileData: any) => {
+    // Load gig applications for professionals
+    if (profileData.user_type === 'artist') {
+      const { data } = await supabase
+        .from('gig_applications')
+        .select(`
+          *,
+          gig:gig_id(title, event_date)
+        `)
+        .eq('professional_id', profileData.id)
+        .order('applied_at', { ascending: false })
+        .limit(5);
+      setApplications(data || []);
+    }
+  };
+
+  const loadStats = async (profileData: any) => {
+    const statsData: any = {};
+
+    // Load earnings for service providers
+    if (['artist', 'studio', 'manager'].includes(profileData.user_type)) {
+      const { data: earningsData } = await supabase
+        .from('bookings')
+        .select('total_amount')
+        .eq('provider_id', profileData.id)
+        .eq('status', 'completed');
+      
+      const totalEarnings = earningsData?.reduce((sum, booking) => sum + (booking.total_amount || 0), 0) || 0;
+      statsData.earnings = totalEarnings;
+    }
+
+    // Load reviews count
+    const { count: reviewsCount } = await supabase
+      .from('reviews')
+      .select('*', { count: 'exact' })
+      .eq('reviewee_id', profileData.id);
+    
+    statsData.reviews = reviewsCount || 0;
+
+    setStats(statsData);
   };
 
   const getUserTypeIcon = (userType: string) => {
@@ -147,69 +266,182 @@ export default function Dashboard() {
           </TabsList>
 
           <TabsContent value="overview">
+            {/* User Type Specific Quick Actions */}
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
+              <div className="flex flex-wrap gap-3">
+                {profile?.user_type === 'client' && (
+                  <GigCreationDialog>
+                    <Button className="bg-gradient-primary hover:opacity-90">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Post a Gig
+                    </Button>
+                  </GigCreationDialog>
+                )}
+                
+                {(profile?.user_type === 'artist' || profile?.user_type === 'manager') && (
+                  <>
+                    <CollaborationDialog>
+                      <Button className="bg-gradient-primary hover:opacity-90">
+                        <Users className="h-4 w-4 mr-2" />
+                        Start Collaboration
+                      </Button>
+                    </CollaborationDialog>
+                    <Button variant="outline" onClick={() => navigate('/gigs')}>
+                      <Briefcase className="h-4 w-4 mr-2" />
+                      Browse Gigs
+                    </Button>
+                  </>
+                )}
+
+                {['artist', 'studio', 'label'].includes(profile?.user_type) && (
+                  <MarketplaceItemDialog>
+                    <Button variant="outline">
+                      <ShoppingBag className="h-4 w-4 mr-2" />
+                      Sell Equipment
+                    </Button>
+                  </MarketplaceItemDialog>
+                )}
+
+                <Button variant="outline" onClick={() => navigate('/marketplace')}>
+                  <Eye className="h-4 w-4 mr-2" />
+                  Browse Marketplace
+                </Button>
+              </div>
+            </div>
+
+            {/* Stats Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Bookings</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    {profile?.user_type === 'client' ? 'Active Bookings' : 'Total Bookings'}
+                  </CardTitle>
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{bookings.length}</div>
                   <p className="text-xs text-muted-foreground">
-                    +2 from last month
+                    {profile?.user_type === 'client' ? 'Services booked' : 'Services provided'}
                   </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Messages</CardTitle>
-                  <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                  <CardTitle className="text-sm font-medium">
+                    {profile?.user_type === 'client' ? 'Posted Gigs' : 'Applications'}
+                  </CardTitle>
+                  <Briefcase className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">12</div>
+                  <div className="text-2xl font-bold">
+                    {profile?.user_type === 'client' ? gigs.length : applications.length}
+                  </div>
                   <p className="text-xs text-muted-foreground">
-                    3 unread
+                    {profile?.user_type === 'client' ? 'Opportunities created' : 'Gigs applied to'}
                   </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Rating</CardTitle>
+                  <CardTitle className="text-sm font-medium">Reviews</CardTitle>
                   <Star className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">4.8</div>
+                  <div className="text-2xl font-bold">{stats.reviews || 0}</div>
                   <p className="text-xs text-muted-foreground">
-                    Based on 15 reviews
+                    Customer feedback received
                   </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Earnings</CardTitle>
-                  <DollarSign className="h-4 w-4 text-muted-foreground" />
+                  <CardTitle className="text-sm font-medium">
+                    {['artist', 'studio', 'manager'].includes(profile?.user_type) ? 'Earnings' : 'Marketplace Items'}
+                  </CardTitle>
+                  {['artist', 'studio', 'manager'].includes(profile?.user_type) ? 
+                    <DollarSign className="h-4 w-4 text-muted-foreground" /> :
+                    <ShoppingBag className="h-4 w-4 text-muted-foreground" />
+                  }
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">₹45,600</div>
+                  <div className="text-2xl font-bold">
+                    {['artist', 'studio', 'manager'].includes(profile?.user_type) ? 
+                      `$${stats.earnings || 0}` : 
+                      marketplaceItems.length
+                    }
+                  </div>
                   <p className="text-xs text-muted-foreground">
-                    +15% from last month
+                    {['artist', 'studio', 'manager'].includes(profile?.user_type) ? 
+                      'Total revenue' : 
+                      'Items for sale'
+                    }
                   </p>
                 </CardContent>
               </Card>
             </div>
 
+            {/* Content Grid */}
             <div className="grid gap-6 md:grid-cols-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>Recent Bookings</CardTitle>
-                  <CardDescription>Your latest booking activity</CardDescription>
+                  <CardTitle>
+                    {profile?.user_type === 'client' ? 'My Gig Posts' : 
+                     profile?.user_type === 'artist' ? 'Recent Applications' : 
+                     'Recent Bookings'}
+                  </CardTitle>
+                  <CardDescription>
+                    {profile?.user_type === 'client' ? 'Gigs you\'ve posted for musicians' : 
+                     profile?.user_type === 'artist' ? 'Your latest gig applications' : 
+                     'Your latest booking activity'}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {bookings.map((booking) => (
+                    {profile?.user_type === 'client' && gigs.length === 0 && (
+                      <p className="text-center text-muted-foreground py-4">
+                        No gigs posted yet. Create your first gig posting!
+                      </p>
+                    )}
+                    
+                    {profile?.user_type === 'artist' && applications.length === 0 && (
+                      <p className="text-center text-muted-foreground py-4">
+                        No applications yet. Browse available gigs to get started!
+                      </p>
+                    )}
+
+                    {profile?.user_type === 'client' && gigs.map((gig) => (
+                      <div key={gig.id} className="flex items-center justify-between p-3 border border-border/50 rounded-lg">
+                        <div>
+                          <h4 className="font-medium">{gig.title}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {new Date(gig.event_date).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <Badge className={getStatusColor(gig.status)}>
+                          {gig.status}
+                        </Badge>
+                      </div>
+                    ))}
+
+                    {profile?.user_type === 'artist' && applications.map((app: any) => (
+                      <div key={app.id} className="flex items-center justify-between p-3 border border-border/50 rounded-lg">
+                        <div>
+                          <h4 className="font-medium">{app.gig?.title}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            Applied {new Date(app.applied_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <Badge className={getStatusColor(app.status)}>
+                          {app.status}
+                        </Badge>
+                      </div>
+                    ))}
+
+                    {!['client', 'artist'].includes(profile?.user_type) && bookings.map((booking) => (
                       <div key={booking.id} className="flex items-center justify-between p-3 border border-border/50 rounded-lg">
                         <div>
                           <h4 className="font-medium">{booking.title}</h4>
@@ -228,23 +460,74 @@ export default function Dashboard() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                  <CardDescription>Common tasks and shortcuts</CardDescription>
+                  <CardTitle>Navigation Hub</CardTitle>
+                  <CardDescription>Quick access to your important sections</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-2">
+                    {/* Universal actions */}
                     <Button variant="outline" className="justify-start" onClick={() => navigate('/bookings')}>
                       <Calendar className="h-4 w-4 mr-2" />
-                      View Calendar
+                      My Bookings
                     </Button>
                     <Button variant="outline" className="justify-start" onClick={() => navigate('/messages')}>
                       <MessageSquare className="h-4 w-4 mr-2" />
-                      Check Messages
+                      Messages
                     </Button>
-                    <Button variant="outline" className="justify-start" onClick={() => navigate('/dashboard')}>
-                      <BarChart3 className="h-4 w-4 mr-2" />
-                      View Analytics
+
+                    {/* User type specific actions */}
+                    {profile?.user_type === 'client' && (
+                      <>
+                        <Button variant="outline" className="justify-start" onClick={() => navigate('/artists')}>
+                          <Music className="h-4 w-4 mr-2" />
+                          Find Musicians
+                        </Button>
+                        <Button variant="outline" className="justify-start" onClick={() => navigate('/studios')}>
+                          <Disc className="h-4 w-4 mr-2" />
+                          Book Studios
+                        </Button>
+                      </>
+                    )}
+
+                    {profile?.user_type === 'artist' && (
+                      <>
+                        <Button variant="outline" className="justify-start" onClick={() => navigate('/gigs')}>
+                          <Briefcase className="h-4 w-4 mr-2" />
+                          Browse Gigs
+                        </Button>
+                        <Button variant="outline" className="justify-start" onClick={() => navigate('/collaborations')}>
+                          <Users className="h-4 w-4 mr-2" />
+                          Collaborations
+                        </Button>
+                      </>
+                    )}
+
+                    {profile?.user_type === 'studio' && (
+                      <Button variant="outline" className="justify-start" onClick={() => navigate('/bookings')}>
+                        <Building className="h-4 w-4 mr-2" />
+                        Studio Bookings
+                      </Button>
+                    )}
+
+                    {profile?.user_type === 'school' && (
+                      <Button variant="outline" className="justify-start" onClick={() => navigate('/bookings')}>
+                        <School className="h-4 w-4 mr-2" />
+                        Student Applications
+                      </Button>
+                    )}
+
+                    {(profile?.user_type === 'label' || profile?.user_type === 'manager') && (
+                      <Button variant="outline" className="justify-start" onClick={() => navigate('/artists')}>
+                        <Star className="h-4 w-4 mr-2" />
+                        Artist Roster
+                      </Button>
+                    )}
+
+                    <Button variant="outline" className="justify-start" onClick={() => navigate('/marketplace')}>
+                      <ShoppingBag className="h-4 w-4 mr-2" />
+                      Marketplace
                     </Button>
+
                     <ProfileEditDialog>
                       <Button variant="outline" className="justify-start w-full">
                         <Settings className="h-4 w-4 mr-2" />
