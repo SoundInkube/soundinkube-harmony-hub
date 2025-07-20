@@ -53,9 +53,9 @@ export function Navigation() {
       return [
         { label: 'Artists', href: '/artists', icon: Mic },
         { label: 'Studios', href: '/studios', icon: Headphones },
-        { label: 'Schools', href: '/schools', icon: GraduationCap },
+        { label: 'Schools', href: '/music-schools', icon: GraduationCap },
         { label: 'Jampads', href: '/jampads', icon: Music },
-        { label: 'Labels', href: '/labels', icon: Building },
+        { label: 'Labels', href: '/record-labels', icon: Building },
       ];
     }
 
@@ -64,7 +64,7 @@ export function Navigation() {
         return [
           { label: 'Music Professionals', href: '/artists', icon: Music },
           { label: 'Studios', href: '/studios', icon: Disc },
-          { label: 'Music Schools', href: '/schools', icon: School },
+          { label: 'Music Schools', href: '/music-schools', icon: School },
           { label: 'My Gigs', href: '/gigs', icon: Briefcase },
           { label: 'Messages', href: '/messages', icon: MessageSquare }
         ];
@@ -98,8 +98,8 @@ export function Navigation() {
         return [
           { label: 'Artists', href: '/artists', icon: Mic },
           { label: 'Studios', href: '/studios', icon: Headphones },
-          { label: 'Schools', href: '/schools', icon: GraduationCap },
-          { label: 'Labels', href: '/labels', icon: Building },
+          { label: 'Schools', href: '/music-schools', icon: GraduationCap },
+          { label: 'Labels', href: '/record-labels', icon: Building },
         ];
     }
   };

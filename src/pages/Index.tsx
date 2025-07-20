@@ -350,7 +350,7 @@ const Index = () => {
               <ul className="space-y-2 text-muted-foreground">
                 <li><button onClick={() => navigate('/artists')} className="hover:text-primary transition-colors text-left">Book Artists</button></li>
                 <li><button onClick={() => navigate('/studios')} className="hover:text-primary transition-colors text-left">Find Studios</button></li>
-                <li><button onClick={() => navigate('/schools')} className="hover:text-primary transition-colors text-left">Learn Music</button></li>
+                <li><button onClick={() => navigate('/music-schools')} className="hover:text-primary transition-colors text-left">Learn Music</button></li>
                 <li><button onClick={() => navigate('/jampads')} className="hover:text-primary transition-colors text-left">Find Jampads</button></li>
               </ul>
             </div>

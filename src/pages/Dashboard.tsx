@@ -502,25 +502,30 @@ export default function Dashboard() {
                       </>
                     )}
 
-                    {profile?.user_type === 'studio' && (
-                      <Button variant="outline" className="justify-start" onClick={() => navigate('/bookings')}>
-                        <Building className="h-4 w-4 mr-2" />
-                        Studio Bookings
-                      </Button>
-                    )}
-
-                    {profile?.user_type === 'school' && (
-                      <Button variant="outline" className="justify-start" onClick={() => navigate('/bookings')}>
-                        <School className="h-4 w-4 mr-2" />
-                        Student Applications
-                      </Button>
+                    {(profile?.user_type === 'studio' || profile?.user_type === 'school') && (
+                      <>
+                        <Button variant="outline" className="justify-start" onClick={() => navigate('/studios')}>
+                          <Building className="h-4 w-4 mr-2" />
+                          Studio Management
+                        </Button>
+                        <Button variant="outline" className="justify-start" onClick={() => navigate('/music-schools')}>
+                          <School className="h-4 w-4 mr-2" />
+                          School Management
+                        </Button>
+                      </>
                     )}
 
                     {(profile?.user_type === 'label' || profile?.user_type === 'manager') && (
-                      <Button variant="outline" className="justify-start" onClick={() => navigate('/artists')}>
-                        <Star className="h-4 w-4 mr-2" />
-                        Artist Roster
-                      </Button>
+                      <>
+                        <Button variant="outline" className="justify-start" onClick={() => navigate('/artists')}>
+                          <Star className="h-4 w-4 mr-2" />
+                          Artist Roster
+                        </Button>
+                        <Button variant="outline" className="justify-start" onClick={() => navigate('/record-labels')}>
+                          <Building className="h-4 w-4 mr-2" />
+                          Label Management
+                        </Button>
+                      </>
                     )}
 
                     <Button variant="outline" className="justify-start" onClick={() => navigate('/marketplace')}>

@@ -39,8 +39,8 @@ const App = () => (
             <Route path="/profile/:userId?" element={<Profile />} />
             <Route path="/artists" element={<Artists />} />
             <Route path="/studios" element={<Studios />} />
-            <Route path="/schools" element={<MusicSchools />} />
-            <Route path="/labels" element={<RecordLabels />} />
+            <Route path="/music-schools" element={<MusicSchools />} />
+            <Route path="/record-labels" element={<RecordLabels />} />
             <Route path="/jampads" element={<Jampads />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/marketplace" element={<Marketplace />} />
