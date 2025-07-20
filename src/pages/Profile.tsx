@@ -48,8 +48,14 @@ export default function Profile() {
       setLoading(true);
       
       if (!userId && user) {
-        // Load current user's profile
-        setProfile(currentUserProfile);
+        // Load current user's profile for public view
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .single();
+        
+        setProfile(profileData);
         setIsOwnProfile(true);
       } else if (userId) {
         // Load specific user's profile
@@ -316,7 +322,7 @@ export default function Profile() {
                       <div>
                         <h4 className="font-medium mb-1">Hourly Rate</h4>
                         <p className="text-2xl font-bold text-primary">
-                          ${profile.hourly_rate}/hr
+                          ₹{profile.hourly_rate}/hr
                         </p>
                       </div>
                     )}

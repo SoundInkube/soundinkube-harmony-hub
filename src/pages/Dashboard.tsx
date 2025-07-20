@@ -641,11 +641,18 @@ export default function Dashboard() {
                     <p className="text-sm text-muted-foreground">{profile?.bio || 'No bio yet'}</p>
                   </div>
                   
-                  <ProfileEditDialog>
-                    <Button className="bg-gradient-primary hover:opacity-90">
-                      Edit Profile
+                  <div className="flex gap-3">
+                    <ProfileEditDialog>
+                      <Button className="bg-gradient-primary hover:opacity-90">
+                        Edit Profile
+                      </Button>
+                    </ProfileEditDialog>
+                    
+                    <Button variant="outline" onClick={() => navigate('/profile')}>
+                      <Eye className="h-4 w-4 mr-2" />
+                      View My Profile
                     </Button>
-                  </ProfileEditDialog>
+                  </div>
                 </div>
               </CardContent>
             </Card>
