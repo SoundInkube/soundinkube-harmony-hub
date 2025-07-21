@@ -270,16 +270,7 @@ export function Navigation() {
                   
                   <DropdownMenuSeparator className="bg-border/50" />
                    
-                   {(profile?.user_type === 'admin' && profile?.verified) && (
-                     <DropdownMenuItem asChild className="hover:bg-destructive/10 transition-colors">
-                       <Link to="/admin" className="flex items-center space-x-3 p-3">
-                         <Settings className="h-4 w-4 text-destructive" />
-                         <span className="font-bold text-destructive">🔧 Admin Panel</span>
-                       </Link>
-                     </DropdownMenuItem>
-                   )}
-                   
-                   {/* Debug: Show admin status */}
+                   {/* Admin Dashboard for soundvibetribe@gmail.com */}
                    {user?.email === 'soundvibetribe@gmail.com' && (
                      <DropdownMenuItem asChild className="hover:bg-destructive/10 transition-colors">
                        <Link to="/admin" className="flex items-center space-x-3 p-3">
