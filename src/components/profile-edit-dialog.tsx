@@ -6,9 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { User, Camera, Globe, Phone, Music, Star, Award, Images, MapPin, Clock, DollarSign, Instagram, Twitter, Youtube, Music2, Linkedin } from 'lucide-react';
+import { User, Camera, Globe, Images, Instagram, Twitter, Youtube, Music2, Linkedin } from 'lucide-react';
 
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
@@ -17,8 +16,6 @@ import { useCities } from '@/hooks/useCities';
 import { useSkills } from '@/hooks/useSkills';
 import { useInstruments } from '@/hooks/useInstruments';
 import { useTeacherSpecializations } from '@/hooks/useTeacherSpecializations';
-import { useProfileCompletion } from '@/hooks/useProfileCompletion';
-import { validateProfileData, sanitizeProfileData } from '@/lib/validation';
 import { ImageUpload } from './ui/image-upload';
 import { GalleryUpload } from './ui/gallery-upload';
 import { MultiSelect } from './ui/multi-select';
@@ -30,6 +27,36 @@ interface ProfileEditDialogProps {
   onOpenChange?: (open: boolean) => void;
 }
 
+interface FormData {
+  full_name: string;
+  username: string;
+  bio: string;
+  location: string;
+  phone: string;
+  website: string;
+  avatar_url: string;
+  gallery_images: string[];
+  specializations: string[];
+  company_name: string;
+  social_media: {
+    instagram: string;
+    twitter: string;
+    youtube: string;
+    soundcloud: string;
+    spotify: string;
+    apple_music: string;
+    linkedin: string;
+    tiktok: string;
+    facebook: string;
+    bandcamp: string;
+  };
+  skills: string[];
+  instruments: string[];
+  selectedGenres: string[];
+  hourly_rate: string;
+  experience_level: string;
+}
+
 export function ProfileEditDialog({ children, open = false, onOpenChange }: ProfileEditDialogProps) {
   const { user } = useAuth();
   const { profile, loading: profileLoading, updateProfile } = useProfile();
@@ -38,21 +65,20 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
   const { data: skills } = useSkills();
   const { data: instruments } = useInstruments();
   const { data: teacherSpecializations } = useTeacherSpecializations();
-  const { isProfileComplete } = useProfileCompletion();
   
   const [loading, setLoading] = useState(false);
-  
-  const [formData, setFormData] = useState({
+
+  // Initialize form data with empty values
+  const [formData, setFormData] = useState<FormData>({
     full_name: '',
     username: '',
     bio: '',
     location: '',
     phone: '',
     website: '',
-    user_type: 'client',
     avatar_url: '',
-    gallery_images: [] as string[],
-    specializations: [] as string[],
+    gallery_images: [],
+    specializations: [],
     company_name: '',
     social_media: {
       instagram: '',
@@ -66,16 +92,18 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
       facebook: '',
       bandcamp: ''
     },
-    skills: [] as string[],
-    instruments: [] as string[],
-    selectedGenres: [] as string[],
+    skills: [],
+    instruments: [],
+    selectedGenres: [],
     hourly_rate: '',
     experience_level: ''
   });
 
-  // Update form when profile loads
+  // Load profile data when profile is available
   useEffect(() => {
-    if (profile) {        
+    if (profile && open) {
+      const profileData = profile as any;
+      
       setFormData({
         full_name: profile.full_name || '',
         username: profile.username || '',
@@ -83,43 +111,30 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
         location: profile.location || '',
         phone: profile.phone || '',
         website: profile.website || '',
-        user_type: profile.user_type || 'client',
         avatar_url: profile.avatar_url || '',
-        gallery_images: (profile as any).gallery_images || [],
-        specializations: (profile as any).specializations || [],
-        company_name: (profile as any).company_name || '',
+        gallery_images: profileData.gallery_images || [],
+        specializations: profileData.specializations || [],
+        company_name: profileData.company_name || '',
         social_media: {
-          instagram: (profile as any).social_media?.instagram || '',
-          twitter: (profile as any).social_media?.twitter || '',
-          youtube: (profile as any).social_media?.youtube || '',
-          soundcloud: (profile as any).social_media?.soundcloud || '',
-          spotify: (profile as any).social_media?.spotify || '',
-          apple_music: (profile as any).social_media?.apple_music || '',
-          linkedin: (profile as any).social_media?.linkedin || '',
-          tiktok: (profile as any).social_media?.tiktok || '',
-          facebook: (profile as any).social_media?.facebook || '',
-          bandcamp: (profile as any).social_media?.bandcamp || ''
+          instagram: profileData.social_media?.instagram || '',
+          twitter: profileData.social_media?.twitter || '',
+          youtube: profileData.social_media?.youtube || '',
+          soundcloud: profileData.social_media?.soundcloud || '',
+          spotify: profileData.social_media?.spotify || '',
+          apple_music: profileData.social_media?.apple_music || '',
+          linkedin: profileData.social_media?.linkedin || '',
+          tiktok: profileData.social_media?.tiktok || '',
+          facebook: profileData.social_media?.facebook || '',
+          bandcamp: profileData.social_media?.bandcamp || ''
         },
-        skills: (profile as any).skills || [],
-        instruments: (profile as any).instruments || [],
-        selectedGenres: (profile as any).genres || [],
-        hourly_rate: (profile as any).hourly_rate || '',
-        experience_level: (profile as any).experience_level || ''
+        skills: profileData.skills || [],
+        instruments: profileData.instruments || [],
+        selectedGenres: profileData.genres || [],
+        hourly_rate: profileData.hourly_rate?.toString() || '',
+        experience_level: profileData.experience_level || ''
       });
     }
-  }, [profile]);
-
-  
-
-  const userTypes = [
-    { value: 'client', label: 'Client' },
-    { value: 'artist', label: 'Music Professional' },
-    { value: 'studio', label: 'Studio' },
-    { value: 'school', label: 'Music School' },
-    { value: 'label', label: 'Record Label' },
-    { value: 'teacher', label: 'Teacher' },
-    { value: 'manager', label: 'Artist Manager' }
-  ];
+  }, [profile, open]);
 
   const experienceLevels = [
     { value: 'beginner', label: 'Beginner' },
@@ -143,6 +158,32 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
     { value: 'vocalist', label: 'Vocalist' }
   ];
 
+  const handleInputChange = (field: keyof FormData, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSocialMediaChange = (platform: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      social_media: {
+        ...prev.social_media,
+        [platform]: value
+      }
+    }));
+  };
+
+  const handleSpecializationChange = (spec: string, checked: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      specializations: checked 
+        ? [...prev.specializations, spec]
+        : prev.specializations.filter(s => s !== spec)
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !profile) return;
@@ -150,24 +191,34 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
     setLoading(true);
     
     try {
-      // Validate form data
-      const validation = validateProfileData(formData);
-      if (!validation.isValid) {
-        throw new Error(validation.errors.join(', '));
-      }
+      // Prepare update data
+      const updateData = {
+        full_name: formData.full_name,
+        username: formData.username,
+        bio: formData.bio,
+        location: formData.location,
+        phone: formData.phone,
+        website: formData.website,
+        avatar_url: formData.avatar_url,
+        gallery_images: formData.gallery_images,
+        specializations: formData.specializations,
+        company_name: formData.company_name,
+        social_media: formData.social_media,
+        skills: formData.skills,
+        instruments: formData.instruments,
+        genres: formData.selectedGenres,
+        hourly_rate: formData.hourly_rate ? parseFloat(formData.hourly_rate) : null,
+        experience_level: formData.experience_level
+      };
 
-      // Sanitize form data
-      const sanitizedData = sanitizeProfileData(formData);
-
-      // Remove genres from the profile update as they're handled separately
-
-      const { error } = await updateProfile(sanitizedData);
+      const { error } = await updateProfile(updateData);
 
       if (error) throw error;
 
       toast.success("Profile updated successfully!");
       if (onOpenChange) onOpenChange(false);
     } catch (error: any) {
+      console.error('Profile update error:', error);
       toast.error(error.message || "Failed to update profile. Please try again.");
     } finally {
       setLoading(false);
@@ -206,8 +257,8 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
             <ImageUpload
               bucketName="avatars"
               currentImage={formData.avatar_url}
-              onImageUploaded={(url) => setFormData(prev => ({ ...prev, avatar_url: url }))}
-              onImageRemoved={() => setFormData(prev => ({ ...prev, avatar_url: '' }))}
+              onImageUploaded={(url) => handleInputChange('avatar_url', url)}
+              onImageRemoved={() => handleInputChange('avatar_url', '')}
               placeholder="Upload your profile picture"
               className="max-w-sm"
             />
@@ -222,7 +273,7 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
             <GalleryUpload
               bucketName="profile-galleries"
               currentImages={formData.gallery_images}
-              onImagesUpdated={(images) => setFormData(prev => ({ ...prev, gallery_images: images }))}
+              onImagesUpdated={(images) => handleInputChange('gallery_images', images)}
               maxImages={10}
             />
           </div>
@@ -233,8 +284,8 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
               <Input
                 id="full_name"
                 placeholder="Your full name"
-                value={formData.full_name || ''}
-                onChange={(e) => setFormData(prev => ({ ...prev, full_name: e.target.value }))}
+                value={formData.full_name}
+                onChange={(e) => handleInputChange('full_name', e.target.value)}
                 required
               />
             </div>
@@ -243,35 +294,23 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
               <Input
                 id="username"
                 placeholder="@username"
-                value={formData.username || ''}
-                onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
+                value={formData.username}
+                onChange={(e) => handleInputChange('username', e.target.value)}
               />
             </div>
           </div>
 
           {/* Music Professional Specializations */}
-          {formData.user_type === 'artist' && (
+          {profile?.user_type === 'artist' && (
             <div>
-              <Label htmlFor="specializations">Specializations (Select multiple)</Label>
+              <Label>Specializations (Select multiple)</Label>
               <div className="grid grid-cols-2 gap-2 mt-2">
                 {musicSpecializations.map((spec) => (
                   <label key={spec.value} className="flex items-center space-x-2 cursor-pointer">
                     <input
                       type="checkbox"
-                      checked={formData.specializations?.includes(spec.label) || false}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setFormData(prev => ({ 
-                            ...prev, 
-                            specializations: [...(prev.specializations || []), spec.label]
-                          }));
-                        } else {
-                          setFormData(prev => ({ 
-                            ...prev, 
-                            specializations: (prev.specializations || []).filter(s => s !== spec.label)
-                          }));
-                        }
-                      }}
+                      checked={formData.specializations.includes(spec.label)}
+                      onChange={(e) => handleSpecializationChange(spec.label, e.target.checked)}
                       className="rounded border-border"
                     />
                     <span className="text-sm">{spec.label}</span>
@@ -282,7 +321,7 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
           )}
 
           {/* Teacher Specializations */}
-          {formData.user_type === 'teacher' && (
+          {profile?.user_type === 'teacher' && (
             <div>
               <Label>Teaching Specializations (Select multiple)</Label>
               <MultiSelect
@@ -291,11 +330,8 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
                   label: spec.name,
                   category: spec.category
                 })) || []}
-                selected={formData.specializations || []}
-                onChange={(selectedSpecs) => setFormData(prev => ({ 
-                  ...prev, 
-                  specializations: selectedSpecs
-                }))}
+                selected={formData.specializations}
+                onChange={(selectedSpecs) => handleInputChange('specializations', selectedSpecs)}
                 placeholder="Select your teaching specializations"
                 className="w-full"
               />
@@ -307,8 +343,8 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
             <Textarea
               id="bio"
               placeholder="Tell others about yourself..."
-              value={formData.bio || ''}
-              onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
+              value={formData.bio}
+              onChange={(e) => handleInputChange('bio', e.target.value)}
               rows={3}
             />
           </div>
@@ -317,8 +353,8 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
             <div>
               <Label htmlFor="location">City</Label>
               <Select
-                value={formData.location || ""}
-                onValueChange={(value) => setFormData(prev => ({ ...prev, location: value }))}
+                value={formData.location}
+                onValueChange={(value) => handleInputChange('location', value)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select your city" />
@@ -335,8 +371,8 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
             <div>
               <Label htmlFor="experience_level">Experience Level</Label>
               <Select
-                value={formData.experience_level || ""}
-                onValueChange={(value) => setFormData(prev => ({ ...prev, experience_level: value }))}
+                value={formData.experience_level}
+                onValueChange={(value) => handleInputChange('experience_level', value)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select experience level" />
@@ -361,11 +397,8 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
                 label: skill.name,
                 category: skill.category
               })) || []}
-              selected={formData.skills || []}
-              onChange={(selectedSkills) => setFormData(prev => ({ 
-                ...prev, 
-                skills: selectedSkills
-              }))}
+              selected={formData.skills}
+              onChange={(selectedSkills) => handleInputChange('skills', selectedSkills)}
               placeholder="Select your skills"
               className="w-full"
             />
@@ -380,26 +413,20 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
                 label: instrument.name,
                 category: instrument.category
               })) || []}
-              selected={formData.instruments || []}
-              onChange={(selectedInstruments) => setFormData(prev => ({ 
-                ...prev, 
-                instruments: selectedInstruments
-              }))}
+              selected={formData.instruments}
+              onChange={(selectedInstruments) => handleInputChange('instruments', selectedInstruments)}
               placeholder="Select your instruments"
               className="w-full"
             />
           </div>
 
           {/* Genres Section (for professionals only) */}
-          {(formData.user_type === 'artist' || formData.user_type === 'manager') && (
+          {(profile?.user_type === 'artist' || profile?.user_type === 'manager') && (
             <div>
               <Label>Genres (Select multiple)</Label>
               <GenreMultiSelect
-                selectedGenres={formData.selectedGenres || []}
-                onGenresChange={(genres) => setFormData(prev => ({ 
-                  ...prev, 
-                  selectedGenres: genres
-                }))}
+                selectedGenres={formData.selectedGenres}
+                onGenresChange={(genres) => handleInputChange('selectedGenres', genres)}
                 placeholder="Select your music genres"
                 className="w-full"
               />
@@ -413,8 +440,8 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
                 id="phone"
                 type="tel"
                 placeholder="+1 (555) 123-4567"
-                value={formData.phone || ''}
-                onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                value={formData.phone}
+                onChange={(e) => handleInputChange('phone', e.target.value)}
               />
             </div>
             <div>
@@ -423,35 +450,35 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
                 id="website"
                 type="url"
                 placeholder="https://yourwebsite.com"
-                value={formData.website || ''}
-                onChange={(e) => setFormData(prev => ({ ...prev, website: e.target.value }))}
+                value={formData.website}
+                onChange={(e) => handleInputChange('website', e.target.value)}
               />
             </div>
           </div>
 
           {/* Professional Information */}
-          {(formData.user_type === 'artist' || formData.user_type === 'teacher') && (
+          {(profile?.user_type === 'artist' || profile?.user_type === 'teacher') && (
             <div>
               <Label htmlFor="hourly_rate">Hourly Rate (USD)</Label>
               <Input
                 id="hourly_rate"
                 type="number"
                 placeholder="e.g., 50"
-                value={formData.hourly_rate || ''}
-                onChange={(e) => setFormData(prev => ({ ...prev, hourly_rate: e.target.value }))}
+                value={formData.hourly_rate}
+                onChange={(e) => handleInputChange('hourly_rate', e.target.value)}
               />
             </div>
           )}
 
           {/* Company Information */}
-          {(formData.user_type === 'studio' || formData.user_type === 'school' || formData.user_type === 'label') && (
+          {(profile?.user_type === 'studio' || profile?.user_type === 'school' || profile?.user_type === 'label') && (
             <div>
               <Label htmlFor="company_name">Company Name</Label>
               <Input
                 id="company_name"
                 placeholder="Your company name"
-                value={formData.company_name || ''}
-                onChange={(e) => setFormData(prev => ({ ...prev, company_name: e.target.value }))}
+                value={formData.company_name}
+                onChange={(e) => handleInputChange('company_name', e.target.value)}
               />
             </div>
           )}
@@ -470,66 +497,40 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
                   <Instagram className="h-4 w-4 text-pink-500" />
                   <Input
                     placeholder="Instagram username"
-                    value={formData.social_media.instagram || ''}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      social_media: { ...prev.social_media, instagram: e.target.value }
-                    }))}
+                    value={formData.social_media.instagram}
+                    onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
                   />
                 </div>
                 <div className="flex items-center gap-2">
                   <Twitter className="h-4 w-4 text-blue-400" />
                   <Input
                     placeholder="Twitter/X username"
-                    value={formData.social_media.twitter || ''}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      social_media: { ...prev.social_media, twitter: e.target.value }
-                    }))}
+                    value={formData.social_media.twitter}
+                    onChange={(e) => handleSocialMediaChange('twitter', e.target.value)}
                   />
                 </div>
                 <div className="flex items-center gap-2">
                   <Youtube className="h-4 w-4 text-red-500" />
                   <Input
                     placeholder="YouTube channel"
-                    value={formData.social_media.youtube || ''}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      social_media: { ...prev.social_media, youtube: e.target.value }
-                    }))}
+                    value={formData.social_media.youtube}
+                    onChange={(e) => handleSocialMediaChange('youtube', e.target.value)}
                   />
                 </div>
                 <div className="flex items-center gap-2">
                   <Music2 className="h-4 w-4 text-orange-500" />
                   <Input
                     placeholder="SoundCloud profile"
-                    value={formData.social_media.soundcloud || ''}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      social_media: { ...prev.social_media, soundcloud: e.target.value }
-                    }))}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Music className="h-4 w-4 text-green-500" />
-                  <Input
-                    placeholder="Spotify artist profile"
-                    value={formData.social_media.spotify || ''}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      social_media: { ...prev.social_media, spotify: e.target.value }
-                    }))}
+                    value={formData.social_media.soundcloud}
+                    onChange={(e) => handleSocialMediaChange('soundcloud', e.target.value)}
                   />
                 </div>
                 <div className="flex items-center gap-2">
                   <Linkedin className="h-4 w-4 text-blue-600" />
                   <Input
                     placeholder="LinkedIn profile"
-                    value={formData.social_media.linkedin || ''}
-                    onChange={(e) => setFormData(prev => ({
-                      ...prev,
-                      social_media: { ...prev.social_media, linkedin: e.target.value }
-                    }))}
+                    value={formData.social_media.linkedin}
+                    onChange={(e) => handleSocialMediaChange('linkedin', e.target.value)}
                   />
                 </div>
               </div>
