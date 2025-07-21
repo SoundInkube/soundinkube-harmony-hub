@@ -132,7 +132,7 @@ All colors MUST be HSL.
   .content-card {
     @apply relative bg-card border border-border/60 rounded-xl overflow-hidden
            transition-all duration-500 hover:scale-[1.02] hover:border-primary/50
-           hover:shadow-glow cursor-pointer group backdrop-blur-sm;
+           hover:shadow-glow cursor-pointer backdrop-blur-sm;
   }
   
   .content-card::before {
