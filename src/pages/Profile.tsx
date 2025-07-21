@@ -25,7 +25,8 @@ import {
   Linkedin,
   MessageSquare,
   Settings,
-  Verified
+  Verified,
+  Eye
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { SocialMediaFeed } from '@/components/social-media-feed';
@@ -260,12 +261,21 @@ export default function Profile() {
                 
                 <div className="flex gap-2">
                   {isOwnProfile || (!userId && user) ? (
-                    <SmartProfileDialog>
-                      <Button variant="outline">
-                        <Settings className="h-4 w-4 mr-2" />
-                        Edit Profile
+                    <div className="flex gap-2">
+                      <SmartProfileDialog>
+                        <Button className="bg-gradient-primary hover:opacity-90">
+                          <Settings className="h-4 w-4 mr-2" />
+                          Edit Profile
+                        </Button>
+                      </SmartProfileDialog>
+                      
+                      <Button variant="outline" asChild>
+                        <a href={`/profile/${profile.id}`} target="_blank" rel="noopener noreferrer">
+                          <Eye className="h-4 w-4 mr-2" />
+                          Public View
+                        </a>
                       </Button>
-                    </SmartProfileDialog>
+                    </div>
                   ) : (
                     <>
                       <Button>

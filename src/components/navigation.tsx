@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
+import { SmartProfileDialog } from '@/components/smart-profile-dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -38,7 +39,8 @@ import {
   Calendar,
   Star,
   School,
-  Disc
+  Disc,
+  Edit3
 } from 'lucide-react';
 
 export function Navigation() {
@@ -200,6 +202,15 @@ export function Navigation() {
                       <span className="font-medium">View My Profile</span>
                     </Link>
                   </DropdownMenuItem>
+
+                  <SmartProfileDialog>
+                    <DropdownMenuItem className="hover:bg-primary/10 transition-colors cursor-pointer">
+                      <div className="flex items-center space-x-3 p-3 w-full">
+                        <Edit3 className="h-4 w-4 text-primary" />
+                        <span className="font-medium">Edit Profile</span>
+                      </div>
+                    </DropdownMenuItem>
+                  </SmartProfileDialog>
                   
                   <DropdownMenuSeparator className="bg-border/50" />
                   
@@ -273,12 +284,14 @@ export function Navigation() {
                      </DropdownMenuItem>
                    )}
                   
-                  <DropdownMenuItem className="hover:bg-muted/50 transition-colors">
-                    <div className="flex items-center space-x-3 p-3 w-full">
-                      <Settings className="h-4 w-4 text-muted-foreground" />
-                      <span className="font-medium">Settings</span>
-                    </div>
-                  </DropdownMenuItem>
+                  <SmartProfileDialog>
+                    <DropdownMenuItem className="hover:bg-muted/50 transition-colors cursor-pointer">
+                      <div className="flex items-center space-x-3 p-3 w-full">
+                        <Settings className="h-4 w-4 text-muted-foreground" />
+                        <span className="font-medium">Profile Settings</span>
+                      </div>
+                    </DropdownMenuItem>
+                  </SmartProfileDialog>
                   
                   <DropdownMenuSeparator className="bg-border/50" />
                   
@@ -388,6 +401,13 @@ export function Navigation() {
                             <span className="font-medium">View My Profile</span>
                           </Link>
                         </Button>
+
+                        <SmartProfileDialog>
+                          <Button variant="ghost" className="w-full justify-start mb-3 hover:bg-primary/10 rounded-xl">
+                            <Edit3 className="h-4 w-4 mr-3 text-primary" />
+                            <span className="font-medium">Edit Profile</span>
+                          </Button>
+                        </SmartProfileDialog>
                         
                         {/* Role-based feature links for mobile */}
                         {profile?.user_type === 'client' && (
