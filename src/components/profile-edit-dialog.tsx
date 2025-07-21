@@ -45,6 +45,7 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
     user_type: profile?.user_type || 'client',
     avatar_url: profile?.avatar_url || '',
     gallery_images: (profile as any)?.gallery_images || [],
+    specialization: (profile as any)?.specialization || '',
     company_name: (profile as any)?.company_name || '',
     social_media: (profile as any)?.social_media || {},
     skills: (profile as any)?.skills || [],
@@ -67,6 +68,7 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
         user_type: profile.user_type || 'client',
         avatar_url: profile.avatar_url || '',
         gallery_images: (profile as any).gallery_images || [],
+        specialization: (profile as any).specialization || '',
         company_name: (profile as any).company_name || '',
         social_media: (profile as any).social_media || {},
         skills: (profile as any).skills || [],
@@ -93,6 +95,20 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
     { value: 'advanced', label: 'Advanced' },
     { value: 'professional', label: 'Professional' },
     { value: 'expert', label: 'Expert' }
+  ];
+
+  const musicSpecializations = [
+    { value: 'singer-songwriter', label: 'Singer/Songwriter' },
+    { value: 'dj', label: 'DJ' },
+    { value: 'producer', label: 'Producer' },
+    { value: 'engineer', label: 'Engineer' },
+    { value: 'lyricist', label: 'Lyricist' },
+    { value: 'teacher', label: 'Teacher' },
+    { value: 'director', label: 'Director' },
+    { value: 'instrumentalist', label: 'Instrumentalist' },
+    { value: 'band', label: 'Band' },
+    { value: 'beatboxer', label: 'Beatboxer' },
+    { value: 'vocalist', label: 'Vocalist' }
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -225,6 +241,28 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
               </SelectContent>
             </Select>
           </div>
+
+          {/* Music Professional Specialization */}
+          {formData.user_type === 'artist' && (
+            <div>
+              <Label htmlFor="specialization">Specialization</Label>
+              <Select 
+                value={formData.specialization} 
+                onValueChange={(value) => setFormData(prev => ({ ...prev, specialization: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your specialization" />
+                </SelectTrigger>
+                <SelectContent>
+                  {musicSpecializations.map((spec) => (
+                    <SelectItem key={spec.value} value={spec.label}>
+                      {spec.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           <div>
             <Label htmlFor="bio">Bio</Label>

@@ -8,7 +8,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
-import Artists from "./pages/Artists";
+import MusicProfessionals from "./pages/MusicProfessionals";
 import Studios from "./pages/Studios";
 import MusicSchools from "./pages/MusicSchools";
 import RecordLabels from "./pages/RecordLabels";
@@ -37,7 +37,8 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile/:userId?" element={<Profile />} />
-            <Route path="/artists" element={<Artists />} />
+            <Route path="/artists" element={<MusicProfessionals />} />
+            <Route path="/music-professionals" element={<MusicProfessionals />} />
             <Route path="/studios" element={<Studios />} />
             <Route path="/music-schools" element={<MusicSchools />} />
             <Route path="/record-labels" element={<RecordLabels />} />

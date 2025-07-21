@@ -51,7 +51,7 @@ export function Navigation() {
     if (!profile) {
       // Default public navigation
       return [
-        { label: 'Artists', href: '/artists', icon: Mic },
+        { label: 'Music Professionals', href: '/artists', icon: Mic },
         { label: 'Studios', href: '/studios', icon: Headphones },
         { label: 'Schools', href: '/music-schools', icon: GraduationCap },
         { label: 'Jampads', href: '/jampads', icon: Music },
@@ -82,21 +82,21 @@ export function Navigation() {
       case 'school':
         return [
           { label: 'Bookings', href: '/bookings', icon: Calendar },
-          { label: 'Artists', href: '/artists', icon: Star },
+           { label: 'Music Professionals', href: '/artists', icon: Star },
           { label: 'Messages', href: '/messages', icon: MessageSquare }
         ];
 
       case 'label':
       case 'manager':
         return [
-          { label: 'Artists', href: '/artists', icon: Star },
+          { label: 'Music Professionals', href: '/artists', icon: Star },
           { label: 'Collaborations', href: '/collaborations', icon: Users },
           { label: 'Messages', href: '/messages', icon: MessageSquare }
         ];
 
       default:
         return [
-          { label: 'Artists', href: '/artists', icon: Mic },
+          { label: 'Music Professionals', href: '/artists', icon: Mic },
           { label: 'Studios', href: '/studios', icon: Headphones },
           { label: 'Schools', href: '/music-schools', icon: GraduationCap },
           { label: 'Labels', href: '/record-labels', icon: Building },

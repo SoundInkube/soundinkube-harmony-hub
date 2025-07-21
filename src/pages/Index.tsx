@@ -28,7 +28,7 @@ import label1 from '@/assets/label-1.jpg';
 const Index = () => {
   const navigate = useNavigate();
   // Sample data for different sections
-  const featuredArtists = [
+  const featuredMusicProfessionals = [
     {
       id: '1',
       title: 'Rajesh Kumar',
@@ -337,11 +337,11 @@ const Index = () => {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Featured Artists */}
+      {/* Featured Music Professionals */}
       <SectionCarousel
-        title="Featured Artists"
+        title="Featured Music Professionals"
         subtitle="Discover talented musicians from across India"
-        data={featuredArtists}
+        data={featuredMusicProfessionals}
         className="bg-muted/20"
       />
 
