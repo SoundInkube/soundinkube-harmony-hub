@@ -160,7 +160,14 @@ export function Navigation() {
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 bg-background border shadow-lg z-50">
+                 <DropdownMenuContent align="end" className="w-56 bg-background border shadow-lg z-50">
+                  <DropdownMenuItem asChild>
+                    <Link to="/">
+                      <Music className="h-4 w-4 mr-2" />
+                      Home
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link to="/profile">
                       <User className="h-4 w-4 mr-2" />
@@ -313,6 +320,12 @@ export function Navigation() {
                   <div className="border-t pt-4">
                     {user ? (
                       <>
+                        <Button variant="ghost" className="w-full justify-start mb-2" asChild>
+                          <Link to="/" onClick={() => setIsOpen(false)}>
+                            <Music className="h-4 w-4 mr-2" />
+                            Home
+                          </Link>
+                        </Button>
                         <Button variant="ghost" className="w-full justify-start mb-2" asChild>
                           <Link to="/profile" onClick={() => setIsOpen(false)}>
                             <User className="h-4 w-4 mr-2" />
