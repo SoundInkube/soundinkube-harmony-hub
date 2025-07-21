@@ -124,7 +124,7 @@ export function Navigation() {
                 <img 
                   src="/lovable-uploads/0ef42355-744e-4141-9372-c611bb5eb01a.png" 
                   alt="SoundInkube" 
-                  className="h-12 w-auto object-contain transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg" 
+                  className="h-48 w-auto object-contain transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg" 
                 />
                 <div className="absolute -inset-2 bg-gradient-primary opacity-0 group-hover:opacity-20 rounded-xl blur transition-all duration-300"></div>
               </div>
