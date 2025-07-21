@@ -698,6 +698,7 @@ export type Database = {
           experience_level: string | null
           founded_year: number | null
           full_name: string | null
+          gallery_images: string[] | null
           genres: string[] | null
           hourly_rate: number | null
           id: string
@@ -725,6 +726,7 @@ export type Database = {
           experience_level?: string | null
           founded_year?: number | null
           full_name?: string | null
+          gallery_images?: string[] | null
           genres?: string[] | null
           hourly_rate?: number | null
           id?: string
@@ -752,6 +754,7 @@ export type Database = {
           experience_level?: string | null
           founded_year?: number | null
           full_name?: string | null
+          gallery_images?: string[] | null
           genres?: string[] | null
           hourly_rate?: number | null
           id?: string

@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ImageUpload } from '@/components/ui/image-upload';
+import { GalleryUpload } from '@/components/ui/gallery-upload';
 import {
   Dialog,
   DialogContent,
@@ -14,7 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { User, Loader2 } from 'lucide-react';
+import { User, Loader2, Camera, Images } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { validateProfileData, sanitizeProfileData } from '@/lib/validation';
 
@@ -41,6 +43,8 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
     phone: profile?.phone || '',
     website: profile?.website || '',
     user_type: profile?.user_type || 'client',
+    avatar_url: profile?.avatar_url || '',
+    gallery_images: (profile as any)?.gallery_images || [],
     company_name: (profile as any)?.company_name || '',
     social_media: (profile as any)?.social_media || {},
     skills: (profile as any)?.skills || [],
@@ -61,6 +65,8 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
         phone: profile.phone || '',
         website: profile.website || '',
         user_type: profile.user_type || 'client',
+        avatar_url: profile.avatar_url || '',
+        gallery_images: (profile as any).gallery_images || [],
         company_name: (profile as any).company_name || '',
         social_media: (profile as any).social_media || {},
         skills: (profile as any).skills || [],
@@ -148,7 +154,37 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Profile Image Section */}
+          <div className="space-y-4">
+            <Label className="text-base font-semibold flex items-center gap-2">
+              <Camera className="h-4 w-4" />
+              Profile Image
+            </Label>
+            <ImageUpload
+              bucketName="avatars"
+              currentImage={formData.avatar_url}
+              onImageUploaded={(url) => setFormData(prev => ({ ...prev, avatar_url: url }))}
+              onImageRemoved={() => setFormData(prev => ({ ...prev, avatar_url: '' }))}
+              placeholder="Upload your profile picture"
+              className="max-w-sm"
+            />
+          </div>
+
+          {/* Gallery Section */}
+          <div className="space-y-4">
+            <Label className="text-base font-semibold flex items-center gap-2">
+              <Images className="h-4 w-4" />
+              Gallery ({formData.gallery_images?.length || 0}/10)
+            </Label>
+            <GalleryUpload
+              bucketName="profile-galleries"
+              currentImages={formData.gallery_images}
+              onImagesUpdated={(images) => setFormData(prev => ({ ...prev, gallery_images: images }))}
+              maxImages={10}
+            />
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="full_name">Full Name *</Label>
