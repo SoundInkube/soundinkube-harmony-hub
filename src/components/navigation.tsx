@@ -160,7 +160,7 @@ export function Navigation() {
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                 <DropdownMenuContent align="end" className="w-56 bg-background border shadow-lg z-50">
+                 <DropdownMenuContent align="end" className="w-56 bg-background border shadow-lg z-[9999] pointer-events-auto">
                   <DropdownMenuItem asChild>
                     <Link to="/">
                       <Music className="h-4 w-4 mr-2" />
