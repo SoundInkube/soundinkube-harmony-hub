@@ -29,6 +29,11 @@ export function AdminSidebar({ className }: AdminSidebarProps) {
       icon: LayoutDashboard,
     },
     {
+      name: 'Home',
+      href: '/',
+      icon: LayoutDashboard,
+    },
+    {
       name: 'User Management',
       href: '/admin/users',
       icon: Users,

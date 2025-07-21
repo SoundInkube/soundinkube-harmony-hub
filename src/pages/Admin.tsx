@@ -113,10 +113,15 @@ const Admin = () => {
                 Welcome back! Here's what's happening on your platform.
               </p>
             </div>
-            <Button onClick={handleRefresh} disabled={loadingData}>
-              <RefreshCw className={`h-4 w-4 mr-2 ${loadingData ? 'animate-spin' : ''}`} />
-              Refresh
-            </Button>
+            <div className="flex gap-3">
+              <Button variant="outline" onClick={() => navigate('/')}>
+                Go to Homepage
+              </Button>
+              <Button onClick={handleRefresh} disabled={loadingData}>
+                <RefreshCw className={`h-4 w-4 mr-2 ${loadingData ? 'animate-spin' : ''}`} />
+                Refresh
+              </Button>
+            </div>
           </div>
 
           {/* Stats Overview */}

@@ -211,7 +211,7 @@ export function AdminOverview() {
               <Users className="h-5 w-5" />
               Recent Users
             </span>
-            <Button variant="outline" size="sm">View All</Button>
+            <Button variant="outline" size="sm" onClick={() => window.location.href = '/admin/users'}>View All</Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
