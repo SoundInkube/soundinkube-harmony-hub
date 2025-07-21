@@ -48,23 +48,34 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
   const [loading, setLoading] = useState(false);
   
   const [formData, setFormData] = useState({
-    full_name: profile?.full_name || '',
-    username: profile?.username || '',
-    bio: profile?.bio || '',
-    location: profile?.location || '',
-    phone: profile?.phone || '',
-    website: profile?.website || '',
-    user_type: profile?.user_type || 'client',
-    avatar_url: profile?.avatar_url || '',
-    gallery_images: (profile as any)?.gallery_images || [],
-    specializations: (profile as any)?.specializations || [],
-    company_name: (profile as any)?.company_name || '',
-    social_media: (profile as any)?.social_media || {},
-    skills: (profile as any)?.skills || [],
-    instruments: (profile as any)?.instruments || [],
-    selectedGenres: [],
-    hourly_rate: (profile as any)?.hourly_rate || '',
-    experience_level: (profile as any)?.experience_level || ''
+    full_name: '',
+    username: '',
+    bio: '',
+    location: '',
+    phone: '',
+    website: '',
+    user_type: 'client',
+    avatar_url: '',
+    gallery_images: [] as string[],
+    specializations: [] as string[],
+    company_name: '',
+    social_media: {
+      instagram: '',
+      twitter: '',
+      youtube: '',
+      soundcloud: '',
+      spotify: '',
+      apple_music: '',
+      linkedin: '',
+      tiktok: '',
+      facebook: '',
+      bandcamp: ''
+    },
+    skills: [] as string[],
+    instruments: [] as string[],
+    selectedGenres: [] as string[],
+    hourly_rate: '',
+    experience_level: ''
   });
 
   // Update form when profile loads
@@ -95,9 +106,20 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
           gallery_images: (profile as any).gallery_images || [],
           specializations: (profile as any).specializations || [],
           company_name: (profile as any).company_name || '',
-          social_media: (profile as any).social_media || {},
-        skills: (profile as any)?.skills || [],
-        instruments: (profile as any)?.instruments || [],
+          social_media: {
+            instagram: (profile as any).social_media?.instagram || '',
+            twitter: (profile as any).social_media?.twitter || '',
+            youtube: (profile as any).social_media?.youtube || '',
+            soundcloud: (profile as any).social_media?.soundcloud || '',
+            spotify: (profile as any).social_media?.spotify || '',
+            apple_music: (profile as any).social_media?.apple_music || '',
+            linkedin: (profile as any).social_media?.linkedin || '',
+            tiktok: (profile as any).social_media?.tiktok || '',
+            facebook: (profile as any).social_media?.facebook || '',
+            bandcamp: (profile as any).social_media?.bandcamp || ''
+          },
+          skills: (profile as any).skills || [],
+          instruments: (profile as any).instruments || [],
           selectedGenres: profileGenres,
           hourly_rate: (profile as any).hourly_rate || '',
           experience_level: (profile as any).experience_level || ''
