@@ -236,7 +236,7 @@ All colors MUST be HSL.
   /* Button Enhancements */
   .btn-premium {
     @apply bg-gradient-primary text-primary-foreground font-semibold
-           transition-all duration-400 hover:scale-105 hover:shadow-glow
+           transition-all duration-300 hover:scale-105 hover:shadow-glow
            border-0 rounded-xl px-8 py-4;
   }
   
