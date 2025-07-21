@@ -1,5 +1,5 @@
 import * as React from "react"
-import { X } from "lucide-react"
+import { X, Check } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -115,7 +115,7 @@ export function MultiSelect({
                         ? "bg-primary text-primary-foreground"
                         : "opacity-50 [&_svg]:invisible"
                     )}>
-                      <X className="h-3 w-3" />
+                      <Check className="h-3 w-3" />
                     </div>
                     <span>{option.label}</span>
                   </CommandItem>

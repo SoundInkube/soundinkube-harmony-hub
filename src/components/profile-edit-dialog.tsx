@@ -257,24 +257,6 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
             </div>
           </div>
 
-          <div>
-            <Label htmlFor="user_type">Account Type</Label>
-            <Select 
-              value={formData.user_type} 
-              onValueChange={(value) => setFormData(prev => ({ ...prev, user_type: value }))}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {userTypes.map((type) => (
-                  <SelectItem key={type.value} value={type.value}>
-                    {type.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
 
           {/* Music Professional Specializations */}
           {formData.user_type === 'artist' && (
