@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
+import { useCities } from '@/hooks/useCities';
+import { useSkills } from '@/hooks/useSkills';
+import { useInstruments } from '@/hooks/useInstruments';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { MultiSelect, Option } from '@/components/ui/multi-select';
 import { ImageUpload } from '@/components/ui/image-upload';
 import { GalleryUpload } from '@/components/ui/gallery-upload';
 import {
@@ -31,6 +35,9 @@ interface ProfileEditDialogProps {
 export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: externalOnOpenChange }: ProfileEditDialogProps) {
   const { user } = useAuth();
   const { profile, updateProfile, loading: profileLoading } = useProfile();
+  const { data: cities } = useCities();
+  const { data: skills } = useSkills();
+  const { data: instruments } = useInstruments();
   const { toast } = useToast();
   const { getProfileGenres, updateProfileGenres } = useGenres();
   const [internalOpen, setInternalOpen] = useState(false);
@@ -87,8 +94,8 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
           specializations: (profile as any).specializations || [],
           company_name: (profile as any).company_name || '',
           social_media: (profile as any).social_media || {},
-          skills: (profile as any).skills || [],
-          instruments: (profile as any).instruments || [],
+        skills: (profile as any)?.skills || [],
+        instruments: (profile as any)?.instruments || [],
           selectedGenres: profileGenres,
           hourly_rate: (profile as any).hourly_rate || '',
           experience_level: (profile as any).experience_level || ''
@@ -311,13 +318,33 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="location">Location</Label>
-              <Input
-                id="location"
-                placeholder="City, Country"
+              <Label htmlFor="location">City</Label>
+              <Select
                 value={formData.location}
-                onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
-              />
+                onValueChange={(value) => setFormData(prev => ({ ...prev, location: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your city" />
+                </SelectTrigger>
+                <SelectContent>
+                  {cities?.map((city) => (
+                    <SelectItem key={city.id} value={`${city.name}, ${city.state}`}>
+                      {city.name}, {city.state}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Country</Label>
+              <Select value="India" disabled>
+                <SelectTrigger>
+                  <SelectValue placeholder="India" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="India">India</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <Label htmlFor="phone">Phone</Label>
@@ -550,28 +577,38 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
               <Label className="text-base font-semibold">Skills & Expertise</Label>
               
               <div>
-                <Label htmlFor="skills">Skills (comma-separated)</Label>
-                <Input
-                  id="skills"
-                  placeholder="Music Production, Mixing, Mastering"
-                  value={Array.isArray(formData.skills) ? formData.skills.join(', ') : ''}
-                  onChange={(e) => setFormData(prev => ({ 
+                <Label>Skills</Label>
+                <MultiSelect
+                  options={skills?.map(skill => ({
+                    value: skill.name,
+                    label: skill.name,
+                    category: skill.category
+                  })) || []}
+                  selected={formData.skills || []}
+                  onChange={(selectedSkills) => setFormData(prev => ({ 
                     ...prev, 
-                    skills: e.target.value.split(',').map(s => s.trim()).filter(Boolean)
+                    skills: selectedSkills
                   }))}
+                  placeholder="Select your skills"
+                  className="w-full"
                 />
               </div>
               
               <div>
-                <Label htmlFor="instruments">Instruments (comma-separated)</Label>
-                <Input
-                  id="instruments"
-                  placeholder="Guitar, Piano, Drums"
-                  value={Array.isArray(formData.instruments) ? formData.instruments.join(', ') : ''}
-                  onChange={(e) => setFormData(prev => ({ 
+                <Label>Instruments</Label>
+                <MultiSelect
+                  options={instruments?.map(instrument => ({
+                    value: instrument.name,
+                    label: instrument.name,
+                    category: instrument.category
+                  })) || []}
+                  selected={formData.instruments || []}
+                  onChange={(selectedInstruments) => setFormData(prev => ({ 
                     ...prev, 
-                    instruments: e.target.value.split(',').map(s => s.trim()).filter(Boolean)
+                    instruments: selectedInstruments
                   }))}
+                  placeholder="Select instruments you play"
+                  className="w-full"
                 />
               </div>
               

@@ -228,6 +228,36 @@ export type Database = {
           },
         ]
       }
+      cities: {
+        Row: {
+          country: string
+          created_at: string
+          id: string
+          name: string
+          population: number | null
+          state: string
+          updated_at: string
+        }
+        Insert: {
+          country?: string
+          created_at?: string
+          id?: string
+          name: string
+          population?: number | null
+          state: string
+          updated_at?: string
+        }
+        Update: {
+          country?: string
+          created_at?: string
+          id?: string
+          name?: string
+          population?: number | null
+          state?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       collaboration_applications: {
         Row: {
           applicant_id: string
@@ -556,6 +586,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      instruments: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       marketplace: {
         Row: {
@@ -1043,6 +1100,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      skills: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       studios: {
         Row: {
