@@ -55,11 +55,14 @@ interface FormData {
   selectedGenres: string[];
   hourly_rate: string;
   experience_level: string;
+  availability_status: string;
+  founded_year: string;
 }
 
 export function ProfileEditDialog({ children, open = false, onOpenChange }: ProfileEditDialogProps) {
   const { user } = useAuth();
-  const { profile, loading: profileLoading, updateProfile } = useProfile();
+  const { profile, loading: profileLoading, updateProfile, refreshProfile } = useProfile();
+  const { updateProfileGenres } = useGenres();
   const { genres } = useGenres();
   const { data: cities } = useCities();
   const { data: skills } = useSkills();
@@ -96,7 +99,9 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
     instruments: [],
     selectedGenres: [],
     hourly_rate: '',
-    experience_level: ''
+    experience_level: '',
+    availability_status: '',
+    founded_year: ''
   });
 
   // Load profile data when profile is available
@@ -131,7 +136,9 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
         instruments: profileData.instruments || [],
         selectedGenres: profileData.genres || [],
         hourly_rate: profileData.hourly_rate?.toString() || '',
-        experience_level: profileData.experience_level || ''
+        experience_level: profileData.experience_level || '',
+        availability_status: profileData.availability_status || 'available',
+        founded_year: profileData.founded_year?.toString() || ''
       });
     }
   }, [profile, open]);
@@ -191,7 +198,7 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
     setLoading(true);
     
     try {
-      // Prepare update data
+      // Prepare update data (excluding genres which are handled separately)
       const updateData = {
         full_name: formData.full_name,
         username: formData.username,
@@ -206,17 +213,33 @@ export function ProfileEditDialog({ children, open = false, onOpenChange }: Prof
         social_media: formData.social_media,
         skills: formData.skills,
         instruments: formData.instruments,
-        genres: formData.selectedGenres,
         hourly_rate: formData.hourly_rate ? parseFloat(formData.hourly_rate) : null,
-        experience_level: formData.experience_level
+        experience_level: formData.experience_level,
+        availability_status: formData.availability_status,
+        founded_year: formData.founded_year ? parseInt(formData.founded_year) : null,
       };
 
-      const { error } = await updateProfile(updateData);
+      // Update profile data
+      const { error: profileError } = await updateProfile(updateData);
+      if (profileError) throw profileError;
 
-      if (error) throw error;
+      // Update genres separately using the junction table
+      if (profile?.id && formData.selectedGenres) {
+        await updateProfileGenres(profile.id, formData.selectedGenres);
+      }
 
       toast.success("Profile updated successfully!");
+      
+      // Refresh profile data
+      await refreshProfile();
+      
       if (onOpenChange) onOpenChange(false);
+      
+      // Force page reload to ensure all data is fresh
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
+      
     } catch (error: any) {
       console.error('Profile update error:', error);
       toast.error(error.message || "Failed to update profile. Please try again.");

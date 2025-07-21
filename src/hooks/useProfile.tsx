@@ -14,6 +14,17 @@ interface Profile {
   location: string | null;
   phone: string | null;
   website: string | null;
+  gallery_images: string[] | null;
+  genres: string[] | null;
+  skills: string[] | null;
+  instruments: string[] | null;
+  specializations: string[] | null;
+  social_media: any;
+  hourly_rate: number | null;
+  experience_level: string | null;
+  availability_status: string | null;
+  company_name: string | null;
+  founded_year: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -37,15 +48,35 @@ export function useProfile() {
       setLoading(true);
       const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select(`
+          *,
+          profile_genres (
+            genres (
+              id,
+              name,
+              category
+            )
+          )
+        `)
         .eq('user_id', user?.id)
         .maybeSingle();
 
       if (error) {
         console.error('Error loading profile:', error);
         setProfile(null);
+      } else if (data) {
+        // Extract genre names from the relationship
+        const genreNames = data.profile_genres?.map((pg: any) => pg.genres?.name).filter(Boolean) || [];
+        
+        const profileWithGenres: Profile = {
+          ...data,
+          genres: genreNames,
+          social_media: data.social_media || {},
+        };
+        
+        setProfile(profileWithGenres);
       } else {
-        setProfile(data);
+        setProfile(null);
       }
     } catch (error) {
       console.error('Error loading profile:', error);
