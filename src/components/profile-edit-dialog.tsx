@@ -275,17 +275,17 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
                   <label key={spec.value} className="flex items-center space-x-2 cursor-pointer">
                     <input
                       type="checkbox"
-                      checked={formData.specializations.includes(spec.label)}
+                      checked={formData.specializations?.includes(spec.label) || false}
                       onChange={(e) => {
                         if (e.target.checked) {
                           setFormData(prev => ({ 
                             ...prev, 
-                            specializations: [...prev.specializations, spec.label]
+                            specializations: [...(prev.specializations || []), spec.label]
                           }));
                         } else {
                           setFormData(prev => ({ 
                             ...prev, 
-                            specializations: prev.specializations.filter(s => s !== spec.label)
+                            specializations: (prev.specializations || []).filter(s => s !== spec.label)
                           }));
                         }
                       }}

@@ -203,14 +203,14 @@ export function Navigation() {
                     </Link>
                   </DropdownMenuItem>
 
-                  <SmartProfileDialog>
-                    <DropdownMenuItem className="hover:bg-primary/10 transition-colors cursor-pointer">
+                  <DropdownMenuItem className="hover:bg-primary/10 transition-colors cursor-pointer">
+                    <SmartProfileDialog>
                       <div className="flex items-center space-x-3 p-3 w-full">
                         <Edit3 className="h-4 w-4 text-primary" />
                         <span className="font-medium">Edit Profile</span>
                       </div>
-                    </DropdownMenuItem>
-                  </SmartProfileDialog>
+                    </SmartProfileDialog>
+                  </DropdownMenuItem>
                   
                   <DropdownMenuSeparator className="bg-border/50" />
                   
