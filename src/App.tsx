@@ -18,9 +18,7 @@ import Marketplace from "./pages/Marketplace";
 import Collaborations from "./pages/Collaborations";
 import Gigs from "./pages/Gigs";
 import Bookings from "./pages/Bookings";
-import Admin from "./pages/Admin";
-import AdminUsers from "./pages/AdminUsers";
-import AdminContentManager from "./pages/AdminContentManager";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,15 +46,7 @@ const App = () => (
             <Route path="/collaborations" element={<Collaborations />} />
             <Route path="/gigs" element={<Gigs />} />
             <Route path="/bookings" element={<Bookings />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/users" element={<AdminUsers />} />
-            <Route path="/admin/content/*" element={<AdminContentManager />} />
-            <Route path="/admin/analytics" element={<AdminContentManager />} />
-            <Route path="/admin/messages" element={<AdminContentManager />} />
-            <Route path="/admin/reviews" element={<AdminContentManager />} />
-            <Route path="/admin/reports" element={<AdminContentManager />} />
-            <Route path="/admin/approvals" element={<AdminContentManager />} />
-            <Route path="/admin/settings" element={<AdminContentManager />} />
+            <Route path="/admin" element={<AdminDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
