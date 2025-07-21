@@ -201,13 +201,6 @@ export function Navigation() {
                     </Link>
                   </DropdownMenuItem>
                   
-                  <DropdownMenuItem asChild className="hover:bg-primary/10 transition-colors">
-                    <Link to="/dashboard" className="flex items-center space-x-3 p-3">
-                      <LayoutDashboard className="h-4 w-4 text-secondary" />
-                      <span className="font-medium">Dashboard</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  
                   <DropdownMenuSeparator className="bg-border/50" />
                   
                   {/* Role-based feature links */}
@@ -393,12 +386,6 @@ export function Navigation() {
                           <Link to="/profile" onClick={() => setIsOpen(false)}>
                             <User className="h-4 w-4 mr-3 text-accent" />
                             <span className="font-medium">View My Profile</span>
-                          </Link>
-                        </Button>
-                        <Button variant="ghost" className="w-full justify-start mb-3 hover:bg-primary/10 rounded-xl" asChild>
-                          <Link to="/dashboard" onClick={() => setIsOpen(false)}>
-                            <LayoutDashboard className="h-4 w-4 mr-3 text-secondary" />
-                            <span className="font-medium">Dashboard</span>
                           </Link>
                         </Button>
                         
