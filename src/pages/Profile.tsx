@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ProfileEditDialog } from '@/components/profile-edit-dialog';
+import { SmartProfileDialog } from '@/components/smart-profile-dialog';
 import { 
   MapPin, 
   Globe, 
@@ -246,12 +246,12 @@ export default function Profile() {
                 
                 <div className="flex gap-2">
                   {isOwnProfile ? (
-                    <ProfileEditDialog>
+                    <SmartProfileDialog>
                       <Button variant="outline">
                         <Settings className="h-4 w-4 mr-2" />
                         Edit Profile
                       </Button>
-                    </ProfileEditDialog>
+                    </SmartProfileDialog>
                   ) : (
                     <>
                       <Button>
@@ -474,11 +474,11 @@ export default function Profile() {
                       Connect your social media accounts to showcase your online presence and engage with your audience.
                     </p>
                     {isOwnProfile && (
-                      <ProfileEditDialog>
+                      <SmartProfileDialog>
                         <Button className="bg-gradient-primary hover:opacity-90">
                           Add Social Links
                         </Button>
-                      </ProfileEditDialog>
+                      </SmartProfileDialog>
                     )}
                   </CardContent>
                 </Card>

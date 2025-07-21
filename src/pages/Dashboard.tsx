@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfileCompletion } from '@/hooks/useProfileCompletion';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ProfileEditDialog } from '@/components/profile-edit-dialog';
+import { Progress } from '@/components/ui/progress';
+import { SmartProfileDialog } from '@/components/smart-profile-dialog';
 import { GigCreationDialog } from '@/components/gig-creation-dialog';
 import { CollaborationDialog } from '@/components/collaboration-dialog';
 import { MarketplaceItemDialog } from '@/components/marketplace-item-dialog';
@@ -38,6 +40,7 @@ import {
 
 export default function Dashboard() {
   const { user, signOut } = useAuth();
+  const { isProfileComplete, completionPercentage, isNewProfile } = useProfileCompletion();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<any>(null);
   const [bookings, setBookings] = useState<any[]>([]);
@@ -266,6 +269,37 @@ export default function Dashboard() {
           </TabsList>
 
           <TabsContent value="overview">
+            {/* Profile Completion Banner */}
+            {!isProfileComplete && (
+              <Card className="mb-6 border-primary/20 bg-primary/5">
+                <CardContent className="p-6">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold mb-2">Complete Your Profile</h3>
+                      <p className="text-muted-foreground mb-4">
+                        {isNewProfile 
+                          ? "Welcome! Let's set up your profile to get the most out of the platform."
+                          : "A complete profile helps you get more opportunities and build trust."
+                        }
+                      </p>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span>Profile Completion</span>
+                          <span className="font-medium">{completionPercentage}%</span>
+                        </div>
+                        <Progress value={completionPercentage} className="h-2" />
+                      </div>
+                    </div>
+                    <SmartProfileDialog>
+                      <Button className="ml-4 bg-gradient-primary hover:opacity-90">
+                        {isNewProfile ? 'Complete Setup' : 'Complete Profile'}
+                      </Button>
+                    </SmartProfileDialog>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {/* User Type Specific Quick Actions */}
             <div className="mb-8">
               <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
@@ -533,12 +567,12 @@ export default function Dashboard() {
                       Marketplace
                     </Button>
 
-                    <ProfileEditDialog>
+                    <SmartProfileDialog>
                       <Button variant="outline" className="justify-start w-full">
                         <Settings className="h-4 w-4 mr-2" />
                         Account Settings
                       </Button>
-                    </ProfileEditDialog>
+                    </SmartProfileDialog>
                   </div>
                 </CardContent>
               </Card>
@@ -642,11 +676,11 @@ export default function Dashboard() {
                   </div>
                   
                   <div className="flex gap-3">
-                    <ProfileEditDialog>
+                    <SmartProfileDialog>
                       <Button className="bg-gradient-primary hover:opacity-90">
                         Edit Profile
                       </Button>
-                    </ProfileEditDialog>
+                    </SmartProfileDialog>
                     
                     <Button variant="outline" onClick={() => navigate('/profile')}>
                       <Eye className="h-4 w-4 mr-2" />
