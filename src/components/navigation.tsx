@@ -241,15 +241,25 @@ export function Navigation() {
                   </DropdownMenuItem>
                   
                   <DropdownMenuSeparator />
-                  
-                  {profile?.user_type === 'admin' && (
-                    <DropdownMenuItem asChild>
-                      <Link to="/admin">
-                        <Settings className="h-4 w-4 mr-2" />
-                        Admin Panel
-                      </Link>
-                    </DropdownMenuItem>
-                  )}
+                   
+                   {(profile?.user_type === 'admin' && profile?.verified) && (
+                     <DropdownMenuItem asChild>
+                       <Link to="/admin">
+                         <Settings className="h-4 w-4 mr-2" />
+                         🔧 Admin Panel
+                       </Link>
+                     </DropdownMenuItem>
+                   )}
+                   
+                   {/* Debug: Show admin status */}
+                   {user?.email === 'soundvibetribe@gmail.com' && (
+                     <DropdownMenuItem asChild>
+                       <Link to="/admin">
+                         <Settings className="h-4 w-4 mr-2" />
+                         🔧 ADMIN DASHBOARD
+                       </Link>
+                     </DropdownMenuItem>
+                   )}
                   <DropdownMenuItem>
                     <Settings className="h-4 w-4 mr-2" />
                     Settings
