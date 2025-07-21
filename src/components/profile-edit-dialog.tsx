@@ -45,7 +45,7 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
     user_type: profile?.user_type || 'client',
     avatar_url: profile?.avatar_url || '',
     gallery_images: (profile as any)?.gallery_images || [],
-    specialization: (profile as any)?.specialization || '',
+    specializations: (profile as any)?.specializations || [],
     company_name: (profile as any)?.company_name || '',
     social_media: (profile as any)?.social_media || {},
     skills: (profile as any)?.skills || [],
@@ -68,7 +68,7 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
         user_type: profile.user_type || 'client',
         avatar_url: profile.avatar_url || '',
         gallery_images: (profile as any).gallery_images || [],
-        specialization: (profile as any).specialization || '',
+        specializations: (profile as any).specializations || [],
         company_name: (profile as any).company_name || '',
         social_media: (profile as any).social_media || {},
         skills: (profile as any).skills || [],
@@ -242,25 +242,35 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
             </Select>
           </div>
 
-          {/* Music Professional Specialization */}
+          {/* Music Professional Specializations */}
           {formData.user_type === 'artist' && (
             <div>
-              <Label htmlFor="specialization">Specialization</Label>
-              <Select 
-                value={formData.specialization} 
-                onValueChange={(value) => setFormData(prev => ({ ...prev, specialization: value }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select your specialization" />
-                </SelectTrigger>
-                <SelectContent>
-                  {musicSpecializations.map((spec) => (
-                    <SelectItem key={spec.value} value={spec.label}>
-                      {spec.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Label htmlFor="specializations">Specializations (Select multiple)</Label>
+              <div className="grid grid-cols-2 gap-2 mt-2">
+                {musicSpecializations.map((spec) => (
+                  <label key={spec.value} className="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.specializations.includes(spec.label)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setFormData(prev => ({ 
+                            ...prev, 
+                            specializations: [...prev.specializations, spec.label]
+                          }));
+                        } else {
+                          setFormData(prev => ({ 
+                            ...prev, 
+                            specializations: prev.specializations.filter(s => s !== spec.label)
+                          }));
+                        }
+                      }}
+                      className="rounded border-border"
+                    />
+                    <span className="text-sm">{spec.label}</span>
+                  </label>
+                ))}
+              </div>
             </div>
           )}
 

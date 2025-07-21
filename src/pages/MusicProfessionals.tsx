@@ -44,7 +44,8 @@ export default function MusicProfessionals() {
   const filteredProfessionals = musicProfessionals.filter(professional => {
     const matchesSearch = professional.stage_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          professional.profile?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         professional.specialization?.toLowerCase().includes(searchTerm.toLowerCase());
+                         professional.specializations?.some((spec: string) => 
+                           spec.toLowerCase().includes(searchTerm.toLowerCase()));
     
     const matchesGenre = genreFilter === 'all' || !genreFilter || 
                         professional.genres?.some((genre: string) => 
@@ -54,7 +55,8 @@ export default function MusicProfessionals() {
                            professional.profile?.location?.toLowerCase().includes(locationFilter.toLowerCase());
 
     const matchesSpecialization = specializationFilter === 'all' || !specializationFilter || 
-                                 professional.specialization?.toLowerCase().includes(specializationFilter.toLowerCase());
+                                 professional.specializations?.some((spec: string) => 
+                                   spec.toLowerCase().includes(specializationFilter.toLowerCase()));
 
     return matchesSearch && matchesGenre && matchesLocation && matchesSpecialization;
   });
@@ -68,7 +70,7 @@ export default function MusicProfessionals() {
   ));
 
   const uniqueSpecializations = Array.from(new Set(
-    musicProfessionals.map(professional => professional.specialization).filter(Boolean)
+    musicProfessionals.flatMap(professional => professional.specializations || [])
   ));
 
   const musicSpecializations = [
@@ -228,11 +230,18 @@ export default function MusicProfessionals() {
                     
                     {/* Additional Info */}
                     <div className="mt-3 space-y-2">
-                      {professional.specialization && (
-                        <div className="flex justify-center">
-                          <Badge variant="secondary" className="text-xs">
-                            {professional.specialization}
-                          </Badge>
+                      {professional.specializations && professional.specializations.length > 0 && (
+                        <div className="flex flex-wrap gap-1 justify-center">
+                          {professional.specializations.slice(0, 2).map((spec: string) => (
+                            <Badge key={spec} variant="secondary" className="text-xs">
+                              {spec}
+                            </Badge>
+                          ))}
+                          {professional.specializations.length > 2 && (
+                            <Badge variant="secondary" className="text-xs">
+                              +{professional.specializations.length - 2} more
+                            </Badge>
+                          )}
                         </div>
                       )}
 

@@ -110,7 +110,7 @@ export type Database = {
           portfolio_urls: string[] | null
           profile_id: string
           rating: number | null
-          specialization: string | null
+          specializations: string[] | null
           stage_name: string
           total_reviews: number | null
           updated_at: string
@@ -127,7 +127,7 @@ export type Database = {
           portfolio_urls?: string[] | null
           profile_id: string
           rating?: number | null
-          specialization?: string | null
+          specializations?: string[] | null
           stage_name: string
           total_reviews?: number | null
           updated_at?: string
@@ -144,7 +144,7 @@ export type Database = {
           portfolio_urls?: string[] | null
           profile_id?: string
           rating?: number | null
-          specialization?: string | null
+          specializations?: string[] | null
           stage_name?: string
           total_reviews?: number | null
           updated_at?: string
@@ -711,7 +711,7 @@ export type Database = {
           portfolio_urls: string[] | null
           skills: string[] | null
           social_media: Json | null
-          specialization: string | null
+          specializations: string[] | null
           team_size: number | null
           updated_at: string
           user_id: string
@@ -740,7 +740,7 @@ export type Database = {
           portfolio_urls?: string[] | null
           skills?: string[] | null
           social_media?: Json | null
-          specialization?: string | null
+          specializations?: string[] | null
           team_size?: number | null
           updated_at?: string
           user_id: string
@@ -769,7 +769,7 @@ export type Database = {
           portfolio_urls?: string[] | null
           skills?: string[] | null
           social_media?: Json | null
-          specialization?: string | null
+          specializations?: string[] | null
           team_size?: number | null
           updated_at?: string
           user_id?: string
