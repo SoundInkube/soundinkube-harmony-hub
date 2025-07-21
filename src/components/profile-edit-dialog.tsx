@@ -4,6 +4,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { useCities } from '@/hooks/useCities';
 import { useSkills } from '@/hooks/useSkills';
 import { useInstruments } from '@/hooks/useInstruments';
+import { useTeacherSpecializations } from '@/hooks/useTeacherSpecializations';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -38,6 +39,7 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
   const { data: cities } = useCities();
   const { data: skills } = useSkills();
   const { data: instruments } = useInstruments();
+  const { data: teacherSpecializations } = useTeacherSpecializations();
   const { toast } = useToast();
   const { getProfileGenres, updateProfileGenres } = useGenres();
   const [internalOpen, setInternalOpen] = useState(false);
@@ -109,6 +111,7 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
   const userTypes = [
     { value: 'client', label: 'Client' },
     { value: 'artist', label: 'Music Professional' },
+    { value: 'teacher', label: 'Music Teacher' },
     { value: 'studio', label: 'Studio Owner' },
     { value: 'school', label: 'Music School' },
     { value: 'label', label: 'Record Label' },
@@ -302,6 +305,27 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
                   </label>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* Teacher Specializations */}
+          {formData.user_type === 'teacher' && (
+            <div>
+              <Label>Teaching Specializations (Select multiple)</Label>
+              <MultiSelect
+                options={teacherSpecializations?.map(spec => ({
+                  value: spec.name,
+                  label: spec.name,
+                  category: spec.category
+                })) || []}
+                selected={formData.specializations || []}
+                onChange={(selectedSpecs) => setFormData(prev => ({ 
+                  ...prev, 
+                  specializations: selectedSpecs
+                }))}
+                placeholder="Select your teaching specializations"
+                className="w-full"
+              />
             </div>
           )}
 
@@ -572,7 +596,7 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
           )}
 
           {/* Skills and Instruments for relevant user types */}
-          {(formData.user_type === 'artist' || formData.user_type === 'manager') && (
+          {(formData.user_type === 'artist' || formData.user_type === 'manager' || formData.user_type === 'teacher') && (
             <div className="space-y-4">
               <Label className="text-base font-semibold">Skills & Expertise</Label>
               
