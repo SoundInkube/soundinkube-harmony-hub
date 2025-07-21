@@ -59,10 +59,11 @@ export function useProfile() {
     if (!user || !profile) return { error: 'No user or profile found' };
 
     try {
-      // Use secure profile update function that validates field restrictions
-      const { error } = await supabase.rpc('update_user_profile', {
-        profile_updates: updates
-      });
+      // Direct table update to handle arrays properly
+      const { error } = await supabase
+        .from('profiles')
+        .update(updates)
+        .eq('user_id', user.id);
 
       if (error) throw error;
       
