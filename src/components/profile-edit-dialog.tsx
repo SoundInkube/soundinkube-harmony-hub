@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { Button } from '@/components/ui/button';
@@ -19,6 +19,8 @@ import {
 import { User, Loader2, Camera, Images } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { validateProfileData, sanitizeProfileData } from '@/lib/validation';
+import { GenreMultiSelect } from '@/components/ui/genre-multi-select';
+import { useGenres } from '@/hooks/useGenres';
 
 interface ProfileEditDialogProps {
   children?: React.ReactNode;
@@ -30,6 +32,7 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
   const { user } = useAuth();
   const { profile, updateProfile, loading: profileLoading } = useProfile();
   const { toast } = useToast();
+  const { getProfileGenres, updateProfileGenres } = useGenres();
   const [internalOpen, setInternalOpen] = useState(false);
   const open = externalOpen !== undefined ? externalOpen : internalOpen;
   const setOpen = externalOnOpenChange || setInternalOpen;
@@ -50,35 +53,51 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
     social_media: (profile as any)?.social_media || {},
     skills: (profile as any)?.skills || [],
     instruments: (profile as any)?.instruments || [],
-    genres: (profile as any)?.genres || [],
+    selectedGenres: [],
     hourly_rate: (profile as any)?.hourly_rate || '',
     experience_level: (profile as any)?.experience_level || ''
   });
 
   // Update form when profile loads
-  useState(() => {
-    if (profile) {
-      setFormData({
-        full_name: profile.full_name || '',
-        username: profile.username || '',
-        bio: profile.bio || '',
-        location: profile.location || '',
-        phone: profile.phone || '',
-        website: profile.website || '',
-        user_type: profile.user_type || 'client',
-        avatar_url: profile.avatar_url || '',
-        gallery_images: (profile as any).gallery_images || [],
-        specializations: (profile as any).specializations || [],
-        company_name: (profile as any).company_name || '',
-        social_media: (profile as any).social_media || {},
-        skills: (profile as any).skills || [],
-        instruments: (profile as any).instruments || [],
-        genres: (profile as any).genres || [],
-        hourly_rate: (profile as any).hourly_rate || '',
-        experience_level: (profile as any).experience_level || ''
-      });
-    }
-  });
+  useEffect(() => {
+    const loadProfileData = async () => {
+      if (profile) {
+        let profileGenres: string[] = [];
+        
+        // Load existing genres for music professionals
+        if (profile.user_type === 'artist' || profile.user_type === 'manager') {
+          try {
+            const genres = await getProfileGenres(profile.id);
+            profileGenres = genres.map(g => g.id);
+          } catch (error) {
+            console.error('Error loading profile genres:', error);
+          }
+        }
+
+        setFormData({
+          full_name: profile.full_name || '',
+          username: profile.username || '',
+          bio: profile.bio || '',
+          location: profile.location || '',
+          phone: profile.phone || '',
+          website: profile.website || '',
+          user_type: profile.user_type || 'client',
+          avatar_url: profile.avatar_url || '',
+          gallery_images: (profile as any).gallery_images || [],
+          specializations: (profile as any).specializations || [],
+          company_name: (profile as any).company_name || '',
+          social_media: (profile as any).social_media || {},
+          skills: (profile as any).skills || [],
+          instruments: (profile as any).instruments || [],
+          selectedGenres: profileGenres,
+          hourly_rate: (profile as any).hourly_rate || '',
+          experience_level: (profile as any).experience_level || ''
+        });
+      }
+    };
+
+    loadProfileData();
+  }, [profile, getProfileGenres]);
 
   const userTypes = [
     { value: 'client', label: 'Client' },
@@ -126,6 +145,11 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
 
       // Sanitize form data
       const sanitizedData = sanitizeProfileData(formData);
+
+      // Update profile genres if user is a professional
+      if (profile && (formData.user_type === 'artist' || formData.user_type === 'manager')) {
+        await updateProfileGenres(profile.id, formData.selectedGenres);
+      }
 
       const { error } = await updateProfile(sanitizedData);
 
@@ -552,15 +576,15 @@ export function ProfileEditDialog({ children, open: externalOpen, onOpenChange: 
               </div>
               
               <div>
-                <Label htmlFor="genres">Genres (comma-separated)</Label>
-                <Input
-                  id="genres"
-                  placeholder="Pop, Rock, Jazz, Electronic"
-                  value={Array.isArray(formData.genres) ? formData.genres.join(', ') : ''}
-                  onChange={(e) => setFormData(prev => ({ 
+                <Label htmlFor="genres">Genres</Label>
+                <GenreMultiSelect
+                  selectedGenres={formData.selectedGenres}
+                  onGenresChange={(genreIds) => setFormData(prev => ({ 
                     ...prev, 
-                    genres: e.target.value.split(',').map(s => s.trim()).filter(Boolean)
+                    selectedGenres: genreIds
                   }))}
+                  placeholder="Select your music genres..."
+                  className="mt-1"
                 />
               </div>
             </div>
