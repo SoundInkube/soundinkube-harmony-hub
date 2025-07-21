@@ -1,4 +1,4 @@
-import { useProfile } from './useProfile';
+import { useProfile } from '@/hooks/useProfile';
 
 export function useProfileCompletion() {
   const { profile } = useProfile();

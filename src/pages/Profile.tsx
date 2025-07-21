@@ -50,24 +50,38 @@ export default function Profile() {
       
       if (!userId && user) {
         // Load current user's profile for public view
-        const { data: profileData } = await supabase
+        const { data: profileData, error } = await supabase
           .from('profiles')
           .select('*')
           .eq('user_id', user.id)
-          .single();
+          .maybeSingle();
+        
+        if (error) {
+          console.error('Error loading own profile:', error);
+          throw error;
+        }
         
         setProfile(profileData);
         setIsOwnProfile(true);
       } else if (userId) {
         // Load specific user's profile
-        const { data: profileData } = await supabase
+        const { data: profileData, error } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', userId)
-          .single();
+          .maybeSingle();
+        
+        if (error) {
+          console.error('Error loading user profile:', error);
+          throw error;
+        }
         
         setProfile(profileData);
         setIsOwnProfile(user?.id === profileData?.user_id);
+      } else if (!user) {
+        // Not authenticated
+        setProfile(null);
+        setIsOwnProfile(false);
       }
 
       // Load social media content if profile has social links
@@ -245,7 +259,7 @@ export default function Profile() {
                 </div>
                 
                 <div className="flex gap-2">
-                  {isOwnProfile ? (
+                  {isOwnProfile || (!userId && user) ? (
                     <SmartProfileDialog>
                       <Button variant="outline">
                         <Settings className="h-4 w-4 mr-2" />
