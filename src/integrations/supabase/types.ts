@@ -273,6 +273,42 @@ export type Database = {
           },
         ]
       }
+      collaboration_genres: {
+        Row: {
+          collaboration_id: string
+          created_at: string
+          genre_id: string
+          id: string
+        }
+        Insert: {
+          collaboration_id: string
+          created_at?: string
+          genre_id: string
+          id?: string
+        }
+        Update: {
+          collaboration_id?: string
+          created_at?: string
+          genre_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collaboration_genres_collaboration_id_fkey"
+            columns: ["collaboration_id"]
+            isOneToOne: false
+            referencedRelation: "collaborations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collaboration_genres_genre_id_fkey"
+            columns: ["genre_id"]
+            isOneToOne: false
+            referencedRelation: "genres"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       collaborations: {
         Row: {
           collaboration_type: string
@@ -338,6 +374,33 @@ export type Database = {
           },
         ]
       }
+      genres: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gig_applications: {
         Row: {
           applied_at: string
@@ -382,6 +445,42 @@ export type Database = {
             columns: ["professional_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gig_genres: {
+        Row: {
+          created_at: string
+          genre_id: string
+          gig_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          genre_id: string
+          gig_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          genre_id?: string
+          gig_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gig_genres_genre_id_fkey"
+            columns: ["genre_id"]
+            isOneToOne: false
+            referencedRelation: "genres"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gig_genres_gig_id_fkey"
+            columns: ["gig_id"]
+            isOneToOne: false
+            referencedRelation: "gigs"
             referencedColumns: ["id"]
           },
         ]
@@ -683,6 +782,42 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "music_schools_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profile_genres: {
+        Row: {
+          created_at: string
+          genre_id: string
+          id: string
+          profile_id: string
+        }
+        Insert: {
+          created_at?: string
+          genre_id: string
+          id?: string
+          profile_id: string
+        }
+        Update: {
+          created_at?: string
+          genre_id?: string
+          id?: string
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profile_genres_genre_id_fkey"
+            columns: ["genre_id"]
+            isOneToOne: false
+            referencedRelation: "genres"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profile_genres_profile_id_fkey"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -993,6 +1128,20 @@ export type Database = {
       admin_update_user_verification: {
         Args: { target_user_id: string; is_verified: boolean }
         Returns: boolean
+      }
+      get_gig_genres: {
+        Args: { gig_uuid: string }
+        Returns: {
+          genre_name: string
+          genre_category: string
+        }[]
+      }
+      get_profile_genres: {
+        Args: { profile_uuid: string }
+        Returns: {
+          genre_name: string
+          genre_category: string
+        }[]
       }
       is_admin: {
         Args: { user_uuid?: string }
