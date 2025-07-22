@@ -53,7 +53,16 @@ export default function Profile() {
         // Load current user's profile for public view
         const { data: profileData, error } = await supabase
           .from('profiles')
-          .select('*')
+          .select(`
+            *,
+            profile_genres (
+              genres (
+                id,
+                name,
+                category
+              )
+            )
+          `)
           .eq('user_id', user.id)
           .maybeSingle();
         
@@ -62,13 +71,29 @@ export default function Profile() {
           throw error;
         }
         
-        setProfile(profileData);
+        // Extract genre names from the relationship
+        const genreNames = profileData?.profile_genres?.map((pg: any) => pg.genres?.name).filter(Boolean) || [];
+        const processedProfile = {
+          ...profileData,
+          genres: genreNames,
+        };
+        
+        setProfile(processedProfile);
         setIsOwnProfile(true);
       } else if (userId) {
         // Load specific user's profile
         const { data: profileData, error } = await supabase
           .from('profiles')
-          .select('*')
+          .select(`
+            *,
+            profile_genres (
+              genres (
+                id,
+                name,
+                category
+              )
+            )
+          `)
           .eq('id', userId)
           .maybeSingle();
         
@@ -77,7 +102,14 @@ export default function Profile() {
           throw error;
         }
         
-        setProfile(profileData);
+        // Extract genre names from the relationship
+        const genreNames = profileData?.profile_genres?.map((pg: any) => pg.genres?.name).filter(Boolean) || [];
+        const processedProfile = {
+          ...profileData,
+          genres: genreNames,
+        };
+        
+        setProfile(processedProfile);
         setIsOwnProfile(user?.id === profileData?.user_id);
       } else if (!user) {
         // Not authenticated
@@ -397,6 +429,32 @@ export default function Profile() {
             </TabsContent>
 
             <TabsContent value="portfolio" className="space-y-6">
+              {/* Gallery Section */}
+              {profile.gallery_images?.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Gallery</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+                      {profile.gallery_images.map((imageUrl: string, index: number) => (
+                        <div
+                          key={index}
+                          className="aspect-square overflow-hidden rounded-lg border border-border"
+                        >
+                          <img
+                            src={imageUrl}
+                            alt={`Gallery image ${index + 1}`}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+              
+              {/* Portfolio URLs Section */}
               <Card>
                 <CardHeader>
                   <CardTitle>Portfolio & Work</CardTitle>
