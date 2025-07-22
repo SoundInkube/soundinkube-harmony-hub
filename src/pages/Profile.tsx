@@ -292,7 +292,7 @@ export default function Profile() {
                 </div>
                 
                 <div className="flex gap-2">
-                  {isOwnProfile || (!userId && user) ? (
+                  {(user && profile?.user_id === user.id) ? (
                     <div className="flex gap-2">
                       <SmartProfileDialog>
                         <Button className="bg-gradient-primary hover:opacity-90">
@@ -308,7 +308,7 @@ export default function Profile() {
                         </a>
                       </Button>
                     </div>
-                  ) : (
+                  ) : user ? (
                     <>
                       <Button>
                         <MessageSquare className="h-4 w-4 mr-2" />
@@ -319,7 +319,7 @@ export default function Profile() {
                         Follow
                       </Button>
                     </>
-                  )}
+                  ) : null}
                 </div>
               </div>
             </div>
