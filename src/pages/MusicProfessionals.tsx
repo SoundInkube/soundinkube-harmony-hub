@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { ContentCard } from '@/components/content-card';
 import { BookingDialog } from '@/components/booking-dialog';
@@ -11,6 +12,7 @@ import { Navigation } from '@/components/navigation';
 import { Search, Filter, MapPin, Star, Music, Calendar } from 'lucide-react';
 
 export default function MusicProfessionals() {
+  const navigate = useNavigate();
   const [musicProfessionals, setMusicProfessionals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -225,7 +227,7 @@ export default function MusicProfessionals() {
                       genre={professional.genres?.[0]}
                       price={professional.hourly_rate ? `₹${professional.hourly_rate}/hr` : undefined}
                       type="artist"
-                      onClick={() => console.log('View music professional:', professional.id)}
+                      onClick={() => navigate(`/profile/${professional.profile?.id}`)}
                     />
                     
                     {/* Additional Info */}
