@@ -292,6 +292,14 @@ export default function Profile() {
                 </div>
                 
                 <div className="flex gap-2">
+                  {/* Back to Homepage - Always visible */}
+                  <Button variant="outline" asChild>
+                    <a href="/">
+                      <ExternalLink className="h-4 w-4 mr-2" />
+                      Back to Homepage
+                    </a>
+                  </Button>
+                  
                   {(user && profile?.user_id === user.id) ? (
                     <div className="flex gap-2">
                       <SmartProfileDialog>
