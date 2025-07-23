@@ -1,8 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Play, Music, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export function HeroSection() {
+  const navigate = useNavigate();
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background Gradient */}
@@ -45,6 +47,7 @@ export function HeroSection() {
             <Button 
               size="lg" 
               className="bg-gradient-primary hover:opacity-90 transition-all duration-300 px-8 py-6 text-lg glow-primary group"
+              onClick={() => navigate('/artists')}
             >
               <Play className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
               Explore Platform
@@ -54,6 +57,7 @@ export function HeroSection() {
               size="lg" 
               variant="outline" 
               className="border-primary/50 hover:bg-primary/10 px-8 py-6 text-lg"
+              onClick={() => navigate('/auth')}
             >
               <Music className="h-5 w-5 mr-2" />
               Join as Artist
