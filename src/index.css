@@ -292,7 +292,8 @@ All colors MUST be HSL.
   }
   
   .profile-avatar {
-    @apply border-4 border-background shadow-avatar;
+    @apply border-4 border-background;
+    box-shadow: var(--shadow-avatar);
   }
   
   .profile-card-premium {
