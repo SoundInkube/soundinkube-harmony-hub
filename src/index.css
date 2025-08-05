@@ -81,11 +81,23 @@ All colors MUST be HSL.
     --transition-elastic: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     --transition-snappy: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     
-    /* Enhanced Spacing & Typography */
-    --radius: 1rem;
-    --radius-sm: 0.75rem;
-    --radius-lg: 1.5rem;
-    --radius-xl: 2rem;
+  /* Enhanced Spacing & Typography */
+  --radius: 1rem;
+  --radius-sm: 0.75rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+  --radius-2xl: 2.5rem;
+  
+  /* Profile-specific gradients */
+  --gradient-cover: linear-gradient(135deg, hsl(0 100% 37%) 0%, hsl(15 80% 35%) 30%, hsl(25 90% 40%) 60%, hsl(0 0% 4%) 100%);
+  --gradient-profile-card: linear-gradient(145deg, hsl(0 5% 8%) 0%, hsl(0 5% 12%) 100%);
+  --gradient-stats: linear-gradient(135deg, hsl(0 100% 37% / 0.1) 0%, hsl(15 80% 35% / 0.1) 100%);
+  --gradient-premium-badge: linear-gradient(135deg, hsl(0 100% 37%) 0%, hsl(25 90% 40%) 100%);
+  
+  /* Professional shadows */
+  --shadow-profile: 0 20px 60px hsl(0 0% 2% / 0.8);
+  --shadow-avatar: 0 15px 40px hsl(0 100% 37% / 0.4);
+  --shadow-card-hover: 0 25px 80px hsl(0 100% 37% / 0.3);
     
     /* Font weights for enhanced typography */
     --font-weight-light: 300;
@@ -262,6 +274,51 @@ All colors MUST be HSL.
   .badge-premium {
     @apply bg-gradient-primary text-primary-foreground border-0 
            shadow-glow rounded-full px-4 py-2 font-medium;
+  }
+  
+  /* Profile-specific styles */
+  .profile-cover {
+    background: var(--gradient-cover);
+    position: relative;
+  }
+  
+  .profile-cover::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent;
+  }
+  
+  .profile-avatar-container {
+    @apply relative;
+  }
+  
+  .profile-avatar {
+    @apply border-4 border-background shadow-avatar;
+  }
+  
+  .profile-card-premium {
+    background: var(--gradient-profile-card);
+    @apply border border-border/40 backdrop-blur-sm;
+    box-shadow: var(--shadow-profile);
+  }
+  
+  .profile-stats-card {
+    background: var(--gradient-stats);
+    @apply border border-primary/20 backdrop-blur-sm rounded-2xl;
+  }
+  
+  .profile-badge-verified {
+    background: var(--gradient-premium-badge);
+    @apply text-white border-0 shadow-glow;
+  }
+  
+  .profile-section-card {
+    @apply bg-card/90 backdrop-blur-xl border border-border/40 rounded-2xl;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .profile-section-card:hover {
+    @apply border-primary/30 scale-[1.01];
+    box-shadow: var(--shadow-card-hover);
   }
 
   /* Enhanced Form Elements */
